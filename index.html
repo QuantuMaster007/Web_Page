@@ -1,147 +1,814 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sourabh Tarodekar | Strategic Leader</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sourabh Tarodekar | Strategic Leader</title>
 
-<script src="https://cdn.tailwindcss.com"></script>
-<script>
-tailwind.config = {
-  darkMode: 'class',
-  theme: {
-    extend: {
-      colors: { brand: '#ef5a43', slate: { 950: '#050a1a' } }
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: '#ef5a43',
+            slate: { 950: '#050a1a' }
+          }
+        }
+      }
     }
-  }
-}
-</script>
+  </script>
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;700;900&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;700;900&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
 
-<style>
-html,body{margin:0;height:100%;font-family:Inter;-webkit-font-smoothing:antialiased}
-.display-font{font-family:Outfit}
-.monogram{clip-path:polygon(25% 0,100% 0,75% 100%,0 100%)}
-.grid-bg{background-image:radial-gradient(circle,rgba(239,90,67,.05) 1px,transparent 1px);background-size:30px 30px}
-.page-transition{transition:opacity .4s ease,transform .4s ease}
-.hidden-state{opacity:0;transform:translateY(10px);pointer-events:none;position:absolute;width:100%}
-.visible-state{opacity:1;transform:none;pointer-events:auto;position:relative;width:100%}
-.project-card,.glass-panel{background:rgba(255,255,255,.6);border:1px solid rgba(15,23,42,.08);backdrop-filter:blur(10px);transition:.4s}
-.dark .project-card,.dark .glass-panel{background:rgba(255,255,255,.03);border-color:rgba(255,255,255,.05)}
-.project-card:hover{transform:translateY(-8px);border-color:#ef5a43;box-shadow:0 20px 40px -15px rgba(239,90,67,.2)}
-.content-container{max-width:1200px;margin:auto;padding:0 2rem}
-.scroll-area{overflow-y:auto;max-height:calc(100vh - 350px);padding-right:12px}
-::-webkit-scrollbar{width:5px}
-::-webkit-scrollbar-thumb{background:#ef5a43;border-radius:10px}
-.nav-btn{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:rgba(15,23,42,.05);transition:.3s}
-.dark .nav-btn{background:rgba(255,255,255,.05)}
-.nav-btn:hover{background:#ef5a43;color:white;transform:translateY(-2px)}
-.filter-btn{font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;padding:6px 14px;border-radius:100px;border:1px solid rgba(15,23,42,.1);cursor:pointer}
-.filter-btn.active{background:#ef5a43;color:white;border-color:#ef5a43}
-.tech-tag{font-size:9px;font-weight:700;padding:3px 8px;border-radius:4px;background:rgba(15,23,42,.05)}
-.dark .tech-tag{background:rgba(255,255,255,.05)}
-.status-dot{width:6px;height:6px;border-radius:50%;background:#10b981;display:inline-block;margin-right:6px;animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-.input-field{width:100%;padding:12px 16px;border-radius:12px;font-size:13px;border:1px solid rgba(15,23,42,.1);background:rgba(15,23,42,.03)}
-.dark .input-field{background:rgba(255,255,255,.03);color:white}
-.input-field:focus{outline:none;border-color:#ef5a43}
-</style>
+  <style>
+    html, body {
+      margin: 0; padding: 0; width: 100%; height: 100vh;
+      overflow: hidden; font-family: 'Inter', sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Better behavior on smaller height screens */
+    @media (max-height: 820px) {
+      body { overflow-y: auto; height: auto; }
+      .scroll-area { max-height: none; }
+      main { overflow: visible !important; }
+    }
+
+    .scroll-area { overflow-y: auto; max-height: calc(100vh - 350px); padding-right: 12px; }
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-thumb { background: #ef5a43; border-radius: 10px; }
+
+    .display-font { font-family: 'Outfit', sans-serif; }
+    .monogram { clip-path: polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%); }
+
+    .grid-bg {
+      background-image: radial-gradient(circle, rgba(239, 90, 67, 0.05) 1px, transparent 1px);
+      background-size: 30px 30px;
+    }
+
+    .page-transition { transition: opacity 0.4s ease, transform 0.4s ease; }
+    .hidden-state { opacity: 0; transform: translateY(10px); pointer-events: none; position: absolute; width: 100%; }
+    .visible-state { opacity: 1; transform: translateY(0); pointer-events: auto; position: relative; width: 100%; }
+
+    .project-card, .glass-panel {
+      background: rgba(255, 255, 255, 0.6);
+      border: 1px solid rgba(15, 23, 42, 0.08);
+      backdrop-filter: blur(10px);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      border-radius: 22px;
+    }
+    .dark .project-card, .dark .glass-panel {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .project-card:hover {
+      transform: translateY(-8px);
+      border-color: #ef5a43;
+      box-shadow: 0 20px 40px -15px rgba(239, 90, 67, 0.2);
+    }
+
+    .nav-btn {
+      display: flex; align-items: center; justify-content: center;
+      width: 38px; height: 38px; border-radius: 10px;
+      background: rgba(15, 23, 42, 0.05); transition: all 0.3s;
+      cursor: pointer;
+    }
+    .dark .nav-btn { background: rgba(255, 255, 255, 0.05); }
+    .nav-btn:hover { background: #ef5a43; color: white; transform: translateY(-2px); }
+
+    .input-field {
+      width: 100%;
+      background: rgba(15, 23, 42, 0.03);
+      border: 1px solid rgba(15, 23, 42, 0.1);
+      border-radius: 12px;
+      padding: 12px 16px;
+      font-size: 13px;
+      transition: all 0.3s;
+    }
+    .dark .input-field {
+      background: rgba(255, 255, 255, 0.03);
+      border-color: rgba(255, 255, 255, 0.1);
+      color: white;
+    }
+    .input-field:focus { outline: none; border-color: #ef5a43; }
+
+    .status-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: #10b981; display: inline-block; margin-right: 6px;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+    .filter-btn {
+      font-size: 10px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 6px 14px; border-radius: 100px;
+      border: 1px solid rgba(15, 23, 42, 0.1);
+      transition: all 0.3s;
+      color: #64748b;
+      cursor: pointer;
+      background: transparent;
+    }
+    .dark .filter-btn { border-color: rgba(255,255,255,0.1); color: #94a3b8; }
+    .filter-btn.active { background: #ef5a43; color: white; border-color: #ef5a43; }
+
+    .tech-tag {
+      font-size: 9px; font-weight: 700; padding: 3px 8px; border-radius: 4px;
+      background: rgba(15, 23, 42, 0.05); color: #64748b;
+    }
+    .dark .tech-tag { background: rgba(255, 255, 255, 0.05); color: #94a3b8; }
+
+    .content-container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+
+    /* Top mini-nav (optional but makes it feel more like real pages) */
+    .top-links a {
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      opacity: .55;
+      transition: .25s;
+      padding: 10px 10px;
+      border-radius: 12px;
+      border: 1px solid transparent;
+    }
+    .top-links a:hover { opacity: 1; color: #ef5a43; border-color: rgba(239,90,67,.25); }
+    .top-links a.active { opacity: 1; color: #ef5a43; border-color: rgba(239,90,67,.35); background: rgba(239,90,67,.06); }
+  </style>
 </head>
 
-<body class="bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors relative">
+<body class="bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col transition-colors duration-500 relative">
 
-<div class="fixed inset-0 grid-bg pointer-events-none opacity-0 dark:opacity-100"></div>
+  <div class="fixed inset-0 grid-bg pointer-events-none opacity-0 dark:opacity-100 transition-opacity duration-1000"></div>
 
-<!-- NAV -->
-<nav class="fixed w-full z-50 bg-white/80 dark:bg-slate-950/80 backdrop-blur border-b">
-  <div class="content-container h-20 flex justify-between items-center">
-    <div class="flex items-center gap-4 cursor-pointer" onclick="showPage('home')">
-      <div class="monogram bg-brand w-10 h-10 flex items-center justify-center text-white font-black">S</div>
-      <span class="font-black tracking-widest hidden md:block">SOURABH TARODEKAR</span>
+  <!-- NAV -->
+  <nav class="fixed w-full z-50 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+    <div class="content-container h-20 flex justify-between items-center">
+      <div class="flex items-center gap-5 cursor-pointer" onclick="go('home')">
+        <div class="monogram bg-brand w-11 h-11 flex items-center justify-center text-white font-black text-xl">S</div>
+        <span class="text-lg md:text-xl font-black tracking-[0.2em] uppercase hidden md:block">Sourabh Tarodekar</span>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <!-- Keep your resume button (placeholder link); update href if you have a PDF -->
+        <a href="#" class="hidden lg:flex items-center gap-2 px-4 py-2 border border-slate-200 dark:border-slate-700 rounded-lg text-[10px] font-black uppercase tracking-widest hover:border-brand hover:text-brand transition-all mr-2">
+          <i class="fas fa-file-arrow-down"></i> Resume
+        </a>
+
+        <a href="mailto:sourabh232@gmail.com" class="nav-btn" title="Email"><i class="fas fa-envelope"></i></a>
+        <a href="https://linkedin.com/in/sourabh232" target="_blank" class="nav-btn" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+        <a href="https://github.com/QuantuMaster007" target="_blank" class="nav-btn" title="GitHub"><i class="fab fa-github"></i></a>
+
+        <button id="theme-toggle" class="nav-btn ml-1 hover:bg-slate-900 dark:hover:bg-white dark:hover:text-slate-900" title="Theme">
+          <i id="theme-toggle-icon" class="fas fa-moon"></i>
+        </button>
+      </div>
     </div>
-    <div class="flex items-center gap-2">
-      <a href="mailto:sourabh232@gmail.com" class="nav-btn"><i class="fas fa-envelope"></i></a>
-      <a href="https://linkedin.com/in/sourabh232" target="_blank" class="nav-btn"><i class="fab fa-linkedin-in"></i></a>
-      <a href="https://github.com/QuantuMaster007" target="_blank" class="nav-btn"><i class="fab fa-github"></i></a>
-      <button id="theme-toggle" class="nav-btn"><i id="theme-toggle-icon" class="fas fa-moon"></i></button>
+  </nav>
+
+  <main class="flex-grow flex flex-col justify-center pt-24 relative overflow-hidden">
+
+    <!-- HOME -->
+    <div id="home-page" class="content-container page-transition visible-state">
+      <div class="grid lg:grid-cols-12 gap-10 items-center">
+
+        <div class="lg:col-span-7">
+          <h1 class="display-font text-[clamp(2.5rem,7vw,4.5rem)] font-black mb-8 leading-[0.9] tracking-tighter">
+            Engineering <br><span class="text-brand italic">Scalable</span> Systems.
+          </h1>
+
+          <div class="space-y-6 max-w-2xl border-l-2 border-brand/20 pl-6">
+            <p class="text-[clamp(1rem,2vw,1.4rem)] font-light text-slate-500 dark:text-slate-400 leading-relaxed">
+              <span class="text-slate-900 dark:text-white font-bold">Technical Program Manager</span> |
+              <span class="text-brand">Hardware NPI</span> |
+              <span class="text-brand">AI/ML Operations</span>
+            </p>
+
+            <!-- Makes Home feel richer + interactive -->
+            <div class="flex flex-wrap gap-3 top-links pt-2">
+              <a href="#about" onclick="go('about')" id="link-home-about">ABOUT</a>
+              <a href="#portfolio" onclick="go('portfolio')" id="link-home-portfolio">PORTFOLIO</a>
+              <a href="#contact" onclick="go('contact')" id="link-home-contact">CONTACT</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-5 flex flex-col gap-4">
+          <div onclick="go('about')" class="project-card p-7 rounded-3xl group cursor-pointer border-brand/30 bg-brand/5">
+            <div class="flex justify-between items-center">
+              <div>
+                <p class="text-[10px] font-black uppercase tracking-[0.3em] text-brand mb-1">Profile</p>
+                <p class="display-font text-3xl font-bold">About</p>
+              </div>
+              <div class="w-12 h-12 rounded-full bg-brand text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                <i class="fas fa-user-astronaut"></i>
+              </div>
+            </div>
+          </div>
+
+          <div onclick="go('portfolio')" class="project-card p-7 rounded-3xl group cursor-pointer border-brand/30 bg-brand/5">
+            <div class="flex justify-between items-center">
+              <div>
+                <p class="text-[10px] font-black uppercase tracking-[0.3em] text-brand mb-1">View Repositories</p>
+                <p class="display-font text-3xl font-bold">Portfolio</p>
+              </div>
+              <div class="w-12 h-12 rounded-full bg-brand text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                <i class="fas fa-code-branch"></i>
+              </div>
+            </div>
+          </div>
+
+          <div onclick="go('contact')" class="project-card p-7 rounded-3xl group cursor-pointer">
+            <div class="flex justify-between items-center">
+              <div>
+                <p class="text-[10px] font-black uppercase tracking-[0.3em] opacity-40 mb-1">Let's Connect</p>
+                <p class="display-font text-2xl font-bold">Contact Hub</p>
+              </div>
+              <i class="fas fa-paper-plane text-slate-400 group-hover:text-brand transition-colors text-xl"></i>
+            </div>
+          </div>
+        </div>
+
+      </div>
     </div>
-  </div>
-</nav>
 
-<!-- MAIN -->
-<main class="pt-24 flex-grow relative overflow-hidden">
+    <!-- ABOUT (ADDED - same visualization style, interactive, page-like) -->
+    <div id="about-page" class="content-container page-transition hidden-state">
+      <div class="flex flex-col lg:flex-row lg:items-end justify-between mb-8 gap-6">
+        <div>
+          <button onclick="go('home')" class="text-brand text-[10px] font-black tracking-widest uppercase mb-3 flex items-center gap-2">
+            <i class="fas fa-arrow-left"></i> Dashboard
+          </button>
+          <h2 class="display-font text-4xl font-black tracking-tighter uppercase leading-none">
+            About <span class="text-brand">Sourabh</span>
+          </h2>
+          <p class="mt-3 text-sm opacity-60 max-w-2xl">
+            The bridge between engineering execution, manufacturing scale, and data-driven operations.
+          </p>
+        </div>
 
-<!-- HOME -->
-<section id="home-page" class="content-container page-transition visible-state">
-  <div class="grid lg:grid-cols-12 gap-10 items-center">
-    <div class="lg:col-span-7">
-      <h1 class="display-font text-[clamp(2.5rem,7vw,4.5rem)] font-black leading-[.9] mb-8">
-        Engineering <span class="text-brand italic">Scalable</span><br>Systems.
-      </h1>
-      <p class="text-lg opacity-70 max-w-xl border-l-2 border-brand/30 pl-6">
-        Technical Program Manager | Hardware NPI | AI/ML Operations
-      </p>
+        <div class="flex flex-wrap gap-2 p-1.5 bg-slate-100 dark:bg-white/5 rounded-full">
+          <button class="filter-btn active" onclick="aboutTab('overview', this)">Overview</button>
+          <button class="filter-btn" onclick="aboutTab('impact', this)">Impact</button>
+          <button class="filter-btn" onclick="aboutTab('stack', this)">Stack</button>
+          <button class="filter-btn" onclick="aboutTab('focus', this)">Focus</button>
+        </div>
+      </div>
+
+      <div class="grid lg:grid-cols-3 gap-6 items-start">
+        <div class="lg:col-span-1 space-y-6">
+          <div class="glass-panel p-6 border-brand/20">
+            <div class="flex justify-between items-center mb-4">
+              <span class="text-[9px] font-black uppercase tracking-widest opacity-40">System Status</span>
+              <span class="text-[9px] font-bold text-green-500 uppercase"><span class="status-dot"></span> Available</span>
+            </div>
+            <p class="text-sm leading-relaxed opacity-70">
+              Technical Program Manager focused on hardware NPI, manufacturing operations, CapEx governance,
+              and automation — aligning cross-functional teams to deliver complex systems.
+            </p>
+
+            <div class="mt-6 pt-5 border-t border-slate-100 dark:border-white/5 space-y-2">
+              <div class="flex justify-between text-[10px] font-bold uppercase">
+                <span class="opacity-40">Location</span><span class="text-brand">Sunnyvale, CA</span>
+              </div>
+              <div class="flex justify-between text-[10px] font-bold uppercase">
+                <span class="opacity-40">Domains</span><span>Hardware • Ops • AI/ML</span>
+              </div>
+            </div>
+          </div>
+
+          <button onclick="go('portfolio')" class="w-full py-4 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-xl font-black uppercase tracking-widest text-[10px] hover:bg-brand dark:hover:bg-brand dark:hover:text-white transition-all">
+            <i class="fas fa-diagram-project mr-2"></i> View Portfolio
+          </button>
+        </div>
+
+        <div class="lg:col-span-2 space-y-6">
+          <!-- Tabs content -->
+          <div id="about-overview" class="glass-panel p-8">
+            <h4 class="text-[10px] font-black uppercase tracking-widest text-brand mb-6">Execution Philosophy</h4>
+            <div class="grid md:grid-cols-2 gap-6">
+              <div class="p-5 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/10">
+                <p class="text-[8px] font-black opacity-40 uppercase mb-2">How I work</p>
+                <p class="text-sm opacity-80 leading-relaxed">
+                  Build a single source of truth, lock the critical path early, and run tight risk governance
+                  so teams can move fast without surprises.
+                </p>
+              </div>
+              <div class="p-5 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/10">
+                <p class="text-[8px] font-black opacity-40 uppercase mb-2">What I optimize</p>
+                <p class="text-sm opacity-80 leading-relaxed">
+                  Cost, readiness, schedule confidence, and production stability — with dashboards and automation
+                  to keep execution measurable.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div id="about-impact" class="glass-panel p-8 hidden">
+            <h4 class="text-[10px] font-black uppercase tracking-widest text-brand mb-6">Impact Highlights</h4>
+            <div class="mt-2 grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+              <div class="p-4 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/10">
+                <p class="text-[8px] font-black opacity-40 uppercase">Programs</p>
+                <p class="text-lg font-bold text-brand">NPI</p>
+              </div>
+              <div class="p-4 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/10">
+                <p class="text-[8px] font-black opacity-40 uppercase">Scale</p>
+                <p class="text-lg font-bold text-brand">CapEx</p>
+              </div>
+              <div class="p-4 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/10">
+                <p class="text-[8px] font-black opacity-40 uppercase">Mode</p>
+                <p class="text-lg font-bold text-green-500">Ops</p>
+              </div>
+              <div class="p-4 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/10">
+                <p class="text-[8px] font-black opacity-40 uppercase">Tooling</p>
+                <p class="text-lg font-bold text-brand">Automation</p>
+              </div>
+            </div>
+          </div>
+
+          <div id="about-stack" class="glass-panel p-8 hidden">
+            <h4 class="text-[10px] font-black uppercase tracking-widest text-brand mb-6">Core Stack</h4>
+            <div class="flex flex-wrap gap-2">
+              <span class="tech-tag">Python</span>
+              <span class="tech-tag">SQL</span>
+              <span class="tech-tag">R</span>
+              <span class="tech-tag">Tableau</span>
+              <span class="tech-tag">Power BI</span>
+              <span class="tech-tag">Automation</span>
+              <span class="tech-tag">ETL</span>
+              <span class="tech-tag">Program Governance</span>
+            </div>
+          </div>
+
+          <div id="about-focus" class="glass-panel p-8 hidden">
+            <h4 class="text-[10px] font-black uppercase tracking-widest text-brand mb-6">Focus Areas</h4>
+            <div class="grid md:grid-cols-2 gap-6">
+              <div class="p-5 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/10">
+                <p class="text-[8px] font-black opacity-40 uppercase mb-2">Hardware NPI</p>
+                <p class="text-sm opacity-80">EVT → DVT → PVT, readiness gates, risk/RAID, supplier alignment.</p>
+              </div>
+              <div class="p-5 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/10">
+                <p class="text-[8px] font-black opacity-40 uppercase mb-2">Manufacturing Ops</p>
+                <p class="text-sm opacity-80">Factory dashboards, WIP visibility, cost governance and throughput.</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
     </div>
-    <div class="lg:col-span-5 flex flex-col gap-4">
-      <div onclick="showPage('about')" class="project-card p-7 rounded-3xl cursor-pointer">About</div>
-      <div onclick="showPage('portfolio')" class="project-card p-7 rounded-3xl cursor-pointer">Portfolio</div>
-      <div onclick="showPage('contact')" class="project-card p-7 rounded-3xl cursor-pointer">Contact</div>
+
+    <!-- PORTFOLIO (YOUR ORIGINAL COMPLETE DATA) -->
+    <div id="portfolio-page" class="content-container page-transition hidden-state">
+      <div class="flex flex-col lg:flex-row lg:items-end justify-between mb-8 gap-6">
+        <div>
+          <button onclick="go('home')" class="text-brand text-[10px] font-black tracking-widest uppercase mb-3 flex items-center gap-2">
+            <i class="fas fa-arrow-left"></i> Dashboard
+          </button>
+          <h2 class="display-font text-4xl font-black tracking-tighter uppercase leading-none">
+            Technical <span class="text-brand">Deployments</span>
+          </h2>
+        </div>
+
+        <div class="flex flex-wrap gap-2 p-1.5 bg-slate-100 dark:bg-white/5 rounded-full">
+          <button class="filter-btn active" onclick="filterProjects('all', this)">All</button>
+          <button class="filter-btn" onclick="filterProjects('Financials', this)">CapEx</button>
+          <button class="filter-btn" onclick="filterProjects('AI / ML', this)">AI/ML</button>
+          <button class="filter-btn" onclick="filterProjects('Operations', this)">Ops</button>
+          <button class="filter-btn" onclick="filterProjects('Analytics', this)">Analytics</button>
+        </div>
+      </div>
+
+      <div id="project-grid" class="scroll-area grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 pb-6"></div>
+
+      <div class="mt-8 pt-6 border-t border-slate-100 dark:border-white/5 flex flex-col md:flex-row md:items-center justify-between gap-6">
+        <div class="flex items-center gap-3">
+          <span class="text-[10px] font-black uppercase tracking-widest opacity-40">Core Stack:</span>
+          <div class="flex flex-wrap gap-2">
+            <span class="tech-tag">Python</span><span class="tech-tag">SQL</span><span class="tech-tag">R</span><span class="tech-tag">Tableau</span>
+          </div>
+        </div>
+
+        <button onclick="copyToClipboard()" id="copy-btn" class="px-4 py-2 rounded-xl bg-brand/10 border border-brand/20 text-brand text-[10px] font-black uppercase tracking-widest hover:bg-brand hover:text-white transition-all">
+          <i class="fas fa-copy"></i> <span id="copy-text">Copy Profile URL</span>
+        </button>
+      </div>
     </div>
-  </div>
-</section>
 
-<!-- ABOUT -->
-<section id="about-page" class="content-container page-transition hidden-state">
-  <button onclick="showPage('home')" class="text-brand text-xs mb-4"><i class="fas fa-arrow-left"></i> Dashboard</button>
-  <h2 class="display-font text-4xl font-black mb-6">About <span class="text-brand">Me</span></h2>
-  <p class="opacity-70 max-w-3xl">
-    I lead complex hardware and AI-enabled programs across NPI, manufacturing operations,
-    CapEx governance, and data-driven execution — bridging engineering, supply chain,
-    and decision intelligence from concept through production scale.
-  </p>
-</section>
+    <!-- DETAIL (YOUR ORIGINAL COMPLETE DATA) -->
+    <div id="detail-page" class="content-container page-transition hidden-state">
+      <div class="mb-8">
+        <button onclick="go('portfolio')" class="text-brand text-[10px] font-black tracking-widest uppercase mb-3 flex items-center gap-2">
+          <i class="fas fa-arrow-left"></i> Back to Portfolio
+        </button>
+        <h2 id="detail-title" class="display-font text-4xl font-black tracking-tighter uppercase leading-none">
+          Project <span class="text-brand">Spotlight</span>
+        </h2>
+      </div>
 
-<!-- PORTFOLIO -->
-<section id="portfolio-page" class="content-container page-transition hidden-state">
-  <!-- (UNCHANGED portfolio + detail logic from your code) -->
-</section>
+      <div class="grid lg:grid-cols-3 gap-8 items-start">
+        <div class="lg:col-span-1 space-y-6">
+          <div class="glass-panel p-6 border-brand/20">
+            <div class="flex justify-between items-center mb-4">
+              <span class="text-[9px] font-black uppercase tracking-widest opacity-40">System Status</span>
+              <span class="text-[9px] font-bold text-green-500 uppercase"><span class="status-dot"></span> Production Ready</span>
+            </div>
 
-<!-- DETAIL -->
-<section id="detail-page" class="content-container page-transition hidden-state"></section>
+            <p id="detail-desc" class="text-sm leading-relaxed opacity-70 mb-6"></p>
 
-<!-- CONTACT -->
-<section id="contact-page" class="content-container page-transition hidden-state"></section>
+            <div class="space-y-3">
+              <div class="flex justify-between text-[10px] font-bold uppercase">
+                <span class="opacity-40">Track:</span><span id="detail-track" class="text-brand"></span>
+              </div>
+              <div class="flex justify-between text-[10px] font-bold uppercase">
+                <span class="opacity-40">Stack:</span><span class="text-slate-900 dark:text-white">Python, BI</span>
+              </div>
+            </div>
+          </div>
 
-</main>
+          <button id="detail-github-btn" class="w-full py-4 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-xl font-black uppercase tracking-widest text-[10px] hover:bg-brand dark:hover:bg-brand dark:hover:text-white transition-all">
+            <i class="fab fa-github mr-2"></i> View Repository
+          </button>
+        </div>
 
-<footer class="py-6 border-t text-center text-[9px] uppercase opacity-40">
-© 2026 Sourabh Tarodekar | MSBA | MBA | PMP
-</footer>
+        <div class="lg:col-span-2 space-y-6">
+          <div class="glass-panel p-8 min-h-[400px]">
+            <h4 class="text-[10px] font-black uppercase tracking-widest text-brand mb-6">Program Lifecycle Overview</h4>
 
-<script>
-/* YOUR ORIGINAL JS LOGIC — UNCHANGED & VERIFIED */
-const repos = [
-  { id:1,name:"CapEx-Forecaster",desc:"Predictive engine for infrastructure rollout.",track:"Financials",icon:"fa-chart-pie",link:"CapEx-Forecasting"},
-  { id:2,name:"NPI-Milestone-Tracker",desc:"Lifecycle management for fab builds.",track:"Operations",icon:"fa-microchip",link:"NPI-Tracker"},
-  { id:3,name:"Supply-Chain-AI",desc:"Lead-time risk ML models.",track:"AI / ML",icon:"fa-brain",link:"SupplyChain-AI"}
-];
+            <div class="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+              <div class="p-4 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/10">
+                <p class="text-[8px] font-black opacity-40 uppercase">Efficiency</p>
+                <p class="text-lg font-bold text-brand">+32%</p>
+              </div>
+              <div class="p-4 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/10">
+                <p class="text-[8px] font-black opacity-40 uppercase">Accuracy</p>
+                <p class="text-lg font-bold text-brand">99.4%</p>
+              </div>
+              <div class="p-4 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/10">
+                <p class="text-[8px] font-black opacity-40 uppercase">Risk Level</p>
+                <p class="text-lg font-bold text-green-500">Low</p>
+              </div>
+              <div class="p-4 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/10">
+                <p class="text-[8px] font-black opacity-40 uppercase">NPS Score</p>
+                <p class="text-lg font-bold text-brand">88</p>
+              </div>
+            </div>
+          </div>
+        </div>
 
-function showPage(page){
-  ['home','about','portfolio','detail','contact'].forEach(p=>{
-    const el=document.getElementById(p+'-page');
-    if(el) el.classList.replace('visible-state','hidden-state');
-  });
-  document.getElementById(page+'-page').classList.replace('hidden-state','visible-state');
-}
+      </div>
+    </div>
 
-document.getElementById('theme-toggle').onclick=()=>{
-  document.documentElement.classList.toggle('dark');
-  document.getElementById('theme-toggle-icon').classList.toggle('fa-moon');
-  document.getElementById('theme-toggle-icon').classList.toggle('fa-sun');
-};
-</script>
+    <!-- CONTACT (YOUR ORIGINAL COMPLETE DATA) -->
+    <div id="contact-page" class="content-container page-transition hidden-state">
+      <div class="mb-8 flex justify-between items-end">
+        <div>
+          <button onclick="go('home')" class="text-brand text-[10px] font-black uppercase tracking-widest mb-3 flex items-center gap-2">
+            <i class="fas fa-arrow-left"></i> Dashboard
+          </button>
+          <h2 class="display-font text-4xl font-black tracking-tighter uppercase">
+            Direct <span class="text-brand">Outreach</span>
+          </h2>
+        </div>
+        <button onclick="downloadVCard()" class="flex items-center gap-2 px-4 py-2 bg-slate-100 dark:bg-white/5 rounded-lg text-[9px] font-black uppercase tracking-widest hover:bg-brand hover:text-white transition-all">
+          <i class="fas fa-id-card"></i> Save Contact
+        </button>
+      </div>
+
+      <div class="grid lg:grid-cols-2 gap-8 items-start relative">
+        <div id="success-msg" class="hidden absolute inset-0 z-20 flex items-center justify-center">
+          <div class="glass-panel p-10 text-center border-brand shadow-2xl">
+            <i class="fas fa-check-circle text-5xl text-brand mb-4"></i>
+            <h3 class="display-font text-2xl font-bold">Message Dispatched!</h3>
+            <p class="text-sm opacity-60 mt-2">Check your email for confirmation.</p>
+            <button onclick="resetForm()" class="mt-6 text-[10px] font-black uppercase text-brand">Send Another</button>
+          </div>
+        </div>
+
+        <div class="glass-panel p-8" id="form-container">
+          <form id="contact-form" action="https://formspree.io/f/xbddlbzj" method="POST" class="space-y-4">
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="text-[9px] font-black uppercase tracking-widest opacity-40 mb-1 block">Name</label>
+                <input type="text" name="name" class="input-field" placeholder="John Doe" required>
+              </div>
+              <div>
+                <label class="text-[9px] font-black uppercase tracking-widest opacity-40 mb-1 block">Email</label>
+                <input type="email" name="email" class="input-field" placeholder="john@company.com" required>
+              </div>
+            </div>
+
+            <div>
+              <label class="text-[9px] font-black uppercase tracking-widest opacity-40 mb-1 block">Subject</label>
+              <input type="text" name="subject" class="input-field" placeholder="TPM Collaboration" required>
+            </div>
+
+            <div>
+              <label class="text-[9px] font-black uppercase tracking-widest opacity-40 mb-1 block">Message</label>
+              <textarea name="message" rows="5" class="input-field" placeholder="How can we build together?" required></textarea>
+            </div>
+
+            <input type="text" name="_gotcha" style="display:none">
+
+            <button type="submit" id="submit-btn" class="w-full py-4 bg-brand text-white rounded-xl font-black uppercase tracking-[0.2em] text-[10px] hover:shadow-lg transition-all">
+              Dispatch Message <i class="fas fa-paper-plane ml-2"></i>
+            </button>
+          </form>
+        </div>
+
+        <div class="flex flex-col gap-6">
+          <div class="glass-panel p-2 h-80 relative overflow-hidden shadow-2xl">
+            <iframe
+              class="w-full h-full rounded-[18px] border-0 grayscale contrast-125 opacity-80 hover:grayscale-0 hover:opacity-100 transition-all duration-700"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d101435.53239857943!2d-122.09315359404743!3d37.38541481109677!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x808fb6570fc28507%3A0x600b396e95df4a78!2sSunnyvale%2C%20CA!5e0!3m2!1sen!2susa!4v1700000000000!5m2!1sen!2susa"
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"></iframe>
+
+            <div class="absolute bottom-6 left-6 bg-white/90 dark:bg-slate-900/90 backdrop-blur p-4 rounded-xl border border-brand/20 shadow-xl">
+              <p class="text-[8px] font-black uppercase text-brand tracking-widest">Base</p>
+              <h4 class="font-bold text-sm">Sunnyvale, CA, USA</h4>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div class="glass-panel p-5">
+              <p class="text-[8px] font-black opacity-40 uppercase mb-1">Local Time</p>
+              <p id="local-time" class="display-font text-xl font-bold tracking-tighter">--:-- PST</p>
+            </div>
+            <div class="glass-panel p-5">
+              <p class="text-[8px] font-black opacity-40 uppercase mb-1">Status</p>
+              <p class="display-font text-xl font-bold text-green-500 tracking-tighter"><span class="status-dot"></span> Online</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="py-6 border-t border-slate-100 dark:border-slate-900 bg-white/50 dark:bg-slate-950/50 backdrop-blur-sm z-10">
+    <div class="content-container flex justify-between items-center text-[9px] font-bold tracking-[0.4em] uppercase opacity-40">
+      <p>© 2026 Sourabh Tarodekar | MSBA | MBA | PMP</p>
+    </div>
+  </footer>
+
+  <script>
+    /* ======= DATA (UNCHANGED FROM YOUR CODE) ======= */
+    const repos = [
+      { id: 1, name: "CapEx-Forecaster", desc: "Predictive engine for infrastructure rollout and facility ready-dates.", track: "Financials", icon: "fa-chart-pie", link: "CapEx-Forecasting" },
+      { id: 2, name: "NPI-Milestone-Tracker", desc: "Lifecycle management for wafer-fab equipment builds.", track: "Operations", icon: "fa-microchip", link: "NPI-Tracker" },
+      { id: 3, name: "Supply-Chain-AI", desc: "Deep learning lead-time risk assessment for global parts.", track: "AI / ML", icon: "fa-brain", link: "SupplyChain-AI" },
+      { id: 4, name: "Mfg-BI-Suite", desc: "End-to-end ETL pipeline for shop-floor productivity metrics.", track: "Analytics", icon: "fa-database", link: "Mfg-BI" },
+      { id: 5, name: "Risk-Assessment", desc: "Quantitative volatility modeling for multi-tier supply networks.", track: "Analytics", icon: "fa-shield-alt", link: "Risk-Engine" },
+      { id: 6, name: "Equipment-ROI", desc: "Financial justification models for semiconductor tool assets.", track: "Financials", icon: "fa-dollar-sign", link: "ROI-Tool" },
+      { id: 7, name: "Inventory-Opt", desc: "Stochastic inventory modeling for critical spare parts.", track: "AI / ML", icon: "fa-cubes", link: "Inv-Opt" },
+      { id: 8, name: "WIP-Control", desc: "Work-in-progress visibility for factory assembly lines.", track: "Operations", icon: "fa-industry", link: "WIP-System" }
+    ];
+
+    /* ======= PAGE NAV (IMPROVED: supports hash/back/forward, smooth transitions) ======= */
+    const pageIds = ['home', 'about', 'portfolio', 'contact', 'detail'];
+
+    function setActiveTopLinks(active) {
+      const ids = ['link-home-about','link-home-portfolio','link-home-contact'];
+      ids.forEach(id => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.classList.remove('active');
+      });
+      // (Home top links only appear on home section, so keep this minimal.)
+    }
+
+    function showPage(pageId, opts = {}) {
+      const valid = pageIds.includes(pageId) ? pageId : 'home';
+
+      pageIds.forEach(p => {
+        const el = document.getElementById(`${p}-page`);
+        if (el) {
+          el.classList.remove('visible-state');
+          el.classList.add('hidden-state');
+        }
+      });
+
+      // After brief transition, show the requested page
+      setTimeout(() => {
+        const target = document.getElementById(`${valid}-page`);
+        if (target) {
+          target.classList.remove('hidden-state');
+          target.classList.add('visible-state');
+        }
+
+        if (valid === 'portfolio') renderProjects(currentFilter);
+        if (opts.scrollTop !== false) window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      }, 160);
+
+      // Highlight nav (optional)
+      setActiveTopLinks(valid);
+    }
+
+    function go(pageId, options = {}) {
+      // Updates hash so Back/Forward works like a real website
+      const hash = `#${pageId}`;
+      if (location.hash !== hash) history.pushState(null, '', hash);
+      showPage(pageId, options);
+    }
+
+    window.addEventListener('popstate', () => {
+      const hash = (location.hash || '#home').replace('#', '');
+      showPage(hash);
+    });
+
+    /* ======= PORTFOLIO RENDERING (UNCHANGED LOGIC + SAFETY) ======= */
+    let currentFilter = 'all';
+
+    function openDetail(id) {
+      const repo = repos.find(r => r.id === id);
+      if (!repo) return;
+
+      document.getElementById('detail-title').innerHTML =
+        `${repo.name.split('-').join(' ')} <span class="text-brand">Deploy</span>`;
+      document.getElementById('detail-desc').innerText = repo.desc;
+      document.getElementById('detail-track').innerText = repo.track;
+
+      const btn = document.getElementById('detail-github-btn');
+      btn.onclick = () => window.open(`https://github.com/QuantuMaster007/${repo.link}`, '_blank');
+
+      go('detail');
+    }
+
+    function renderProjects(filter = 'all') {
+      const grid = document.getElementById('project-grid');
+      if (!grid) return;
+
+      const list = repos.filter(r => filter === 'all' || r.track === filter);
+
+      grid.innerHTML = list.map(r => `
+        <div onclick="openDetail(${r.id})" class="project-card p-6 rounded-2xl group flex flex-col h-full cursor-pointer">
+          <div class="flex justify-between items-start mb-4">
+            <div class="p-3 rounded-xl bg-slate-50 dark:bg-white/5 text-slate-400 group-hover:bg-brand group-hover:text-white transition-all">
+              <i class="fas ${r.icon} text-lg"></i>
+            </div>
+            <div class="text-[8px] font-black uppercase text-slate-400">
+              <span class="status-dot"></span> Active
+            </div>
+          </div>
+          <h3 class="font-bold text-sm mb-2 group-hover:text-brand transition-colors">${r.name}</h3>
+          <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-snug flex-grow">${r.desc}</p>
+          <div class="mt-5 pt-4 border-t border-slate-100 dark:border-white/5 flex justify-between items-center text-[9px] font-bold text-slate-400 uppercase">
+            <span>${r.track}</span><i class="fab fa-github opacity-30 group-hover:opacity-100"></i>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function filterProjects(track, btnEl) {
+      currentFilter = track;
+
+      document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+      if (btnEl) btnEl.classList.add('active');
+      renderProjects(track);
+    }
+
+    /* ======= ABOUT TABS ======= */
+    function aboutTab(tab, btnEl) {
+      // Toggle button active
+      const container = btnEl?.closest('div');
+      if (container) container.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      if (btnEl) btnEl.classList.add('active');
+
+      ['overview','impact','stack','focus'].forEach(k => {
+        const el = document.getElementById(`about-${k}`);
+        if (!el) return;
+        el.classList.toggle('hidden', k !== tab);
+      });
+    }
+
+    /* ======= CONTACT FORM (UNCHANGED + SAFE UI) ======= */
+    const form = document.getElementById('contact-form');
+    if (form) {
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const btn = document.getElementById('submit-btn');
+        const original = btn.innerHTML;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Dispatching...';
+        btn.disabled = true;
+
+        try {
+          const data = new FormData(form);
+          const response = await fetch(form.action, { method: 'POST', body: data, headers: { 'Accept': 'application/json' } });
+
+          if (response.ok) {
+            document.getElementById('form-container').classList.add('opacity-0');
+            document.getElementById('success-msg').classList.remove('hidden');
+          } else {
+            btn.innerHTML = 'Failed — Try Again <i class="fas fa-rotate-right ml-2"></i>';
+            btn.disabled = false;
+            setTimeout(() => { btn.innerHTML = original; }, 1800);
+          }
+        } catch (err) {
+          btn.innerHTML = 'Network Error — Try Again <i class="fas fa-rotate-right ml-2"></i>';
+          btn.disabled = false;
+          setTimeout(() => { btn.innerHTML = original; }, 1800);
+        }
+      });
+    }
+
+    function resetForm() {
+      if (!form) return;
+      form.reset();
+      document.getElementById('form-container').classList.remove('opacity-0');
+      document.getElementById('success-msg').classList.add('hidden');
+      const btn = document.getElementById('submit-btn');
+      btn.disabled = false;
+      btn.innerHTML = 'Dispatch Message <i class="fas fa-paper-plane ml-2"></i>';
+    }
+
+    /* ======= TIME ======= */
+    function updateTime() {
+      const opt = { timeZone: 'America/Los_Angeles', hour: '2-digit', minute: '2-digit', hour12: true };
+      const el = document.getElementById('local-time');
+      if (!el) return;
+      el.innerText = new Intl.DateTimeFormat('en-US', opt).format(new Date()) + " PST";
+    }
+    setInterval(updateTime, 1000);
+    updateTime();
+
+    /* ======= THEME (IMPROVED: persists) ======= */
+    const root = document.documentElement;
+    const themeBtn = document.getElementById('theme-toggle');
+    const themeIcon = document.getElementById('theme-toggle-icon');
+
+    function applyTheme(mode) {
+      if (mode === 'dark') {
+        root.classList.add('dark');
+        themeIcon.classList.remove('fa-moon');
+        themeIcon.classList.add('fa-sun');
+      } else {
+        root.classList.remove('dark');
+        themeIcon.classList.add('fa-moon');
+        themeIcon.classList.remove('fa-sun');
+      }
+    }
+
+    const saved = localStorage.getItem('theme');
+    if (saved) {
+      applyTheme(saved);
+    } else {
+      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      applyTheme(prefersDark ? 'dark' : 'light');
+    }
+
+    themeBtn.addEventListener('click', () => {
+      const next = root.classList.contains('dark') ? 'light' : 'dark';
+      localStorage.setItem('theme', next);
+      applyTheme(next);
+    });
+
+    /* ======= UTILS ======= */
+    function copyToClipboard() {
+      navigator.clipboard.writeText("https://github.com/QuantuMaster007");
+      const t = document.getElementById('copy-text');
+      t.innerText = "Copied!";
+      setTimeout(() => t.innerText = "Copy Profile URL", 2000);
+    }
+
+    function downloadVCard() {
+      const vcard =
+`BEGIN:VCARD
+VERSION:3.0
+FN:Sourabh Tarodekar
+TITLE:Technical Program Manager
+EMAIL:sourabh232@gmail.com
+URL:https://linkedin.com/in/sourabh232
+URL:https://github.com/QuantuMaster007
+END:VCARD`;
+      const blob = new Blob([vcard], { type: 'text/vcard' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'Sourabh_Tarodekar.vcf';
+      a.click();
+      setTimeout(() => window.URL.revokeObjectURL(url), 1000);
+    }
+
+    /* ======= INITIAL LOAD (hash routing) ======= */
+    function init() {
+      // Always render projects once so grid is ready
+      renderProjects('all');
+
+      const hash = (location.hash || '#home').replace('#', '');
+      if (pageIds.includes(hash)) {
+        showPage(hash, { scrollTop: false });
+      } else {
+        showPage('home', { scrollTop: false });
+      }
+    }
+    init();
+  </script>
 
 </body>
 </html>
