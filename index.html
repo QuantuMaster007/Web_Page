@@ -28,29 +28,24 @@
             overflow: hidden; font-family: 'Inter', sans-serif;
             -webkit-font-smoothing: antialiased;
         }
-        @media (max-height: 800px) { body { overflow-y: auto; height: auto; } }
+        /* Allow scroll for portfolio grid on smaller heights */
+        .scroll-area { overflow-y: auto; max-height: calc(100vh - 200px); padding-bottom: 50px; }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-thumb { background: #ef5a43; border-radius: 10px; }
         
         .display-font { font-family: 'Outfit', sans-serif; }
         .monogram { clip-path: polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%); transition: all 0.3s ease; }
 
-        /* Subtle Engineering Grid */
         .grid-bg {
             background-image: radial-gradient(circle, rgba(239, 90, 67, 0.05) 1px, transparent 1px);
             background-size: 30px 30px;
         }
 
-        /* Animations */
-        .page-transition { transition: opacity 0.5s ease, transform 0.5s ease; }
-        .hidden-state { opacity: 0; transform: translateY(15px); pointer-events: none; position: absolute; }
-        .visible-state { opacity: 1; transform: translateY(0); pointer-events: auto; position: relative; }
+        /* Page Switcher Animations */
+        .page-transition { transition: opacity 0.4s ease, transform 0.4s ease; }
+        .hidden-state { opacity: 0; transform: translateY(10px); pointer-events: none; position: absolute; width: 100%; }
+        .visible-state { opacity: 1; transform: translateY(0); pointer-events: auto; position: relative; width: 100%; }
 
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .animate-reveal { animation: fadeUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
-
-        /* Unified Card Styling */
         .nav-card {
             background: rgba(15, 23, 42, 0.03);
             border: 1px solid rgba(15, 23, 42, 0.08);
@@ -76,22 +71,20 @@
 
     <nav class="fixed w-full z-50 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
         <div class="content-container h-20 flex justify-between items-center">
-            <div class="flex items-center gap-5 animate-reveal cursor-pointer" onclick="showPage('home')">
+            <div class="flex items-center gap-5 cursor-pointer" onclick="showPage('home')">
                 <div class="monogram bg-brand w-11 h-11 flex items-center justify-center text-white font-black text-xl hover:scale-110">S</div>
                 <span class="text-lg md:text-xl font-black tracking-[0.2em] uppercase">Sourabh Tarodekar</span>
             </div>
             
-            <div class="flex items-center gap-4">
-                <button id="theme-toggle" class="w-10 h-10 flex items-center justify-center rounded-xl border border-slate-200 dark:border-slate-700 hover:border-brand transition-all">
-                    <i id="theme-toggle-icon" class="fas fa-moon text-sm"></i>
-                </button>
-            </div>
+            <button id="theme-toggle" class="w-10 h-10 flex items-center justify-center rounded-xl border border-slate-200 dark:border-slate-700 hover:border-brand transition-all">
+                <i id="theme-toggle-icon" class="fas fa-moon text-sm"></i>
+            </button>
         </div>
     </nav>
 
-    <main class="flex-grow flex items-center pt-16 relative">
+    <main class="flex-grow flex flex-col justify-center pt-24 relative overflow-hidden">
         
-        <div id="home-page" class="content-container py-6 page-transition visible-state">
+        <div id="home-page" class="content-container page-transition visible-state">
             <div class="grid lg:grid-cols-12 gap-10 items-center">
                 <div class="lg:col-span-7">
                     <h1 class="display-font text-[clamp(2.2rem,6.5vw,4.2rem)] font-black mb-8 leading-[0.95] tracking-tighter">
@@ -100,11 +93,9 @@
                     <div class="space-y-6 max-w-2xl">
                         <p class="text-[clamp(0.95rem,1.8vw,1.3rem)] font-light text-slate-500 dark:text-slate-400 leading-relaxed">
                             <span class="text-slate-900 dark:text-white font-bold">Technical Program Manager</span> | 
-                            <span class="text-slate-900 dark:text-white font-bold">NPI Hardware Programs</span> | 
+                            <span class="text-slate-900 dark:text-white font-bold">NPI Hardware</span> | 
                             <span class="text-slate-900 dark:text-white font-bold">Manufacturing Ops</span> | 
-                            <span class="text-slate-900 dark:text-white font-bold">CapEx</span> | 
-                            <span class="text-slate-900 dark:text-white font-bold">Supply Chain</span> | 
-                            <span class="text-slate-900 dark:text-white font-bold">AI/ML</span>
+                            <span class="text-slate-900 dark:text-white font-bold">AI/ML Automation</span>
                         </p>
                     </div>
                 </div>
@@ -112,26 +103,23 @@
                 <div class="lg:col-span-5 flex flex-col gap-3">
                     <div onclick="showPage('about')" class="nav-card block p-6 rounded-2xl group cursor-pointer">
                         <div class="flex justify-between items-center">
-                            <div>
-                                <p class="text-[9px] font-black uppercase tracking-[0.3em] text-brand mb-1">Introduction</p>
-                                <p class="display-font text-2xl font-bold">About</p>
-                            </div>
-                            <i class="fas fa-user text-brand opacity-0 group-hover:opacity-100 transition-all -translate-x-2 group-hover:translate-x-0"></i>
+                            <div><p class="text-[9px] font-black uppercase tracking-[0.3em] text-brand mb-1">Introduction</p><p class="display-font text-2xl font-bold">About</p></div>
+                            <i class="fas fa-user text-brand"></i>
                         </div>
                     </div>
                     <a href="https://linkedin.com/in/sourabh232" target="_blank" class="nav-card block p-6 rounded-2xl group">
                         <div class="flex justify-between items-center">
                             <div><p class="text-[9px] font-black uppercase tracking-[0.3em] text-brand mb-1">Career Path</p><p class="display-font text-2xl font-bold">Resume</p></div>
-                            <i class="fas fa-file-pdf text-brand opacity-0 group-hover:opacity-100 transition-all"></i>
+                            <i class="fas fa-file-pdf text-brand"></i>
                         </div>
                     </a>
-                    <div class="nav-card block p-6 rounded-2xl group cursor-not-allowed opacity-60">
+                    <div onclick="showPage('portfolio')" class="nav-card block p-6 rounded-2xl group cursor-pointer border-brand/30">
                         <div class="flex justify-between items-center">
                             <div><p class="text-[9px] font-black uppercase tracking-[0.3em] text-brand mb-1">Technical Work</p><p class="display-font text-2xl font-bold">Portfolio</p></div>
-                            <i class="fas fa-lock text-brand"></i>
+                            <i class="fas fa-microchip text-brand opacity-100"></i>
                         </div>
                     </div>
-                    <a href="mailto:sourabh232@gmail.com" class="nav-card block p-6 rounded-2xl group">
+                    <a href="mailto:sourabh232@gmail.com" class="nav-card block p-6 rounded-2xl group border-brand/10">
                         <div class="flex justify-between items-center">
                             <div><p class="text-[9px] font-black uppercase tracking-[0.3em] text-brand mb-1">Collaboration</p><p class="display-font text-2xl font-bold text-brand">Contact</p></div>
                             <i class="fas fa-paper-plane text-brand"></i>
@@ -141,82 +129,79 @@
             </div>
         </div>
 
-        <div id="about-page" class="content-container py-6 page-transition hidden-state">
+        <div id="about-page" class="content-container page-transition hidden-state">
             <div class="grid lg:grid-cols-12 gap-10 items-start">
                 <div class="lg:col-span-8">
-                    <button onclick="showPage('home')" class="text-brand text-xs font-bold tracking-widest uppercase mb-8 hover:underline flex items-center gap-2">
-                        <i class="fas fa-arrow-left"></i> Back to Dashboard
-                    </button>
-                    <h2 class="display-font text-[clamp(2rem,5vw,3.5rem)] font-black mb-6 tracking-tighter">
-                        Architecting <span class="text-brand">Scalable Excellence.</span>
-                    </h2>
-                    <div class="prose prose-slate dark:prose-invert max-w-none space-y-6 text-slate-600 dark:text-slate-400 font-light text-lg leading-relaxed">
-                        <p>
-                            I am a <strong class="text-slate-900 dark:text-white">Technical Program Manager</strong> at the intersection of Hardware Engineering and Business Intelligence. My career is defined by managing high-stakes <strong class="text-brand">NPI (New Product Introduction)</strong> cycles for complex wafer-deposition tools and global mobility platforms.
-                        </p>
-                        <p>
-                            With a dual focus on <strong class="text-slate-900 dark:text-white">MS Business Analytics</strong> and an <strong class="text-slate-900 dark:text-white">MBA</strong>, I don't just lead programs; I engineer data-driven systems that optimize multi-million dollar CapEx portfolios and streamline supply chain operations through automation and AI/ML integration.
-                        </p>
-                        <div class="grid grid-cols-2 md:grid-cols-3 gap-4 pt-4">
-                            <div class="p-4 border border-slate-200 dark:border-slate-800 rounded-xl bg-slate-50 dark:bg-white/5">
-                                <p class="text-brand font-black text-2xl">7+ Yrs</p>
-                                <p class="text-[10px] uppercase font-bold tracking-widest opacity-60">Global Ops</p>
-                            </div>
-                            <div class="p-4 border border-slate-200 dark:border-slate-800 rounded-xl bg-slate-50 dark:bg-white/5">
-                                <p class="text-brand font-black text-2xl">$32M+</p>
-                                <p class="text-[10px] uppercase font-bold tracking-widest opacity-60">Budget Managed</p>
-                            </div>
-                            <div class="p-4 border border-slate-200 dark:border-slate-800 rounded-xl bg-slate-50 dark:bg-white/5">
-                                <p class="text-brand font-black text-2xl">PMP</p>
-                                <p class="text-[10px] uppercase font-bold tracking-widest opacity-60">Certified Excellence</p>
-                            </div>
-                        </div>
-                    </div>
+                    <button onclick="showPage('home')" class="text-brand text-xs font-bold tracking-widest uppercase mb-8 hover:underline"><i class="fas fa-arrow-left"></i> Back</button>
+                    <h2 class="display-font text-5xl font-black mb-6 tracking-tighter">Architecting <span class="text-brand">Excellence.</span></h2>
+                    <p class="text-lg font-light leading-relaxed text-slate-500 dark:text-slate-400 mb-6">Technical Program Manager at the intersection of Hardware Engineering and Data Science. Dual MSBA/MBA background with $30M+ portfolio experience in semiconductor NPI and global manufacturing.</p>
                 </div>
-                <div class="lg:col-span-4 space-y-4 pt-12">
-                    <div class="p-8 rounded-3xl bg-brand/5 border border-brand/10">
-                        <p class="display-font text-xl font-bold mb-4 italic">"Sourabh bridges the gap between technical engineering complexity and strategic business ROI."</p>
-                        <div class="h-1 w-12 bg-brand mb-2"></div>
-                        <p class="text-[10px] font-black uppercase tracking-tighter opacity-50 text-slate-900 dark:text-white">Applied Materials Leadership</p>
-                    </div>
+            </div>
+        </div>
+
+        <div id="portfolio-page" class="content-container page-transition hidden-state">
+            <button onclick="showPage('home')" class="text-brand text-xs font-bold tracking-widest uppercase mb-6 hover:underline"><i class="fas fa-arrow-left"></i> Back to Console</button>
+            <h2 class="display-font text-4xl font-black mb-6 tracking-tighter uppercase">Technical <span class="text-brand">Deployments</span></h2>
+            
+            <div class="scroll-area grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <a href="https://github.com/QuantuMaster007" target="_blank" class="nav-card p-6 rounded-xl group border-l-4 border-l-brand">
+                    <div class="flex justify-between mb-3"><i class="fas fa-chart-line text-brand"></i> <span class="text-[8px] font-black tracking-widest uppercase opacity-40">Financial Analytics</span></div>
+                    <h3 class="font-bold text-lg mb-2">CapEx Factory Readiness</h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 leading-snug">Automated forecasting for capital equipment rollout and factory-floor infrastructure readiness tracking.</p>
+                </a>
+
+                <a href="https://github.com/QuantuMaster007" target="_blank" class="nav-card p-6 rounded-xl group border-l-4 border-l-blue-500">
+                    <div class="flex justify-between mb-3"><i class="fas fa-brain text-blue-500"></i> <span class="text-[8px] font-black tracking-widest uppercase opacity-40">AI / ML</span></div>
+                    <h3 class="font-bold text-lg mb-2">Supply Chain Demand Predictor</h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 leading-snug">Regression models to predict lead-time volatility and component shortage risks in NPI hardware cycles.</p>
+                </a>
+
+                <a href="https://github.com/QuantuMaster007" target="_blank" class="nav-card p-6 rounded-xl group border-l-4 border-l-green-500">
+                    <div class="flex justify-between mb-3"><i class="fas fa-microchip text-green-500"></i> <span class="text-[8px] font-black tracking-widest uppercase opacity-40">Operations</span></div>
+                    <h3 class="font-bold text-lg mb-2">Semiconductor Tool Tracking</h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 leading-snug">Real-time status dashboard for wafer-deposition equipment milestones from design to clean-room delivery.</p>
+                </a>
+
+                <a href="https://github.com/QuantuMaster007" target="_blank" class="nav-card p-6 rounded-xl group border-l-4 border-l-purple-500">
+                    <div class="flex justify-between mb-3"><i class="fas fa-database text-purple-500"></i> <span class="text-[8px] font-black tracking-widest uppercase opacity-40">Business Intelligence</span></div>
+                    <h3 class="font-bold text-lg mb-2">Portfolio ROI Analyzer</h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 leading-snug">Custom ETL pipeline to visualize program health and budget utilization across global manufacturing sites.</p>
+                </a>
+
+                <div class="p-6 rounded-xl border border-dashed border-slate-300 dark:border-slate-800 flex items-center justify-center">
+                    <p class="text-[10px] font-bold tracking-[0.3em] uppercase opacity-30">View 10+ More on GitHub</p>
                 </div>
             </div>
         </div>
 
     </main>
 
-    <footer class="py-6 border-t border-slate-100 dark:border-slate-900 relative z-10 bg-white/50 dark:bg-slate-950/50 backdrop-blur-sm">
+    <footer class="py-6 border-t border-slate-100 dark:border-slate-900 bg-white/50 dark:bg-slate-950/50 backdrop-blur-sm z-10">
         <div class="content-container flex justify-between items-center">
-            <p class="text-[9px] font-bold tracking-[0.3em] uppercase opacity-40">
-                © 2026 Sourabh Tarodekar | MSBA | MBA | PMP
-            </p>
+            <p class="text-[9px] font-bold tracking-[0.3em] uppercase opacity-40">© 2026 Sourabh Tarodekar | MSBA | MBA | PMP</p>
             <div class="flex gap-8 text-lg opacity-50">
-                <a href="mailto:sourabh232@gmail.com" class="hover:text-brand transition-all"><i class="fas fa-envelope"></i></a>
-                <a href="https://linkedin.com/in/sourabh232" target="_blank" class="hover:text-brand transition-all"><i class="fab fa-linkedin"></i></a>
+                <a href="mailto:sourabh232@gmail.com" class="hover:text-brand"><i class="fas fa-envelope"></i></a>
+                <a href="https://linkedin.com/in/sourabh232" target="_blank" class="hover:text-brand"><i class="fab fa-linkedin"></i></a>
             </div>
         </div>
     </footer>
 
     <script>
-        // PAGE SWITCHER LOGIC
+        // PAGE SWITCHER
         function showPage(pageId) {
-            const home = document.getElementById('home-page');
-            const about = document.getElementById('about-page');
+            const pages = ['home-page', 'about-page', 'portfolio-page'];
+            pages.forEach(p => {
+                const el = document.getElementById(p);
+                el.classList.replace('visible-state', 'hidden-state');
+            });
             
-            if (pageId === 'about') {
-                home.classList.replace('visible-state', 'hidden-state');
-                setTimeout(() => {
-                    about.classList.replace('hidden-state', 'visible-state');
-                }, 300);
-            } else {
-                about.classList.replace('visible-state', 'hidden-state');
-                setTimeout(() => {
-                    home.classList.replace('hidden-state', 'visible-state');
-                }, 300);
-            }
+            setTimeout(() => {
+                const active = document.getElementById(pageId + '-page');
+                active.classList.replace('hidden-state', 'visible-state');
+            }, 300);
         }
 
-        // DARK MODE LOGIC
+        // DARK MODE
         const btn = document.getElementById('theme-toggle');
         const icon = document.getElementById('theme-toggle-icon');
         const root = document.documentElement;
