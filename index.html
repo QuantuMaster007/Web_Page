@@ -36,8 +36,8 @@
             overflow: hidden; font-family: 'Inter', sans-serif;
             -webkit-font-smoothing: antialiased;
         }
-        .scroll-area { overflow-y: auto; max-height: calc(100vh - 280px); padding-right: 12px; }
-        ::-webkit-scrollbar { width: 5px; }
+        .scroll-area { overflow-y: auto; max-height: calc(100vh - 250px); padding-right: 12px; }
+        ::-webkit-scrollbar { width: 4px; }
         ::-webkit-scrollbar-thumb { background: #ef5a43; border-radius: 10px; }
         
         .display-font { font-family: 'Outfit', sans-serif; }
@@ -52,20 +52,15 @@
         .hidden-state { opacity: 0; transform: translateY(10px); pointer-events: none; position: absolute; width: 100%; }
         .visible-state { opacity: 1; transform: translateY(0); pointer-events: auto; position: relative; width: 100%; }
 
-        .project-card, .glass-panel {
+        .glass-panel {
             background: rgba(255, 255, 255, 0.6);
             border: 1px solid rgba(15, 23, 42, 0.08);
-            backdrop-filter: blur(10px);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            backdrop-filter: blur(12px);
+            transition: all 0.3s ease;
         }
-        .dark .project-card, .dark .glass-panel {
-            background: rgba(255, 255, 255, 0.03);
+        .dark .glass-panel {
+            background: rgba(15, 23, 42, 0.4);
             border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        .project-card:hover {
-            transform: translateY(-8px);
-            border-color: #ef5a43;
-            box-shadow: 0 20px 40px -15px rgba(239, 90, 67, 0.2);
         }
 
         .nav-btn {
@@ -77,60 +72,53 @@
         .dark .nav-btn { background: rgba(255, 255, 255, 0.05); }
         .nav-btn:hover { background: #ef5a43; color: white; transform: translateY(-2px); }
 
-        .input-field {
-            width: 100%; background: rgba(15, 23, 42, 0.03); border: 1px solid rgba(15, 23, 42, 0.1);
-            border-radius: 12px; padding: 12px 16px; font-size: 13px; transition: all 0.3s;
-        }
-        .dark .input-field { background: rgba(255, 255, 255, 0.03); border-color: rgba(255, 255, 255, 0.1); color: white; }
-        .input-field:focus { outline: none; border-color: #ef5a43; }
-
-        .status-dot {
-            width: 6px; height: 6px; border-radius: 50%;
-            background: #10b981; display: inline-block; margin-right: 6px;
-            animation: pulse 2s infinite;
-        }
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
-
-        .filter-btn {
-            font-size: 10px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase;
-            padding: 6px 14px; border-radius: 100px; border: 1px solid rgba(15, 23, 42, 0.1);
-            transition: all 0.3s; color: #64748b; cursor: pointer;
-        }
-        .dark .filter-btn { border-color: rgba(255,255,255,0.1); }
-        .filter-btn.active { background: #ef5a43; color: white; border-color: #ef5a43; }
-
         .tech-tag {
-            font-size: 9px; font-weight: 700; padding: 3px 8px; border-radius: 4px;
-            background: rgba(15, 23, 42, 0.05); color: #64748b;
+            font-size: 10px; font-weight: 700; padding: 4px 10px; border-radius: 6px;
+            background: rgba(239, 90, 67, 0.1); color: #ef5a43;
+            border: 1px solid rgba(239, 90, 67, 0.2);
         }
-        .dark .tech-tag { background: rgba(255, 255, 255, 0.05); color: #94a3b8; }
 
-        .content-container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
-        
-        .timeline-item { position: relative; padding-left: 2rem; border-left: 1px solid rgba(239, 90, 67, 0.3); padding-bottom: 2rem; }
-        .timeline-dot { position: absolute; left: -5px; top: 0; width: 10px; height: 10px; background: #ef5a43; border-radius: 50%; }
+        .timeline-card {
+            border-left: 2px solid #ef5a43;
+            position: relative;
+            padding-left: 24px;
+            margin-bottom: 24px;
+        }
+        .timeline-card::before {
+            content: '';
+            position: absolute;
+            left: -7px; top: 0;
+            width: 12px; height: 12px;
+            background: #ef5a43; border-radius: 50%;
+            box-shadow: 0 0 10px rgba(239, 90, 67, 0.5);
+        }
+
+        .content-container { width: 100%; max-width: 1250px; margin: 0 auto; padding: 0 2rem; }
     </style>
 </head>
 
-<body class="bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col transition-colors duration-500 relative">
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-500 relative overflow-hidden">
     
-    <div class="fixed inset-0 grid-bg pointer-events-none opacity-0 dark:opacity-100 transition-opacity duration-1000"></div>
+    <div class="fixed inset-0 grid-bg pointer-events-none opacity-50 dark:opacity-100 transition-opacity"></div>
 
-    <nav class="fixed w-full z-50 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+    <nav class="fixed w-full z-50 bg-white/70 dark:bg-slate-950/70 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800">
         <div class="content-container h-20 flex justify-between items-center">
             <div class="flex items-center gap-5 cursor-pointer" onclick="showPage('home')">
                 <div class="monogram bg-brand w-11 h-11 flex items-center justify-center text-white font-black text-xl">S</div>
-                <span class="text-lg md:text-xl font-black tracking-[0.2em] uppercase hidden md:block">Sourabh Tarodekar</span>
+                <span class="text-lg font-black tracking-[0.2em] uppercase hidden md:block">Sourabh Tarodekar</span>
             </div>
             
-            <div class="flex items-center gap-2">
-                <button onclick="showPage('about')" class="hidden md:flex items-center gap-2 px-4 py-2 text-[10px] font-black uppercase tracking-widest hover:text-brand transition-all">About</button>
-                <button onclick="showPage('portfolio')" class="hidden md:flex items-center gap-2 px-4 py-2 text-[10px] font-black uppercase tracking-widest hover:text-brand transition-all">Portfolio</button>
-                <a href="mailto:sourabh232@gmail.com" class="nav-btn" title="Email"><i class="fas fa-envelope"></i></a>
-                <a href="https://linkedin.com/in/sourabh232" target="_blank" class="nav-btn" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-                <button id="theme-toggle" class="nav-btn ml-1 hover:bg-slate-900 dark:hover:bg-white dark:hover:text-slate-900">
-                    <i id="theme-toggle-icon" class="fas fa-moon"></i>
-                </button>
+            <div class="flex items-center gap-6">
+                <div class="hidden md:flex items-center gap-8">
+                    <button onclick="showPage('about')" class="text-[11px] font-black uppercase tracking-widest hover:text-brand transition-all">Executive Summary</button>
+                    <button onclick="showPage('portfolio')" class="text-[11px] font-black uppercase tracking-widest hover:text-brand transition-all">Project Radar</button>
+                </div>
+                <div class="h-6 w-px bg-slate-200 dark:bg-slate-800"></div>
+                <div class="flex gap-2">
+                    <a href="YOUR_RESUME_PDF_LINK" target="_blank" class="nav-btn" title="Resume PDF"><i class="fas fa-file-pdf"></i></a>
+                    <a href="https://linkedin.com/in/sourabh232" target="_blank" class="nav-btn"><i class="fab fa-linkedin-in"></i></a>
+                    <button id="theme-toggle" class="nav-btn"><i id="theme-toggle-icon" class="fas fa-moon"></i></button>
+                </div>
             </div>
         </div>
     </nav>
@@ -138,37 +126,34 @@
     <main class="flex-grow flex flex-col justify-center pt-24 relative overflow-hidden">
         
         <div id="home-page" class="content-container page-transition visible-state">
-            <div class="grid lg:grid-cols-12 gap-10 items-center">
-                <div class="lg:col-span-7">
-                    <h1 class="display-font text-[clamp(2.5rem,7vw,4.5rem)] font-black mb-8 leading-[0.9] tracking-tighter">
-                        Engineering <br><span class="text-brand italic">Scalable</span> Systems.
+            <div class="grid lg:grid-cols-2 gap-20 items-center">
+                <div>
+                    <span class="text-brand font-black text-xs uppercase tracking-[0.5em] mb-4 block">Based in Sunnyvale, CA</span>
+                    <h1 class="display-font text-[clamp(3rem,8vw,5.5rem)] font-black mb-8 leading-[0.85] tracking-tighter">
+                        Strategy <br><span class="text-brand italic">In Motion.</span>
                     </h1>
-                    <div class="space-y-6 max-w-2xl border-l-2 border-brand/20 pl-6">
-                        <p class="text-[clamp(1rem,2vw,1.4rem)] font-light text-slate-500 dark:text-slate-400 leading-relaxed">
-                            <span class="text-slate-900 dark:text-white font-bold">Technical Program Manager</span> | 
-                            <span class="text-brand">Hardware NPI</span> | 
-                            <span class="text-brand">CapEx Planning</span>
-                        </p>
-                    </div>
+                    <p class="text-lg font-light text-slate-500 dark:text-slate-400 leading-relaxed max-w-md border-l-4 border-brand pl-6">
+                        Technical Program Manager driving $32M+ CapEx portfolios and precision Hardware NPI.
+                    </p>
                 </div>
 
-                <div class="lg:col-span-5 flex flex-col gap-4">
-                    <div onclick="showPage('about')" class="project-card p-7 rounded-3xl group cursor-pointer border-brand/30">
-                        <div class="flex justify-between items-center">
-                            <div><p class="text-[10px] font-black uppercase tracking-[0.3em] opacity-40 mb-1">Introduction</p><p class="display-font text-2xl font-bold">About Me</p></div>
-                            <i class="fas fa-user-tie text-slate-400 group-hover:text-brand transition-colors text-xl"></i>
+                <div class="grid gap-4">
+                    <div onclick="showPage('about')" class="glass-panel p-8 rounded-[2rem] group cursor-pointer hover:border-brand/50 flex justify-between items-center">
+                        <div>
+                            <p class="text-[10px] font-black uppercase tracking-widest opacity-40 mb-1">Background</p>
+                            <p class="display-font text-3xl font-bold">Introduction</p>
+                        </div>
+                        <div class="w-14 h-14 rounded-2xl bg-slate-100 dark:bg-white/5 flex items-center justify-center group-hover:bg-brand group-hover:text-white transition-all">
+                            <i class="fas fa-id-badge text-xl"></i>
                         </div>
                     </div>
-                    <div onclick="showPage('portfolio')" class="project-card p-7 rounded-3xl group cursor-pointer border-brand/30 bg-brand/5">
-                        <div class="flex justify-between items-center">
-                            <div><p class="text-[10px] font-black uppercase tracking-[0.3em] text-brand mb-1">Technical Works</p><p class="display-font text-2xl font-bold">Portfolio</p></div>
-                            <div class="w-10 h-10 rounded-full bg-brand text-white flex items-center justify-center group-hover:scale-110 transition-transform"><i class="fas fa-code-branch"></i></div>
+                    <div onclick="showPage('portfolio')" class="glass-panel p-8 rounded-[2rem] group cursor-pointer border-brand/20 bg-brand/5 flex justify-between items-center">
+                        <div>
+                            <p class="text-[10px] font-black uppercase tracking-widest text-brand mb-1">Work History</p>
+                            <p class="display-font text-3xl font-bold">Portfolio</p>
                         </div>
-                    </div>
-                    <div onclick="showPage('contact')" class="project-card p-7 rounded-3xl group cursor-pointer">
-                        <div class="flex justify-between items-center">
-                            <div><p class="text-[10px] font-black uppercase tracking-[0.3em] opacity-40 mb-1">Let's Connect</p><p class="display-font text-2xl font-bold">Contact Hub</p></div>
-                            <i class="fas fa-paper-plane text-slate-400 group-hover:text-brand transition-colors text-xl"></i>
+                        <div class="w-14 h-14 rounded-2xl bg-brand text-white flex items-center justify-center shadow-xl">
+                            <i class="fas fa-rocket text-xl"></i>
                         </div>
                     </div>
                 </div>
@@ -176,69 +161,131 @@
         </div>
 
         <div id="about-page" class="content-container page-transition hidden-state">
-            <div class="flex justify-between items-end mb-8">
-                <div>
-                    <button onclick="showPage('home')" class="text-brand text-[10px] font-black tracking-widest uppercase mb-3 flex items-center gap-2"><i class="fas fa-arrow-left"></i> Dashboard</button>
-                    <h2 class="display-font text-4xl font-black tracking-tighter uppercase leading-none">Introduction <span class="text-brand">& Background</span></h2>
-                </div>
-                <button onclick="downloadVCard()" class="px-4 py-2 bg-slate-100 dark:bg-white/5 rounded-lg text-[9px] font-black uppercase tracking-widest hover:bg-brand hover:text-white transition-all">Save Contact</button>
+            <div class="mb-8">
+                <button onclick="showPage('home')" class="text-brand text-[10px] font-black tracking-widest uppercase mb-3 flex items-center gap-2">
+                    <i class="fas fa-arrow-left"></i> Back to HQ
+                </button>
+                <h2 class="display-font text-5xl font-black tracking-tighter uppercase leading-none">The <span class="text-brand">Brief</span></h2>
             </div>
 
-            <div class="scroll-area grid lg:grid-cols-3 gap-8 pb-10">
-                <div class="lg:col-span-1 space-y-6">
-                    <div class="glass-panel p-6">
-                        <h3 class="text-[10px] font-black uppercase tracking-widest text-brand mb-4">Executive Summary</h3>
-                        <p class="text-sm leading-relaxed opacity-70">Technical Program Manager with 7+ years driving cross functional Programs, CapEx planning, and NPI execution across high-volume manufacturing environments. PMP and Six Sigma Green Belt certified.</p>
-                    </div>
-                    
-                    <div class="glass-panel p-6">
-                        <h3 class="text-[10px] font-black uppercase tracking-widest text-brand mb-4">Core Competencies</h3>
-                        <div class="space-y-4">
-                            <div>
-                                <p class="text-[9px] font-bold uppercase opacity-40 mb-2">Technical Tools</p>
-                                <div class="flex flex-wrap gap-2">
-                                    <span class="tech-tag">Jira</span><span class="tech-tag">SAP</span><span class="tech-tag">SQL</span><span class="tech-tag">Python</span><span class="tech-tag">Tableau</span><span class="tech-tag">Agile PLM</span>
-                                </div>
-                            </div>
-                            <div>
-                                <p class="text-[9px] font-bold uppercase opacity-40 mb-2">Operations</p>
-                                <div class="flex flex-wrap gap-2">
-                                    <span class="tech-tag">EVT/DVT/PVT</span><span class="tech-tag">UPH Opt</span><span class="tech-tag">Tool Install</span><span class="tech-tag">DFM</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                <div class="glass-panel p-5 rounded-2xl text-center">
+                    <p class="text-[9px] font-black opacity-40 uppercase tracking-widest">Experience</p>
+                    <p class="text-2xl font-black text-brand">7+ Years</p>
+                </div>
+                <div class="glass-panel p-5 rounded-2xl text-center">
+                    <p class="text-[9px] font-black opacity-40 uppercase tracking-widest">CapEx Portfolio</p>
+                    <p class="text-2xl font-black text-brand">$32M+</p>
+                </div>
+                <div class="glass-panel p-5 rounded-2xl text-center">
+                    <p class="text-[9px] font-black opacity-40 uppercase tracking-widest">Cost Savings</p>
+                    <p class="text-2xl font-black text-brand">$2.2M</p>
+                </div>
+                <div class="glass-panel p-5 rounded-2xl text-center">
+                    <p class="text-[9px] font-black opacity-40 uppercase tracking-widest">Status</p>
+                    <p class="text-2xl font-black text-green-500">PMP / CSM</p>
+                </div>
+            </div>
 
-                    <div class="glass-panel p-6">
-                        <h3 class="text-[10px] font-black uppercase tracking-widest text-brand mb-4">Education</h3>
-                        <div class="space-y-3">
-                            <div><p class="text-xs font-bold">MS, Business Analytics</p><p class="text-[10px] opacity-60">Hult International Business School</p></div>
-                            <div><p class="text-xs font-bold">MBA, Operations Mgmt</p><p class="text-[10px] opacity-60">Hult International Business School</p></div>
+            <div class="scroll-area grid lg:grid-cols-12 gap-8 pb-20">
+                <div class="lg:col-span-7 space-y-6">
+                    <div class="glass-panel p-8 rounded-3xl">
+                        <h3 class="text-brand font-black text-xs uppercase tracking-[0.3em] mb-6">Mission Critical Experience</h3>
+                        
+                        <div class="timeline-card">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h4 class="font-black text-lg">Applied Materials</h4>
+                                    <p class="text-xs text-brand font-bold uppercase tracking-widest">Technical Program Manager</p>
+                                </div>
+                                <span class="text-[10px] opacity-40 font-bold">2024 - PRESENT</span>
+                            </div>
+                            <p class="text-sm mt-3 opacity-70 leading-relaxed">
+                                Orchestrating the hardware lifecycle for multi-module deposition systems. Driving financial governance over <b>$32M in Capital Expenditure</b> while maintaining 98% install readiness across global facilities.
+                            </p>
+                        </div>
+
+                        <div class="timeline-card">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h4 class="font-black text-lg">Ford Motor Company</h4>
+                                    <p class="text-xs text-brand font-bold uppercase tracking-widest">Engineering Project Manager</p>
+                                </div>
+                                <span class="text-[10px] opacity-40 font-bold">2017 - 2020</span>
+                            </div>
+                            <p class="text-sm mt-3 opacity-70 leading-relaxed">
+                                Scaled global chassis supply programs through rigorous PPAP and DFMEA governance. Delivered <b>$1.4M in direct cost savings</b> through vendor negotiation and process optimization.
+                            </p>
+                        </div>
+
+                        <div class="timeline-card" style="border:none">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h4 class="font-black text-lg">Jahdao Gears</h4>
+                                    <p class="text-xs text-brand font-bold uppercase tracking-widest">Associate Project Engineer</p>
+                                </div>
+                                <span class="text-[10px] opacity-40 font-bold">2016 - 2017</span>
+                            </div>
+                            <p class="text-sm mt-3 opacity-70 leading-relaxed">
+                                Built real-time BI dashboards tracking OEE and Yield. Reduced unplanned factory downtime by <b>12%</b> via automated preventive maintenance scheduling.
+                            </p>
                         </div>
                     </div>
                 </div>
 
-                <div class="lg:col-span-2 glass-panel p-8">
-                    <h3 class="text-[10px] font-black uppercase tracking-widest text-brand mb-8">Professional Trajectory</h3>
-                    <div class="space-y-2">
-                        <div class="timeline-item">
-                            <div class="timeline-dot"></div>
-                            <p class="text-[9px] font-bold text-brand uppercase">2024 - Present</p>
-                            <h4 class="font-bold">Technical Program Manager | Applied Materials</h4>
-                            <p class="text-xs opacity-70 mt-2">Owned $32M+ CapEx portfolio. Improved financial accuracy by 15% and achieved 98% on-time installation readiness for critical toolsets.</p>
+                <div class="lg:col-span-5 space-y-6">
+                    <div class="glass-panel p-8 rounded-3xl">
+                        <h3 class="text-brand font-black text-xs uppercase tracking-[0.3em] mb-6">Execution Matrix</h3>
+                        
+                        <div class="space-y-6">
+                            <div>
+                                <p class="text-[10px] font-black uppercase opacity-40 mb-3 tracking-widest">Program Management</p>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="tech-tag">ROI Modeling</span>
+                                    <span class="tech-tag">NPI Lifecycle</span>
+                                    <span class="tech-tag">EVT/DVT/PVT</span>
+                                    <span class="tech-tag">Budget Variance</span>
+                                </div>
+                            </div>
+                            <div>
+                                <p class="text-[10px] font-black uppercase opacity-40 mb-3 tracking-widest">Data & Analytics</p>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="tech-tag">Python (Pandas)</span>
+                                    <span class="tech-tag">SQL</span>
+                                    <span class="tech-tag">Tableau</span>
+                                    <span class="tech-tag">JMP</span>
+                                    <span class="tech-tag">Jira</span>
+                                </div>
+                            </div>
+                            <div>
+                                <p class="text-[10px] font-black uppercase opacity-40 mb-3 tracking-widest">Hard Engineering</p>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="tech-tag">Precision Mfg</span>
+                                    <span class="tech-tag">Six Sigma</span>
+                                    <span class="tech-tag">DFM/DFT</span>
+                                    <span class="tech-tag">Tool Install</span>
+                                </div>
+                            </div>
                         </div>
-                        <div class="timeline-item">
-                            <div class="timeline-dot"></div>
-                            <p class="text-[9px] font-bold text-brand uppercase">2017 - 2020</p>
-                            <h4 class="font-bold">Engineering Project Manager | Ford Motors</h4>
-                            <p class="text-xs opacity-70 mt-2">Managed global supply programs for chassis systems. Realized $1.4M cost savings and improved reliability KPIs by 10%.</p>
+                    </div>
+
+                    <div class="glass-panel p-8 rounded-3xl bg-slate-900 text-white dark:bg-brand/10">
+                        <h3 class="text-brand font-black text-xs uppercase tracking-[0.3em] mb-6">Education</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <p class="text-sm font-black">Hult International Business School</p>
+                                <p class="text-xs opacity-60 italic">MS, Business Analytics | MBA, Operations Mgmt</p>
+                            </div>
+                            <hr class="opacity-10">
+                            <div>
+                                <p class="text-sm font-black">University of Pune</p>
+                                <p class="text-xs opacity-60 italic">BS, Mechanical Engineering</p>
+                            </div>
                         </div>
-                        <div class="timeline-item" style="border-left: none;">
-                            <div class="timeline-dot"></div>
-                            <p class="text-[9px] font-bold text-brand uppercase">2016 - 2017</p>
-                            <h4 class="font-bold">Associate Project Engineer | Jahdao Gears</h4>
-                            <p class="text-xs opacity-70 mt-2">Designed real-time production KPI dashboards. Reduced report lag by 40% and unplanned downtime by 12%.</p>
-                        </div>
+                        
+                        <a href="YOUR_RESUME_PDF_LINK" target="_blank" class="mt-8 w-full py-4 border border-brand/50 text-brand text-[10px] font-black uppercase tracking-widest rounded-xl flex items-center justify-center gap-3 hover:bg-brand hover:text-white transition-all">
+                            <i class="fas fa-file-pdf"></i> Download Official CV
+                        </a>
                     </div>
                 </div>
             </div>
@@ -248,122 +295,70 @@
             <div class="flex flex-col lg:flex-row lg:items-end justify-between mb-8 gap-6">
                 <div>
                     <button onclick="showPage('home')" class="text-brand text-[10px] font-black tracking-widest uppercase mb-3 flex items-center gap-2"><i class="fas fa-arrow-left"></i> Dashboard</button>
-                    <h2 class="display-font text-4xl font-black tracking-tighter uppercase leading-none">Technical <span class="text-brand">Deployments</span></h2>
+                    <h2 class="display-font text-5xl font-black tracking-tighter uppercase leading-none">Project <span class="text-brand">Radar</span></h2>
                 </div>
-                <div class="flex flex-wrap gap-2 p-1.5 bg-slate-100 dark:bg-white/5 rounded-full">
+                <div class="flex flex-wrap gap-2 p-1.5 bg-slate-200 dark:bg-white/5 rounded-full">
                     <button class="filter-btn active" onclick="filterProjects('all')">All</button>
                     <button class="filter-btn" onclick="filterProjects('Financials')">CapEx</button>
-                    <button class="filter-btn" onclick="filterProjects('AI / ML')">AI/ML</button>
                     <button class="filter-btn" onclick="filterProjects('Operations')">Ops</button>
                 </div>
             </div>
             
-            <div id="project-grid" class="scroll-area grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 pb-6">
+            <div id="project-grid" class="scroll-area grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 pb-10">
                 </div>
         </div>
 
         <div id="detail-page" class="content-container page-transition hidden-state">
             <div class="mb-8">
-                <button onclick="showPage('portfolio')" class="text-brand text-[10px] font-black tracking-widest uppercase mb-3 flex items-center gap-2"><i class="fas fa-arrow-left"></i> Back to Portfolio</button>
-                <h2 id="detail-title" class="display-font text-4xl font-black tracking-tighter uppercase leading-none">Project <span class="text-brand">Spotlight</span></h2>
+                <button onclick="showPage('portfolio')" class="text-brand text-[10px] font-black tracking-widest uppercase mb-3 flex items-center gap-2"><i class="fas fa-arrow-left"></i> Back to Radar</button>
+                <h2 id="detail-title" class="display-font text-5xl font-black tracking-tighter uppercase leading-none">Impact <span class="text-brand">Metrics</span></h2>
             </div>
 
             <div class="grid lg:grid-cols-3 gap-8 items-start">
-                <div class="lg:col-span-1 space-y-6">
-                    <div class="glass-panel p-6 border-brand/20">
-                        <div class="flex justify-between items-center mb-4">
-                            <span class="text-[9px] font-black uppercase tracking-widest opacity-40">System Status</span>
-                            <span class="text-[9px] font-bold text-green-500 uppercase"><span class="status-dot"></span> Production Ready</span>
-                        </div>
-                        <p id="detail-desc" class="text-sm leading-relaxed opacity-70 mb-6"></p>
-                        <div class="space-y-3">
-                            <div class="flex justify-between text-[10px] font-bold uppercase"><span class="opacity-40">Track:</span><span id="detail-track" class="text-brand"></span></div>
-                            <div class="flex justify-between text-[10px] font-bold uppercase"><span class="opacity-40">Role:</span><span class="text-slate-900 dark:text-white uppercase">Technical Lead</span></div>
-                        </div>
-                    </div>
-                    <button id="detail-github-btn" class="w-full py-4 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-xl font-black uppercase tracking-widest text-[10px] hover:bg-brand dark:hover:bg-brand dark:hover:text-white transition-all">
-                        <i class="fab fa-github mr-2"></i> View Repository
-                    </button>
-                </div>
-
-                <div class="lg:col-span-2 space-y-6">
-                    <div class="glass-panel p-8">
-                        <h4 class="text-[10px] font-black uppercase tracking-widest text-brand mb-6">Program Impact Metrics</h4>
-                        <div id="metrics-container" class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-                            </div>
-                        <div class="mt-10 p-6 rounded-2xl bg-brand/5 border border-brand/10 text-center">
-                            <h5 class="text-[9px] font-black uppercase mb-2 tracking-widest">NPI Execution Workflow</h5>
-                            <p class="text-[10px] opacity-60">EVT Phase → DVT Phase → PVT Phase → Mass Production</p>
-                        </div>
+                <div class="lg:col-span-1 glass-panel p-8 rounded-3xl border-brand/20">
+                    <p id="detail-desc" class="text-sm leading-relaxed opacity-70 mb-8"></p>
+                    <div class="space-y-4">
+                        <div class="flex justify-between text-[10px] font-black uppercase"><span class="opacity-40">Classification</span><span id="detail-track" class="text-brand"></span></div>
+                        <div class="flex justify-between text-[10px] font-black uppercase"><span class="opacity-40">Primary Lead</span><span>Sourabh T.</span></div>
                     </div>
                 </div>
-            </div>
-        </div>
-
-        <div id="contact-page" class="content-container page-transition hidden-state">
-            <div class="mb-8 flex justify-between items-end">
-                <div>
-                    <button onclick="showPage('home')" class="text-brand text-[10px] font-black uppercase tracking-widest mb-3 flex items-center gap-2"><i class="fas fa-arrow-left"></i> Dashboard</button>
-                    <h2 class="display-font text-4xl font-black tracking-tighter uppercase">Direct <span class="text-brand">Outreach</span></h2>
-                </div>
-            </div>
-
-            <div class="grid lg:grid-cols-2 gap-8 items-start relative">
-                <div id="success-msg" class="hidden absolute inset-0 z-20 flex items-center justify-center">
-                    <div class="glass-panel p-10 text-center border-brand shadow-2xl">
-                        <i class="fas fa-check-circle text-5xl text-brand mb-4"></i>
-                        <h3 class="display-font text-2xl font-bold">Message Dispatched!</h3>
-                        <button onclick="resetForm()" class="mt-6 text-[10px] font-black uppercase text-brand">Send Another</button>
-                    </div>
-                </div>
-
-                <div class="glass-panel p-8" id="form-container">
-                    <form id="contact-form" action="https://formspree.io/f/xbddlbzj" method="POST" class="space-y-4">
-                        <div class="grid grid-cols-2 gap-4">
-                            <div><label class="text-[9px] font-black uppercase tracking-widest opacity-40 mb-1 block">Name</label>
-                            <input type="text" name="name" class="input-field" placeholder="Full Name" required></div>
-                            <div><label class="text-[9px] font-black uppercase tracking-widest opacity-40 mb-1 block">Email</label>
-                            <input type="email" name="email" class="input-field" placeholder="email@address.com" required></div>
+                <div class="lg:col-span-2 glass-panel p-10 rounded-3xl">
+                    <h4 class="text-[11px] font-black uppercase tracking-[0.3em] text-brand mb-8">Performance Scorecard</h4>
+                    <div id="metrics-container" class="grid grid-cols-2 md:grid-cols-4 gap-6">
                         </div>
-                        <div><label class="text-[9px] font-black uppercase tracking-widest opacity-40 mb-1 block">Subject</label>
-                        <input type="text" name="subject" class="input-field" placeholder="TPM Role" required></div>
-                        <div><label class="text-[9px] font-black uppercase tracking-widest opacity-40 mb-1 block">Message</label>
-                        <textarea name="message" rows="5" class="input-field" placeholder="How can we collaborate?" required></textarea></div>
-                        <input type="text" name="_gotcha" style="display:none">
-                        <button type="submit" id="submit-btn" class="w-full py-4 bg-brand text-white rounded-xl font-black uppercase tracking-[0.2em] text-[10px] hover:shadow-lg transition-all">
-                            Dispatch Message <i class="fas fa-paper-plane ml-2"></i>
-                        </button>
-                    </form>
-                </div>
-
-                <div class="flex flex-col gap-6">
-                    <div class="glass-panel p-5"><p class="text-[8px] font-black opacity-40 uppercase mb-1">Local Time</p><p id="local-time" class="display-font text-xl font-bold tracking-tighter">--:-- PST</p></div>
-                    <div class="glass-panel p-5"><p class="text-[8px] font-black opacity-40 uppercase mb-1">Status</p><p class="display-font text-xl font-bold text-green-500 tracking-tighter"><span class="status-dot"></span> Online</p></div>
-                    <div class="glass-panel p-5"><p class="text-[8px] font-black opacity-40 uppercase mb-1">Base</p><p class="display-font text-xl font-bold tracking-tighter">Sunnyvale, CA</p></div>
                 </div>
             </div>
         </div>
     </main>
 
-    <footer class="py-6 border-t border-slate-100 dark:border-slate-900 bg-white/50 dark:bg-slate-950/50 backdrop-blur-sm z-10">
-        <div class="content-container flex justify-between items-center text-[9px] font-bold tracking-[0.4em] uppercase opacity-40">
-            <p>© 2026 Sourabh Tarodekar | MSBA | MBA | PMP</p>
+    <footer class="py-8 bg-white/50 dark:bg-slate-950/50 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 z-10">
+        <div class="content-container flex justify-between items-center text-[10px] font-bold tracking-[0.4em] uppercase opacity-40">
+            <p>© 2026 Sourabh Tarodekar</p>
+            <p>PMP • Six Sigma • Strategic Leadership</p>
         </div>
     </footer>
 
     <script>
         const repos = [
-            { id: 1, name: "CapEx-Forecaster", desc: "Strategic portfolio management for infrastructure rollout.", track: "Financials", icon: "fa-chart-pie", link: "CapEx-Forecasting", metrics: { eff: "+15%", acc: "98.2%", risk: "Low", nps: "92" }, details: "Managed $32M+ portfolio. Reduced non-compliant spend by 27% through milestone-based budget controls." },
-            { id: 2, name: "NPI-Integration", desc: "Multi-module deposition system integration.", track: "Operations", icon: "fa-microchip", link: "NPI-Tracker", metrics: { eff: "+35%", acc: "99.1%", risk: "Med", nps: "85" }, details: "Reduced cross-module integration issues by 35% through data-driven modeling and DOE analysis." },
-            { id: 3, name: "Global-Supply-SCM", desc: "Supply programs for automotive chassis systems.", track: "Operations", icon: "fa-car", link: "SupplyChain-AI", metrics: { eff: "+10%", acc: "95.0%", risk: "Low", nps: "89" }, details: "Realized $1.4M cost savings at Ford Motors while achieving 95% Quality & Cost-Weight-Function metrics." },
-            { id: 4, name: "Mfg-Analytics-Dashboard", desc: "Real-time production KPI tracking (OEE/Yield).", track: "Analytics", icon: "fa-database", link: "Mfg-BI", metrics: { eff: "+40%", acc: "100%", risk: "Low", nps: "94" }, details: "Reduced report lag by 40% and unplanned downtime by 12% through automated SQL/Tableau pipelines." }
+            { id: 1, name: "CapEx-Management", desc: "Financial governance for $32M+ infrastructure rollout.", track: "Financials", icon: "fa-chart-pie", metrics: { eff: "+22%", acc: "98.2%", risk: "Low", nps: "92" }, details: "Reduced non-compliant spend by 27% and optimized ROI via tool reuse ($800K saving)." },
+            { id: 2, name: "NPI-Execution", desc: "Technical rollout for multi-module deposition systems.", track: "Operations", icon: "fa-microchip", metrics: { eff: "+35%", acc: "99.1%", risk: "Med", nps: "85" }, details: "Managed phase-gates (EVT/DVT/PVT) for precision equipment, improving install readiness by 98%." },
+            { id: 3, name: "Global-Supply-SCM", desc: "Component qualification for global chassis systems.", track: "Operations", icon: "fa-car", metrics: { eff: "+15%", acc: "95.0%", risk: "Low", nps: "89" }, details: "Implemented DFMEA frameworks for 25+ components, shortening escalation closure by 20%." },
+            { id: 4, name: "BI-Yield-Analytics", desc: "Real-time production KPI tracking & automation.", track: "Analytics", icon: "fa-database", metrics: { eff: "+40%", acc: "100%", risk: "Low", nps: "94" }, details: "Reduced dashboard reporting lag by 40% using SQL/Tableau automated pipelines." }
         ];
 
         function showPage(pageId) {
-            const pages = ['home-page', 'portfolio-page', 'contact-page', 'detail-page', 'about-page'];
-            pages.forEach(p => document.getElementById(p).classList.replace('visible-state', 'hidden-state'));
+            const pages = ['home-page', 'portfolio-page', 'detail-page', 'about-page'];
+            pages.forEach(p => {
+                const el = document.getElementById(p);
+                if(el) {
+                    el.classList.replace('visible-state', 'hidden-state');
+                    el.style.display = 'none';
+                }
+            });
             setTimeout(() => {
-                document.getElementById(pageId + '-page').classList.replace('hidden-state', 'visible-state');
+                const target = document.getElementById(pageId + '-page');
+                target.style.display = 'block';
+                target.classList.replace('hidden-state', 'visible-state');
                 if(pageId === 'portfolio') renderProjects();
                 gtag('event', 'page_view', { page_title: pageId });
             }, 300);
@@ -375,63 +370,35 @@
             document.getElementById('detail-desc').innerText = repo.details;
             document.getElementById('detail-track').innerText = repo.track;
             document.getElementById('metrics-container').innerHTML = `
-                <div class="p-4 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/10"><p class="text-[8px] font-black opacity-40 uppercase">Efficiency</p><p class="text-lg font-bold text-brand">${repo.metrics.eff}</p></div>
-                <div class="p-4 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/10"><p class="text-[8px] font-black opacity-40 uppercase">Accuracy</p><p class="text-lg font-bold text-brand">${repo.metrics.acc}</p></div>
-                <div class="p-4 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/10"><p class="text-[8px] font-black opacity-40 uppercase">Risk Level</p><p class="text-lg font-bold ${repo.metrics.risk === 'High' ? 'text-red-500' : 'text-green-500'}">${repo.metrics.risk}</p></div>
-                <div class="p-4 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/10"><p class="text-[8px] font-black opacity-40 uppercase">NPS Score</p><p class="text-lg font-bold text-brand">${repo.metrics.nps}</p></div>
+                <div class="text-center"><p class="text-[9px] font-black opacity-40 uppercase mb-2">Efficiency</p><p class="text-3xl font-black text-brand">${repo.metrics.eff}</p></div>
+                <div class="text-center"><p class="text-[9px] font-black opacity-40 uppercase mb-2">Accuracy</p><p class="text-3xl font-black text-brand">${repo.metrics.acc}</p></div>
+                <div class="text-center"><p class="text-[9px] font-black opacity-40 uppercase mb-2">Risk</p><p class="text-3xl font-black text-green-500">${repo.metrics.risk}</p></div>
+                <div class="text-center"><p class="text-[9px] font-black opacity-40 uppercase mb-2">NPS</p><p class="text-3xl font-black text-brand">${repo.metrics.nps}</p></div>
             `;
-            document.getElementById('detail-github-btn').onclick = () => window.open(`https://github.com/QuantuMaster007/${repo.link}`, '_blank');
             showPage('detail');
         }
 
         function renderProjects(filter = 'all') {
             const grid = document.getElementById('project-grid');
             grid.innerHTML = repos.filter(r => filter === 'all' || r.track === filter).map(r => `
-                <div onclick="openDetail(${r.id})" class="project-card p-6 rounded-2xl group flex flex-col h-full cursor-pointer">
-                    <div class="flex justify-between items-start mb-4">
-                        <div class="p-3 rounded-xl bg-slate-50 dark:bg-white/5 text-slate-400 group-hover:bg-brand group-hover:text-white transition-all"><i class="fas ${r.icon} text-lg"></i></div>
-                        <i class="fab fa-github text-xs opacity-20"></i>
+                <div onclick="openDetail(${r.id})" class="glass-panel p-8 rounded-3xl group cursor-pointer hover:border-brand/50 flex flex-col h-full">
+                    <div class="p-4 rounded-2xl bg-slate-100 dark:bg-white/5 w-fit mb-6 group-hover:bg-brand group-hover:text-white transition-all">
+                        <i class="fas ${r.icon} text-lg"></i>
                     </div>
-                    <h3 class="font-bold text-sm mb-2 group-hover:text-brand transition-colors">${r.name}</h3>
-                    <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-snug flex-grow">${r.desc}</p>
-                    <div class="mt-5 pt-4 border-t border-slate-100 dark:border-white/5 flex justify-between items-center text-[9px] font-bold text-slate-400 uppercase">
-                        <span>${r.track}</span><i class="fas fa-arrow-right opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all text-brand"></i>
+                    <h3 class="font-black text-lg mb-2 group-hover:text-brand transition-colors">${r.name}</h3>
+                    <p class="text-xs opacity-60 leading-relaxed mb-6 flex-grow">${r.desc}</p>
+                    <div class="pt-6 border-t border-slate-200 dark:border-white/5 flex justify-between items-center text-[10px] font-black uppercase tracking-widest opacity-40">
+                        <span>${r.track}</span>
+                        <i class="fas fa-chevron-right text-brand"></i>
                     </div>
                 </div>
             `).join('');
         }
 
         function filterProjects(track) {
-            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.toggle('active', btn.innerText.toLowerCase() === track.toLowerCase() || (track === 'all' && btn.innerText.toLowerCase() === 'all')));
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.toggle('active', btn.innerText.toLowerCase() === track.toLowerCase()));
             renderProjects(track);
         }
-
-        const form = document.getElementById('contact-form');
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const btn = document.getElementById('submit-btn');
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Dispatching...';
-            const response = await fetch(form.action, { method: 'POST', body: new FormData(form), headers: { 'Accept': 'application/json' } });
-            if (response.ok) {
-                document.getElementById('form-container').classList.add('opacity-0');
-                document.getElementById('success-msg').classList.remove('hidden');
-                gtag('event', 'form_submission');
-            }
-        });
-
-        function resetForm() {
-            form.reset();
-            document.getElementById('form-container').classList.remove('opacity-0');
-            document.getElementById('success-msg').classList.add('hidden');
-            document.getElementById('submit-btn').innerHTML = 'Dispatch Message <i class="fas fa-paper-plane ml-2"></i>';
-        }
-
-        function updateTime() {
-            const opt = { timeZone: 'America/Los_Angeles', hour: '2-digit', minute: '2-digit', hour12: true };
-            document.getElementById('local-time').innerText = new Intl.DateTimeFormat('en-US', opt).format(new Date()) + " PST";
-        }
-        setInterval(updateTime, 1000);
-        updateTime();
 
         document.getElementById('theme-toggle').addEventListener('click', () => {
             document.documentElement.classList.toggle('dark');
@@ -439,15 +406,9 @@
             icon.classList.toggle('fa-moon'); icon.classList.toggle('fa-sun');
         });
 
-        function downloadVCard() {
-            const vcard = `BEGIN:VCARD\nVERSION:3.0\nFN:Sourabh Tarodekar\nTITLE:Technical Program Manager\nEMAIL:sourabh232@gmail.com\nURL:https://linkedin.com/in/sourabh232\nEND:VCARD`;
-            const blob = new Blob([vcard], { type: 'text/vcard' });
-            const a = document.createElement('a');
-            a.href = window.URL.createObjectURL(blob);
-            a.download = 'Sourabh_Tarodekar.vcf';
-            a.click();
-        }
-
+        // Initialize display
+        document.querySelectorAll('.page-transition').forEach(p => p.style.display = 'none');
+        document.getElementById('home-page').style.display = 'block';
         renderProjects();
     </script>
 </body>
