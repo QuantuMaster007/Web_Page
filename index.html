@@ -1,208 +1,177 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sourabh Tarodekar | Strategic Leader</title>
-    
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: { 
-                        brand: '#ef5a43', 
-                        slate: { 950: '#050a1a' }
-                    }
-                }
-            }
-        }
-    </script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;700;900&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
-    
-    <style>
-        html, body { 
-            margin: 0; 
-            padding: 0; 
-            width: 100%; 
-            height: 100vh;
-            overflow: hidden; 
-            font-family: 'Inter', sans-serif;
-            -webkit-font-smoothing: antialiased;
-        }
-        
-        @media (max-height: 800px) {
-            body { overflow-y: auto; height: auto; }
-        }
-        
-        .display-font { font-family: 'Outfit', sans-serif; }
-        .monogram { clip-path: polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%); }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sourabh Tarodekar | Strategic Leader</title>
 
-        /* Subtle Engineering Grid for Dark Mode */
-        .grid-bg {
-            background-image: radial-gradient(circle, rgba(239, 90, 67, 0.05) 1px, transparent 1px);
-            background-size: 30px 30px;
-        }
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  darkMode: 'class',
+  theme: {
+    extend: {
+      colors: { brand: '#ef5a43', slate: { 950: '#050a1a' } }
+    }
+  }
+}
+</script>
 
-        /* Animation */
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .animate-reveal { animation: fadeUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;700;900&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
 
-        /* Unified Card Styling */
-        .nav-card {
-            background: rgba(15, 23, 42, 0.03);
-            border: 1px solid rgba(15, 23, 42, 0.08);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .dark .nav-card {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        .nav-card:hover {
-            transform: translateY(-4px);
-            border-color: #ef5a43;
-            box-shadow: 0 12px 24px -10px rgb(239 90 67 / 0.15);
-        }
-
-        .content-container {
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
-    </style>
+<style>
+html,body{margin:0;height:100%;font-family:Inter}
+.display-font{font-family:Outfit}
+.monogram{clip-path:polygon(25% 0,100% 0,75% 100%,0 100%)}
+.grid-bg{background-image:radial-gradient(circle,rgba(239,90,67,.05) 1px,transparent 1px);background-size:30px 30px}
+.page{display:none;min-height:calc(100vh - 160px)}
+.page.active{display:block;animation:fadeUp .6s cubic-bezier(.2,.8,.2,1)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+.nav-card{background:rgba(15,23,42,.03);border:1px solid rgba(15,23,42,.08);transition:.4s}
+.dark .nav-card{background:rgba(255,255,255,.02);border-color:rgba(255,255,255,.05)}
+.nav-card:hover{transform:translateY(-4px);border-color:#ef5a43;box-shadow:0 12px 24px -10px rgb(239 90 67/.15)}
+.content{max-width:1200px;margin:auto;padding:0 2rem}
+</style>
 </head>
 
-<body class="bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col transition-colors duration-500 relative">
-    
-    <div class="fixed inset-0 grid-bg pointer-events-none opacity-0 dark:opacity-100 transition-opacity duration-1000"></div>
+<body class="bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors">
 
-    <nav class="fixed w-full z-50 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
-        <div class="content-container h-20 flex justify-between items-center">
-            <div class="flex items-center gap-5 animate-reveal">
-                <div class="monogram bg-brand w-11 h-11 flex items-center justify-center text-white font-black text-xl">S</div>
-                <span class="text-lg md:text-xl font-black tracking-[0.2em] uppercase">Sourabh Tarodekar</span>
-            </div>
-            
-            <button id="theme-toggle" class="w-10 h-10 flex items-center justify-center rounded-xl border border-slate-200 dark:border-slate-700 hover:border-brand transition-all animate-reveal">
-                <i id="theme-toggle-icon" class="fas fa-moon text-sm"></i>
-            </button>
-        </div>
-    </nav>
+<div class="fixed inset-0 grid-bg pointer-events-none opacity-0 dark:opacity-100"></div>
 
-    <main class="flex-grow flex items-center pt-16">
-        <div class="content-container py-6">
-            <div class="grid lg:grid-cols-12 gap-10 items-center">
-                
-                <div class="lg:col-span-7 animate-reveal" style="animation-delay: 0.1s;">
-                    <h1 class="display-font text-[clamp(2.2rem,6.5vw,4.2rem)] font-black mb-8 leading-[0.95] tracking-tighter">
-                        The <span class="text-brand italic">Bridge</span> Between <br>Complex Systems.
-                    </h1>
-                    
-                    <div class="space-y-6 max-w-2xl">
-                        <p class="text-[clamp(0.95rem,1.8vw,1.3rem)] font-light text-slate-500 dark:text-slate-400 leading-relaxed">
-                            <span class="text-slate-900 dark:text-white font-bold">Technical Program Manager</span> 
-                            <span class="mx-1 text-brand/30">|</span> 
-                            <span class="text-slate-900 dark:text-white font-bold">NPI Hardware Programs + Manufacturing Ops</span> 
-                            <span class="mx-1 text-brand/30">|</span> 
-                            <span class="text-slate-900 dark:text-white font-bold">Capital Expenditure</span> 
-                            <span class="mx-1 text-brand/30">|</span> 
-                            <span class="text-slate-900 dark:text-white font-bold">Supply Chain Operations</span> 
-                            <span class="mx-1 text-brand/30">|</span> 
-                            <span class="text-slate-900 dark:text-white font-bold">Data Analytics & Automation</span> 
-                            <span class="mx-1 text-brand/30">|</span> 
-                            <span class="text-slate-900 dark:text-white font-bold">AI/ML</span>
-                        </p>
-                    </div>
-                </div>
+<!-- NAV -->
+<nav class="fixed w-full z-50 bg-white/80 dark:bg-slate-950/80 backdrop-blur border-b">
+  <div class="content h-20 flex justify-between items-center">
+    <a href="#home" class="flex items-center gap-4 font-black tracking-widest">
+      <div class="monogram bg-brand w-10 h-10 flex items-center justify-center text-white">S</div>
+      SOURABH
+    </a>
+    <button id="theme-toggle" class="w-10 h-10 border rounded-xl">
+      <i id="theme-icon" class="fa-solid fa-moon"></i>
+    </button>
+  </div>
+</nav>
 
-                <div class="lg:col-span-5 flex flex-col gap-3 animate-reveal" style="animation-delay: 0.2s;">
-                    <a href="mailto:sourabh232@gmail.com" class="nav-card block p-6 rounded-2xl group">
-                        <div class="flex justify-between items-center">
-                            <div>
-                                <p class="text-[9px] font-black uppercase tracking-[0.3em] text-brand mb-1">Introduction</p>
-                                <p class="display-font text-2xl font-bold">About</p>
-                            </div>
-                            <i class="fas fa-arrow-right text-brand opacity-0 group-hover:opacity-100 transition-all -translate-x-2 group-hover:translate-x-0"></i>
-                        </div>
-                    </a>
-                    
-                    <a href="https://linkedin.com/in/sourabh232" target="_blank" class="nav-card block p-6 rounded-2xl group">
-                        <div class="flex justify-between items-center">
-                            <div>
-                                <p class="text-[9px] font-black uppercase tracking-[0.3em] text-brand mb-1">Career Path</p>
-                                <p class="display-font text-2xl font-bold">Resume</p>
-                            </div>
-                            <i class="fas fa-file-pdf text-brand opacity-0 group-hover:opacity-100 transition-all -translate-x-2 group-hover:translate-x-0"></i>
-                        </div>
-                    </a>
+<main class="pt-32 pb-24">
 
-                    <div class="nav-card block p-6 rounded-2xl group cursor-pointer">
-                        <div class="flex justify-between items-center">
-                            <div>
-                                <p class="text-[9px] font-black uppercase tracking-[0.3em] text-brand mb-1">Technical Work</p>
-                                <p class="display-font text-2xl font-bold">Portfolio</p>
-                            </div>
-                            <i class="fas fa-microchip text-brand opacity-0 group-hover:opacity-100 transition-all -translate-x-2 group-hover:translate-x-0"></i>
-                        </div>
-                    </div>
+<!-- HOME -->
+<section id="home" class="page active">
+  <div class="content grid lg:grid-cols-12 gap-10 items-center">
+    <div class="lg:col-span-7">
+      <h1 class="display-font text-[clamp(2.5rem,6vw,4.5rem)] font-black leading-[.95] mb-8">
+        The <span class="text-brand italic">Bridge</span><br>Between Complex Systems
+      </h1>
+      <p class="text-lg opacity-70 max-w-xl">
+        Technical Program Manager driving NPI hardware, manufacturing operations,
+        CapEx execution, and data-driven scale.
+      </p>
+    </div>
 
-                    <a href="mailto:sourabh232@gmail.com" class="nav-card block p-6 rounded-2xl group">
-                        <div class="flex justify-between items-center">
-                            <div>
-                                <p class="text-[9px] font-black uppercase tracking-[0.3em] text-brand mb-1">Collaboration</p>
-                                <p class="display-font text-2xl font-bold text-brand">Contact</p>
-                            </div>
-                            <i class="fas fa-paper-plane text-brand opacity-0 group-hover:opacity-100 transition-all -translate-x-2 group-hover:translate-x-0"></i>
-                        </div>
-                    </a>
-                </div>
+    <div class="lg:col-span-5 space-y-4">
+      <a href="#about" class="nav-card p-6 rounded-2xl block">
+        <h3 class="display-font text-2xl font-bold">About</h3>
+      </a>
+      <a href="#portfolio" class="nav-card p-6 rounded-2xl block">
+        <h3 class="display-font text-2xl font-bold">Portfolio</h3>
+      </a>
+      <a href="#contact" class="nav-card p-6 rounded-2xl block">
+        <h3 class="display-font text-2xl font-bold text-brand">Contact</h3>
+      </a>
+    </div>
+  </div>
+</section>
 
-            </div>
-        </div>
-    </main>
+<!-- ABOUT -->
+<section id="about" class="page">
+  <div class="content max-w-4xl">
+    <h1 class="display-font text-5xl font-black mb-6">
+      About <span class="text-brand">Me</span>
+    </h1>
+    <p class="text-lg opacity-70 mb-6">
+      I specialize in leading complex hardware and manufacturing programs where
+      engineering, supply chain, and capital strategy intersect.
+    </p>
+    <p class="text-lg opacity-70 mb-10">
+      From EVT through mass production, I focus on execution clarity,
+      risk reduction, and scalable systems.
+    </p>
+    <a href="#home" class="text-brand font-bold">← Back to Home</a>
+  </div>
+</section>
 
-    <footer class="py-6 border-t border-slate-100 dark:border-slate-900 animate-reveal" style="animation-delay: 0.3s;">
-        <div class="content-container flex justify-between items-center">
-            <p class="text-[9px] font-bold tracking-[0.3em] uppercase opacity-40">
-                © 2026 Sourabh Tarodekar | MSBA | MBA | PMP
-            </p>
-            <div class="flex gap-8 text-lg opacity-50">
-                <a href="mailto:sourabh232@gmail.com" class="hover:text-brand transition-all"><i class="fas fa-envelope"></i></a>
-                <a href="https://linkedin.com/in/sourabh232" target="_blank" class="hover:text-brand transition-all"><i class="fab fa-linkedin"></i></a>
-            </div>
-        </div>
-    </footer>
+<!-- PORTFOLIO -->
+<section id="portfolio" class="page">
+  <div class="content">
+    <h1 class="display-font text-5xl font-black mb-12">
+      Selected <span class="text-brand">Work</span>
+    </h1>
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="nav-card p-6 rounded-xl">
+        <h3 class="font-bold mb-2">$32M CapEx Portfolio</h3>
+        <p class="opacity-70 text-sm">Multi-site fab execution & governance</p>
+      </div>
+      <div class="nav-card p-6 rounded-xl">
+        <h3 class="font-bold mb-2">NPI Programs</h3>
+        <p class="opacity-70 text-sm">EVT → DVT → PVT delivery</p>
+      </div>
+      <div class="nav-card p-6 rounded-xl">
+        <h3 class="font-bold mb-2">Automation & Analytics</h3>
+        <p class="opacity-70 text-sm">Dashboards, forecasting, AI tooling</p>
+      </div>
+    </div>
+    <a href="#home" class="inline-block mt-10 text-brand font-bold">← Back to Home</a>
+  </div>
+</section>
 
-    <script>
-        const btn = document.getElementById('theme-toggle');
-        const icon = document.getElementById('theme-toggle-icon');
-        const root = document.documentElement;
+<!-- CONTACT -->
+<section id="contact" class="page">
+  <div class="content max-w-xl text-center">
+    <h1 class="display-font text-5xl font-black mb-6">
+      Let’s <span class="text-brand">Connect</span>
+    </h1>
+    <p class="opacity-70 mb-10">
+      Open to leadership roles, collaboration, and high-impact challenges.
+    </p>
+    <a href="mailto:sourabh232@gmail.com"
+       class="inline-block bg-brand text-white px-8 py-4 rounded-xl font-bold">
+      Email Me
+    </a>
+    <div class="flex justify-center gap-6 mt-8 text-xl opacity-60">
+      <a href="https://linkedin.com/in/sourabh232" target="_blank">
+        <i class="fab fa-linkedin"></i>
+      </a>
+    </div>
+    <a href="#home" class="block mt-10 text-brand font-bold">← Back to Home</a>
+  </div>
+</section>
 
-        const updateUI = () => {
-            if (root.classList.contains('dark')) {
-                icon.classList.replace('fa-moon', 'fa-sun');
-                localStorage.theme = 'dark';
-            } else {
-                icon.classList.replace('fa-sun', 'fa-moon');
-                localStorage.theme = 'light';
-            }
-        };
+</main>
 
-        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            root.classList.add('dark');
-        }
-        updateUI();
+<footer class="border-t py-6 text-center text-xs opacity-50">
+© 2026 Sourabh Tarodekar
+</footer>
 
-        btn.addEventListener('click', () => {
-            root.classList.toggle('dark');
-            updateUI();
-        });
-    </script>
+<script>
+const pages=document.querySelectorAll('.page');
+function showPage(id){
+  pages.forEach(p=>p.classList.remove('active'));
+  const page=document.getElementById(id)||document.getElementById('home');
+  page.classList.add('active');
+  window.scrollTo({top:0});
+}
+window.addEventListener('hashchange',()=>showPage(location.hash.substring(1)));
+showPage(location.hash.substring(1));
+
+/* Theme */
+const root=document.documentElement,btn=document.getElementById('theme-toggle'),icon=document.getElementById('theme-icon');
+if(localStorage.theme==='dark'){root.classList.add('dark');icon.classList.replace('fa-moon','fa-sun')}
+btn.onclick=()=>{
+  root.classList.toggle('dark');
+  icon.classList.toggle('fa-sun');
+  icon.classList.toggle('fa-moon');
+  localStorage.theme=root.classList.contains('dark')?'dark':'light';
+};
+</script>
+
 </body>
 </html>
