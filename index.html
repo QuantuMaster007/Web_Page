@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sourabh Tarodekar | Portfolio</title>
+    <title>Sourabh Tarodekar | Strategic Leader</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -28,7 +28,7 @@
             overflow: hidden; font-family: 'Inter', sans-serif;
             -webkit-font-smoothing: antialiased;
         }
-        .scroll-area { overflow-y: auto; max-height: calc(100vh - 220px); padding-right: 10px; }
+        .scroll-area { overflow-y: auto; max-height: calc(100vh - 280px); padding-right: 10px; }
         ::-webkit-scrollbar { width: 4px; }
         ::-webkit-scrollbar-thumb { background: #ef5a43; border-radius: 10px; }
         
@@ -56,8 +56,20 @@
         .nav-card:hover {
             transform: translateY(-3px);
             border-color: #ef5a43;
-            box-shadow: 0 10px 20px -10px rgb(239 90 67 / 0.1);
         }
+
+        .filter-btn {
+            font-size: 9px;
+            font-weight: 800;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 6px 14px;
+            border-radius: 8px;
+            border: 1px solid rgba(15, 23, 42, 0.1);
+            transition: all 0.2s;
+        }
+        .dark .filter-btn { border-color: rgba(255,255,255,0.1); }
+        .filter-btn.active { background: #ef5a43; color: white; border-color: #ef5a43; }
 
         .content-container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
     </style>
@@ -74,9 +86,15 @@
                 <span class="text-lg md:text-xl font-black tracking-[0.2em] uppercase">Sourabh Tarodekar</span>
             </div>
             
-            <button id="theme-toggle" class="w-10 h-10 flex items-center justify-center rounded-xl border border-slate-200 dark:border-slate-700 hover:border-brand transition-all">
-                <i id="theme-toggle-icon" class="fas fa-moon text-sm"></i>
-            </button>
+            <div class="flex items-center gap-3">
+                <a href="https://github.com/QuantuMaster007" target="_blank" class="hidden md:flex items-center gap-2 px-4 py-2 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-lg text-[10px] font-black uppercase tracking-widest hover:bg-brand dark:hover:bg-brand dark:hover:text-white transition-all">
+                    <i class="fab fa-github text-sm"></i> GitHub Console
+                </a>
+                
+                <button id="theme-toggle" class="w-10 h-10 flex items-center justify-center rounded-xl border border-slate-200 dark:border-slate-700 hover:border-brand transition-all">
+                    <i id="theme-toggle-icon" class="fas fa-moon text-sm"></i>
+                </button>
+            </div>
         </div>
     </nav>
 
@@ -92,7 +110,7 @@
                         <p class="text-[clamp(0.95rem,1.8vw,1.3rem)] font-light text-slate-500 dark:text-slate-400 leading-relaxed">
                             <span class="text-slate-900 dark:text-white font-bold">Technical Program Manager</span> | 
                             <span class="text-slate-900 dark:text-white font-bold">Hardware NPI</span> | 
-                            <span class="text-slate-900 dark:text-white font-bold">Manufacturing Ops</span>
+                            <span class="text-slate-900 dark:text-white font-bold">AI/ML Automation</span>
                         </p>
                     </div>
                 </div>
@@ -104,7 +122,7 @@
                             <i class="fas fa-user text-brand"></i>
                         </div>
                     </div>
-                    <div onclick="showPage('portfolio')" class="nav-card block p-6 rounded-2xl group cursor-pointer border-brand/30">
+                    <div onclick="showPage('portfolio')" class="nav-card block p-6 rounded-2xl group cursor-pointer border-brand/20">
                         <div class="flex justify-between items-center">
                             <div><p class="text-[9px] font-black uppercase tracking-[0.3em] text-brand mb-1">Technical Work</p><p class="display-font text-2xl font-bold">Portfolio</p></div>
                             <i class="fas fa-microchip text-brand"></i>
@@ -121,47 +139,21 @@
         </div>
 
         <div id="portfolio-page" class="content-container page-transition hidden-state">
-            <div class="flex justify-between items-end mb-6">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
                 <div>
                     <button onclick="showPage('home')" class="text-brand text-[10px] font-black tracking-widest uppercase mb-2 hover:underline block"><i class="fas fa-arrow-left"></i> Back</button>
                     <h2 class="display-font text-3xl font-black tracking-tighter uppercase">Technical <span class="text-brand">Deployments</span></h2>
                 </div>
-                <p class="text-[10px] font-bold opacity-40 uppercase tracking-widest hidden md:block">14 Active Repositories</p>
+                <div class="flex flex-wrap gap-2">
+                    <button class="filter-btn active" onclick="filterProjects('all')">All</button>
+                    <button class="filter-btn" onclick="filterProjects('Financials')">CapEx</button>
+                    <button class="filter-btn" onclick="filterProjects('AI / ML')">AI/ML</button>
+                    <button class="filter-btn" onclick="filterProjects('Operations')">Ops</button>
+                </div>
             </div>
             
-            <div class="scroll-area grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                
-                <script>
-                    const repos = [
-                        { name: "CapEx-Forecaster", desc: "Predictive model for factory infrastructure rollout costs.", track: "Financials", color: "blue", link: "CapEx-Forecasting" },
-                        { name: "NPI-Milestone-Tracker", desc: "Hardware lifecycle management and bottleneck identification.", track: "Operations", color: "brand", link: "NPI-Tracker" },
-                        { name: "Supply-Chain-AI", desc: "ML-driven lead time optimization for semiconductor parts.", track: "AI / ML", color: "purple", link: "SupplyChain-AI" },
-                        { name: "Manufacturing-BI-Suite", desc: "Real-time PowerBI/Tableau ETL for shop-floor efficiency.", track: "Analytics", color: "blue", link: "Mfg-BI" },
-                        { name: "Risk-Assessment-Engine", desc: "Quantitative risk modeling for global logistics networks.", track: "Analytics", color: "blue", link: "Risk-Engine" },
-                        { name: "Equipment-ROI-Tool", desc: "CapEx justification and asset performance dashboard.", track: "Financials", color: "blue", link: "ROI-Tool" },
-                        { name: "Lean-Six-Sigma-App", desc: "Digital DMAIC tracker for process improvement cycles.", track: "Operations", color: "brand", link: "Lean-App" },
-                        { name: "Inventory-Optimizer", desc: "Stochastic modeling for spare parts inventory management.", track: "AI / ML", color: "purple", link: "Inv-Opt" },
-                        { name: "WIP-Control-System", desc: "Work-in-progress visibility for wafer-fab tool assembly.", track: "Operations", color: "brand", link: "WIP-System" },
-                        { name: "Supplier-Scorecard-Auto", desc: "Automated data-scraping for vendor performance metrics.", track: "Automation", color: "green", link: "Supplier-Auto" },
-                        { name: "Demand-Signal-Processor", desc: "Time-series forecasting for high-mix low-volume demand.", track: "AI / ML", color: "purple", link: "Demand-Signal" },
-                        { name: "Automation-Script-Library", desc: "Python/SQL tools for redundant task elimination in Ops.", track: "Automation", color: "green", link: "Script-Lib" },
-                        { name: "Global-Mobility-Ops", desc: "Resource allocation logic for distributed field teams.", track: "Operations", color: "brand", link: "Mobility-Ops" },
-                        { name: "Quantum-Master-Core", desc: "Personal framework for data-driven program leadership.", track: "Core", color: "slate-500", link: "Core-Logic" }
-                    ];
-
-                    document.write(repos.map(r => `
-                        <a href="https://github.com/QuantuMaster007/${r.link}" target="_blank" class="nav-card p-5 rounded-xl group border-l-4 border-l-${r.color === 'brand' ? '[#ef5a43]' : r.color + '-500'}">
-                            <div class="flex justify-between items-start mb-2">
-                                <span class="text-[8px] font-black tracking-widest uppercase opacity-50">${r.track}</span>
-                                <i class="fab fa-github opacity-20 group-hover:opacity-100 transition-all"></i>
-                            </div>
-                            <h3 class="font-bold text-sm mb-1 group-hover:text-brand transition-colors">${r.name}</h3>
-                            <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-snug">${r.desc}</p>
-                        </a>
-                    `).join(''));
-                </script>
-
-            </div>
+            <div id="project-grid" class="scroll-area grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                </div>
         </div>
 
     </main>
@@ -177,15 +169,52 @@
     </footer>
 
     <script>
-        function showPage(pageId) {
-            const pages = ['home-page', 'portfolio-page', 'about-page'];
-            pages.forEach(p => {
-                const el = document.getElementById(p);
-                if(el) el.classList.replace('visible-state', 'hidden-state');
+        const repos = [
+            { name: "CapEx-Forecaster", desc: "Predictive model for factory infrastructure rollout costs.", track: "Financials", color: "blue", link: "CapEx-Forecasting" },
+            { name: "NPI-Milestone-Tracker", desc: "Hardware lifecycle management and bottleneck identification.", track: "Operations", color: "brand", link: "NPI-Tracker" },
+            { name: "Supply-Chain-AI", desc: "ML-driven lead time optimization for semiconductor parts.", track: "AI / ML", color: "purple", link: "SupplyChain-AI" },
+            { name: "Manufacturing-BI-Suite", desc: "Real-time PowerBI/Tableau ETL for shop-floor efficiency.", track: "Analytics", color: "blue", link: "Mfg-BI" },
+            { name: "Risk-Assessment-Engine", desc: "Quantitative risk modeling for global logistics networks.", track: "Analytics", color: "blue", link: "Risk-Engine" },
+            { name: "Equipment-ROI-Tool", desc: "CapEx justification and asset performance dashboard.", track: "Financials", color: "blue", link: "ROI-Tool" },
+            { name: "Lean-Six-Sigma-App", desc: "Digital DMAIC tracker for process improvement cycles.", track: "Operations", color: "brand", link: "Lean-App" },
+            { name: "Inventory-Optimizer", desc: "Stochastic modeling for spare parts inventory management.", track: "AI / ML", color: "purple", link: "Inv-Opt" },
+            { name: "WIP-Control-System", desc: "Work-in-progress visibility for wafer-fab tool assembly.", track: "Operations", color: "brand", link: "WIP-System" },
+            { name: "Supplier-Scorecard-Auto", desc: "Automated data-scraping for vendor performance metrics.", track: "Automation", color: "green", link: "Supplier-Auto" },
+            { name: "Demand-Signal-Processor", desc: "Time-series forecasting for high-mix low-volume demand.", track: "AI / ML", color: "purple", link: "Demand-Signal" },
+            { name: "Automation-Script-Library", desc: "Python/SQL tools for redundant task elimination in Ops.", track: "Automation", color: "green", link: "Script-Lib" },
+            { name: "Global-Mobility-Ops", desc: "Resource allocation logic for distributed field teams.", track: "Operations", color: "brand", link: "Mobility-Ops" },
+            { name: "Quantum-Master-Core", desc: "Personal framework for data-driven program leadership.", track: "Core", color: "slate-500", link: "Core-Logic" }
+        ];
+
+        function renderProjects(filter = 'all') {
+            const grid = document.getElementById('project-grid');
+            grid.innerHTML = repos
+                .filter(r => filter === 'all' || r.track === filter)
+                .map(r => `
+                    <a href="https://github.com/QuantuMaster007/${r.link}" target="_blank" class="nav-card p-5 rounded-xl group border-l-4 border-l-${r.color === 'brand' ? '[#ef5a43]' : r.color + '-500'}">
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="text-[8px] font-black tracking-widest uppercase opacity-50">${r.track}</span>
+                            <i class="fab fa-github opacity-20 group-hover:opacity-100 transition-all"></i>
+                        </div>
+                        <h3 class="font-bold text-sm mb-1 group-hover:text-brand transition-colors">${r.name}</h3>
+                        <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-snug">${r.desc}</p>
+                    </a>
+                `).join('');
+        }
+
+        function filterProjects(track) {
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.innerText.toLowerCase() === track.toLowerCase() || (track === 'all' && btn.innerText.toLowerCase() === 'all'));
             });
+            renderProjects(track);
+        }
+
+        function showPage(pageId) {
+            const pages = ['home-page', 'portfolio-page'];
+            pages.forEach(p => document.getElementById(p).classList.replace('visible-state', 'hidden-state'));
             setTimeout(() => {
-                const active = document.getElementById(pageId + '-page');
-                if(active) active.classList.replace('hidden-state', 'visible-state');
+                document.getElementById(pageId + '-page').classList.replace('hidden-state', 'visible-state');
+                if(pageId === 'portfolio') renderProjects();
             }, 300);
         }
 
@@ -197,6 +226,8 @@
             icon.classList.toggle('fa-moon');
             icon.classList.toggle('fa-sun');
         });
+
+        renderProjects();
     </script>
 </body>
 </html>
