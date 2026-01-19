@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,7 +11,10 @@
             darkMode: 'class',
             theme: {
                 extend: {
-                    colors: { brand: '#ef5a43', slate: { 950: '#020617' } }
+                    colors: { 
+                        brand: '#ef5a43', 
+                        slate: { 950: '#050a1a' }
+                    }
                 }
             }
         }
@@ -20,209 +23,192 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;700;900&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     
     <style>
-        /* RESET & OVERFLOW PREVENTION */
         html, body { 
             margin: 0; 
             padding: 0; 
             width: 100%; 
-            overflow-x: hidden; 
+            height: 100vh;
+            overflow: hidden; 
             font-family: 'Inter', sans-serif;
             -webkit-font-smoothing: antialiased;
-            scroll-behavior: smooth;
         }
+        
+        @media (max-height: 800px) {
+            body { overflow-y: auto; height: auto; }
+        }
+        
         .display-font { font-family: 'Outfit', sans-serif; }
         .monogram { clip-path: polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%); }
 
-        /* KPI Box Visualization */
-        .kpi-box {
+        /* Animation Keyframes */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-reveal {
+            animation: fadeUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+        }
+
+        /* Nav Card Hover Effects */
+        .nav-card {
             background: rgba(15, 23, 42, 0.03);
             border: 1px solid rgba(15, 23, 42, 0.1);
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .dark .kpi-box {
+        .dark .nav-card {
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.08);
         }
-        .kpi-box:hover {
+        .nav-card:hover {
             transform: translateY(-5px);
             border-color: #ef5a43;
-            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+            box-shadow: 0 15px 30px -10px rgb(239 90 67 / 0.2);
         }
 
         .content-container {
             width: 100%;
             max-width: 1280px;
             margin: 0 auto;
-            padding: 0 1.5rem;
+            padding: 0 2.5rem;
         }
+
+        /* Theme Toggle Smoothness */
+        #theme-toggle i { transition: transform 0.4s ease; }
+        .dark #theme-toggle i { transform: rotate(360deg); }
     </style>
 </head>
 
-<body class="bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100">
+<body class="bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 flex flex-col transition-colors duration-500">
 
     <nav class="fixed w-full z-50 bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800">
         <div class="content-container h-24 flex justify-between items-center">
-            <div class="flex items-center gap-4">
-                <div class="monogram bg-brand w-12 h-12 flex items-center justify-center text-white font-black text-2xl">S</div>
-                <span class="text-sm md:text-lg font-black tracking-[0.3em] uppercase hidden sm:block">Sourabh Tarodekar</span>
+            <div class="flex items-center gap-6 animate-reveal">
+                <div class="monogram bg-brand w-14 h-14 flex items-center justify-center text-white font-black text-3xl">S</div>
+                <span class="text-xl md:text-3xl font-black tracking-[0.2em] uppercase">Sourabh Tarodekar</span>
             </div>
-            <div class="flex gap-4 md:gap-8 text-[11px] md:text-[14px] font-bold tracking-widest uppercase opacity-90">
-                <a href="#about" class="hover:text-brand transition-colors">About</a>
-                <a href="#experience" class="hover:text-brand transition-colors">Resume</a>
-                <a href="#portfolio" class="hover:text-brand transition-colors">Portfolio</a>
-                <a href="#contact" class="hover:text-brand transition-colors text-brand">Contact</a>
+            
+            <div class="flex items-center gap-8 animate-reveal">
+                <span class="hidden lg:block text-[11px] font-bold tracking-[0.5em] uppercase opacity-40">Precision Through Scale</span>
+                
+                <button id="theme-toggle" class="w-12 h-12 flex items-center justify-center rounded-2xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 hover:border-brand transition-all shadow-sm">
+                    <i id="theme-toggle-icon" class="fas fa-moon text-lg"></i>
+                </button>
             </div>
         </div>
     </nav>
 
-    <section id="about" class="min-h-screen flex flex-col justify-center content-container pt-20">
-        <div class="grid lg:grid-cols-12 gap-12 items-center">
-            <div class="lg:col-span-8">
-                <h1 class="display-font text-[clamp(2.5rem,8vw,5rem)] font-black mb-8 leading-[0.9] tracking-tighter">
-                    The <span class="text-brand italic">Bridge</span> Between Complex Systems.
-                </h1>
-                <p class="text-[clamp(1rem,2.5vw,1.4rem)] font-light text-slate-500 dark:text-slate-400 leading-relaxed">
-                    <span class="text-slate-900 dark:text-white font-bold">Technical Program Manager</span> | 
-                    <span class="text-slate-900 dark:text-white font-bold">NPI Hardware Programs + Manufacturing Ops</span> | 
-                    <span class="text-slate-900 dark:text-white font-bold">Capital Expenditure</span> | 
-                    <span class="text-slate-900 dark:text-white font-bold">Supply Chain Operations</span> | 
-                    <span class="text-slate-900 dark:text-white font-bold">Data Analytics & Automation</span> | 
-                    <span class="text-slate-900 dark:text-white font-bold">AI/ML</span>
-                </p>
-            </div>
-            <div class="lg:col-span-4 hidden lg:block border-l-4 border-brand/20 pl-10 space-y-10">
-                <div>
-                    <p class="text-6xl font-black text-brand">$32M+</p>
-                    <p class="text-[10px] font-bold uppercase tracking-widest opacity-50">CapEx Portfolio managed</p>
-                </div>
-                <div>
-                    <p class="text-6xl font-black text-brand">7+ Yrs</p>
-                    <p class="text-[10px] font-bold uppercase tracking-widest opacity-50">Global Program Excellence</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="experience" class="py-24 bg-slate-50 dark:bg-slate-900/20">
-        <div class="content-container">
-            <h2 class="display-font text-xs font-black tracking-[0.6em] uppercase text-brand mb-20">Professional Tenure</h2>
-            
-            <div class="space-y-32">
-                <div class="grid lg:grid-cols-4 gap-12">
-                    <div class="lg:col-span-1">
-                        <p class="text-2xl font-black">Applied Materials</p>
-                        <p class="text-xs font-bold opacity-40 uppercase mt-1">2022 — Present</p>
-                        <p class="text-[10px] mt-4 text-brand font-bold uppercase italic">Technical Program Manager III</p>
-                    </div>
-                    <div class="lg:col-span-3">
-                        <h3 class="display-font text-3xl font-bold mb-6">NPI Execution & CapEx Governance</h3>
-                        <p class="text-lg text-slate-600 dark:text-slate-400 mb-8 italic">
-                            Managing <span class="text-slate-900 dark:text-white font-extrabold uppercase underline decoration-brand/30 underline-offset-4">CVD/PVD Wafer-Deposition Tools</span>.
+    <main class="flex-grow flex items-center pt-24">
+        <div class="content-container py-12">
+            <div class="grid lg:grid-cols-12 gap-16 items-center">
+                
+                <div class="lg:col-span-7 animate-reveal" style="animation-delay: 0.1s;">
+                    <h1 class="display-font text-[clamp(2.5rem,7.5vw,5rem)] font-black mb-10 leading-[0.95] tracking-tighter">
+                        The <span class="text-brand italic underline decoration-brand/20">Bridge</span> Between <br>Complex Systems.
+                    </h1>
+                    
+                    <div class="space-y-8 max-w-3xl">
+                        <p class="text-[clamp(1.1rem,2vw,1.5rem)] font-light text-slate-500 dark:text-slate-400 leading-relaxed">
+                            <span class="text-slate-900 dark:text-white font-bold">Technical Program Manager</span> 
+                            <span class="mx-2 text-brand/30">|</span> 
+                            <span class="text-slate-900 dark:text-white font-bold">NPI Hardware Programs + Manufacturing Ops</span> 
+                            <span class="mx-2 text-brand/30">|</span> 
+                            <span class="text-slate-900 dark:text-white font-bold">Capital Expenditure</span> 
+                            <span class="mx-2 text-brand/30">|</span> 
+                            <span class="text-slate-900 dark:text-white font-bold">Supply Chain Operations</span> 
+                            <span class="mx-2 text-brand/30">|</span> 
+                            <span class="text-slate-900 dark:text-white font-bold">Data Analytics & Automation</span> 
+                            <span class="mx-2 text-brand/30">|</span> 
+                            <span class="text-slate-900 dark:text-white font-bold">AI/ML</span>
                         </p>
-                        <div class="grid sm:grid-cols-2 gap-6">
-                            <div class="kpi-box p-8 rounded-2xl">
-                                <span class="text-[9px] font-black text-brand uppercase tracking-widest block mb-2">Portfolio ROI</span>
-                                <p class="text-sm font-medium leading-relaxed italic">Managed $32M CapEx portfolio; reduced risk inventory by $11.2M via strategic reuse logic.</p>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-5 flex flex-col gap-5 animate-reveal" style="animation-delay: 0.3s;">
+                    <a href="mailto:sourabh232@gmail.com" class="nav-card block p-8 rounded-3xl group">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <p class="text-[11px] font-black uppercase tracking-[0.3em] text-brand mb-2">Introduction</p>
+                                <p class="display-font text-4xl font-bold">About</p>
                             </div>
-                            <div class="kpi-box p-8 rounded-2xl">
-                                <span class="text-[9px] font-black text-brand uppercase tracking-widest block mb-2">Engineering Rhythms</span>
-                                <p class="text-sm font-medium leading-relaxed italic">Owned EVT/DVT/PVT phase-gates for high-complexity hardware builds.</p>
+                            <i class="fas fa-arrow-right text-brand opacity-0 group-hover:opacity-100 transition-all -translate-x-4 group-hover:translate-x-0"></i>
+                        </div>
+                    </a>
+                    
+                    <a href="https://linkedin.com/in/sourabh232" target="_blank" class="nav-card block p-8 rounded-3xl group">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <p class="text-[11px] font-black uppercase tracking-[0.3em] text-brand mb-2">Career Path</p>
+                                <p class="display-font text-4xl font-bold">Resume</p>
                             </div>
+                            <i class="fas fa-file-pdf text-brand opacity-0 group-hover:opacity-100 transition-all -translate-x-4 group-hover:translate-x-0"></i>
+                        </div>
+                    </a>
+
+                    <div class="nav-card block p-8 rounded-3xl group cursor-pointer">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <p class="text-[11px] font-black uppercase tracking-[0.3em] text-brand mb-2">Technical Work</p>
+                                <p class="display-font text-4xl font-bold">Portfolio</p>
+                            </div>
+                            <i class="fas fa-microchip text-brand opacity-0 group-hover:opacity-100 transition-all -translate-x-4 group-hover:translate-x-0"></i>
                         </div>
                     </div>
-                </div>
 
-                <div class="grid lg:grid-cols-4 gap-12">
-                    <div class="lg:col-span-1">
-                        <p class="text-2xl font-black">Ford Motor Co.</p>
-                        <p class="text-xs font-bold opacity-40 uppercase mt-1">2017 — 2020</p>
-                        <p class="text-[10px] mt-4 text-brand font-bold uppercase italic">Engineering Program Manager</p>
-                    </div>
-                    <div class="lg:col-span-3">
-                        <h3 class="display-font text-3xl font-bold mb-6">Global Mobility Platforms</h3>
-                        <div class="grid sm:grid-cols-2 gap-6">
-                            <div class="kpi-box p-8 rounded-2xl">
-                                <span class="text-[9px] font-black text-brand uppercase tracking-widest block mb-2">Cost Savings</span>
-                                <p class="text-sm font-medium leading-relaxed italic">Realized $1.4M in annual technical cost savings through design and material optimization.</p>
+                    <a href="mailto:sourabh232@gmail.com" class="nav-card block p-8 rounded-3xl group bg-brand text-white border-brand shadow-lg shadow-brand/20">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <p class="text-[11px] font-black uppercase tracking-[0.3em] text-white/70 mb-2">Collaboration</p>
+                                <p class="display-font text-4xl font-bold">Contact</p>
                             </div>
-                            <div class="kpi-box p-8 rounded-2xl">
-                                <span class="text-[9px] font-black text-brand uppercase tracking-widest block mb-2">Governance</span>
-                                <p class="text-sm font-medium leading-relaxed italic">Established component qualification scorecards driving 100% compliance with launch readiness.</p>
-                            </div>
+                            <i class="fas fa-paper-plane opacity-0 group-hover:opacity-100 transition-all -translate-x-4 group-hover:translate-x-0"></i>
                         </div>
-                    </div>
+                    </a>
                 </div>
+
             </div>
         </div>
-    </section>
+    </main>
 
-    <section class="py-24 content-container">
-        <div class="grid md:grid-cols-2 gap-20">
-            <div>
-                <h2 class="display-font text-xs font-black tracking-[0.6em] uppercase text-brand mb-10">Academic Honors</h2>
-                <div class="space-y-8">
-                    <div class="border-l-4 border-brand pl-6"><p class="text-2xl font-black italic uppercase">MBA, International Business</p></div>
-                    <div class="border-l-4 border-brand pl-6"><p class="text-2xl font-black italic uppercase">MS, Business Analytics</p></div>
-                    <div class="border-l-4 border-brand pl-6"><p class="text-2xl font-black italic uppercase">BS, Mechanical Engineering</p></div>
-                </div>
-            </div>
-            <div>
-                <h2 class="display-font text-xs font-black tracking-[0.6em] uppercase text-brand mb-10">Technical Validations</h2>
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="kpi-box p-6 text-center rounded-2xl">
-                        <i class="fas fa-certificate text-brand mb-3"></i>
-                        <p class="text-[10px] font-black uppercase tracking-widest">PMP®</p>
-                    </div>
-                    <div class="kpi-box p-6 text-center rounded-2xl">
-                        <i class="fas fa-layer-group text-brand mb-3"></i>
-                        <p class="text-[10px] font-black uppercase tracking-widest">Six Sigma</p>
-                    </div>
-                    <div class="kpi-box p-6 text-center rounded-2xl">
-                        <i class="fas fa-cubes text-brand mb-3"></i>
-                        <p class="text-[10px] font-black uppercase tracking-widest">PMC Product</p>
-                    </div>
-                    <div class="kpi-box p-6 text-center rounded-2xl">
-                        <i class="fas fa-sync-alt text-brand mb-3"></i>
-                        <p class="text-[10px] font-black uppercase tracking-widest">Agile Scrum</p>
-                    </div>
-                </div>
+    <footer class="py-10 border-t border-slate-100 dark:border-slate-900 animate-reveal" style="animation-delay: 0.5s;">
+        <div class="content-container flex flex-col md:flex-row justify-between items-center gap-6">
+            <p class="text-[11px] font-bold tracking-[0.4em] uppercase opacity-40">
+                © 2026 Sourabh Tarodekar | MSBA | MBA | PMP
+            </p>
+            <div class="flex gap-12 text-2xl opacity-60">
+                <a href="mailto:sourabh232@gmail.com" class="hover:text-brand transition-all hover:-translate-y-1"><i class="fas fa-envelope"></i></a>
+                <a href="https://linkedin.com/in/sourabh232" target="_blank" class="hover:text-brand transition-all hover:-translate-y-1"><i class="fab fa-linkedin"></i></a>
             </div>
         </div>
-    </section>
-
-    <section id="portfolio" class="py-24 bg-brand/5">
-        <div class="content-container text-center">
-            <h2 class="display-font text-xs font-black tracking-[0.6em] uppercase text-brand mb-8">Selected Portfolio</h2>
-            <p class="text-slate-500 italic">Technical case studies and hardware program highlights coming soon.</p>
-        </div>
-    </section>
-
-    <section id="contact" class="py-32 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-t-[3rem] md:rounded-t-[5rem]">
-        <div class="content-container grid lg:grid-cols-2 gap-20 items-center">
-            <div>
-                <h2 class="display-font text-5xl md:text-7xl font-black uppercase italic mb-8">Unlock <span class="text-brand">Potential.</span></h2>
-                <p class="text-xl font-light opacity-80 mb-10">Ready to lead your next multi-million dollar mandate. <span class="font-bold underline decoration-brand italic">Hire me.</span></p>
-                <div class="flex gap-10 text-3xl">
-                    <a href="mailto:sourabh232@gmail.com" class="hover:text-brand transition-transform hover:-translate-y-1"><i class="fas fa-envelope"></i></a>
-                    <a href="https://linkedin.com/in/sourabh232" target="_blank" class="hover:text-brand transition-transform hover:-translate-y-1"><i class="fab fa-linkedin"></i></a>
-                </div>
-            </div>
-            <div class="bg-white/5 dark:bg-slate-100 p-10 rounded-[3rem] border border-white/10 dark:border-slate-200">
-                <form action="https://formspree.io/f/xbddlbzj" method="POST" class="space-y-6">
-                    <input type="text" name="name" placeholder="FULL NAME" required class="w-full border-b border-current/20 py-4 outline-none focus:border-brand bg-transparent text-xs font-bold tracking-[0.2em]">
-                    <input type="email" name="email" placeholder="BUSINESS EMAIL" required class="w-full border-b border-current/20 py-4 outline-none focus:border-brand bg-transparent text-xs font-bold tracking-[0.2em]">
-                    <textarea name="message" rows="2" placeholder="HOW CAN I HELP?" required class="w-full border-b border-current/20 py-4 outline-none focus:border-brand bg-transparent text-xs font-bold tracking-[0.2em]"></textarea>
-                    <button type="submit" class="w-full py-5 bg-brand text-white font-black uppercase tracking-[0.4em] hover:bg-slate-800 transition-all rounded-xl">Submit</button>
-                </form>
-            </div>
-        </div>
-    </section>
-
-    <footer class="py-12 bg-slate-900 dark:bg-white text-center border-t border-white/5 dark:border-slate-200">
-        <p class="text-[9px] font-black tracking-[0.4em] uppercase opacity-40 px-6">
-            © 2026 Sourabh Tarodekar | MSBA | MBA | PMP | Precision Through Scale
-        </p>
     </footer>
+
+    <script>
+        const btn = document.getElementById('theme-toggle');
+        const icon = document.getElementById('theme-toggle-icon');
+        const root = document.documentElement;
+
+        const setDark = () => {
+            root.classList.add('dark');
+            icon.classList.replace('fa-moon', 'fa-sun');
+            localStorage.theme = 'dark';
+        };
+
+        const setLight = () => {
+            root.classList.remove('dark');
+            icon.classList.replace('fa-sun', 'fa-moon');
+            localStorage.theme = 'light';
+        };
+
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            setDark();
+        } else {
+            setLight();
+        }
+
+        btn.addEventListener('click', () => {
+            root.classList.contains('dark') ? setLight() : setDark();
+        });
+    </script>
 
 </body>
 </html>
