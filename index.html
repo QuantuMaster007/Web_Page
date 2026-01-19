@@ -30,7 +30,7 @@
         }
         .scroll-area { overflow-y: auto; max-height: calc(100vh - 250px); padding-right: 12px; }
         ::-webkit-scrollbar { width: 5px; }
-        ::-webkit-scrollbar-thumb { background: #brand; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: #ef5a43; border-radius: 10px; }
         
         .display-font { font-family: 'Outfit', sans-serif; }
         .monogram { clip-path: polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%); }
@@ -55,6 +55,15 @@
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
+        .nav-btn {
+            display: flex; align-items: center; justify-content: center;
+            width: 40px; height: 40px; border-radius: 10px;
+            background: rgba(15, 23, 42, 0.05); transition: all 0.3s;
+            color: inherit;
+        }
+        .dark .nav-btn { background: rgba(255, 255, 255, 0.05); }
+        .nav-btn:hover { background: #ef5a43; color: white; transform: translateY(-2px); }
+
         .input-field {
             width: 100%; background: rgba(15, 23, 42, 0.03); border: 1px solid rgba(15, 23, 42, 0.1);
             border-radius: 12px; padding: 12px 16px; font-size: 13px; transition: all 0.3s;
@@ -76,15 +85,18 @@
     <nav class="fixed w-full z-50 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
         <div class="content-container h-20 flex justify-between items-center">
             <div class="flex items-center gap-5 cursor-pointer" onclick="showPage('home')">
-                <div class="monogram bg-brand w-11 h-11 flex items-center justify-center text-white font-black text-xl">S</div>
-                <span class="text-lg md:text-xl font-black tracking-[0.2em] uppercase">Sourabh Tarodekar</span>
+                <div class="monogram bg-brand w-11 h-11 flex items-center justify-center text-white font-black text-xl hover:rotate-12 transition-transform">S</div>
+                <span class="text-lg md:text-xl font-black tracking-[0.2em] uppercase hidden sm:block">Sourabh Tarodekar</span>
             </div>
             
-            <div class="flex items-center gap-3">
-                <a href="https://github.com/QuantuMaster007" target="_blank" class="hidden sm:flex items-center gap-2 px-4 py-2 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-lg text-[10px] font-black uppercase tracking-widest hover:bg-brand dark:hover:bg-brand transition-all">
-                    <i class="fab fa-github"></i> GitHub
-                </a>
-                <button id="theme-toggle" class="w-10 h-10 flex items-center justify-center rounded-xl border border-slate-200 dark:border-slate-700 hover:border-brand">
+            <div class="flex items-center gap-2">
+                <a href="mailto:sourabh232@gmail.com" class="nav-btn" title="Email"><i class="fas fa-envelope"></i></a>
+                <a href="https://linkedin.com/in/sourabh232" target="_blank" class="nav-btn" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                <a href="https://github.com/QuantuMaster007" target="_blank" class="nav-btn" title="GitHub"><i class="fab fa-github"></i></a>
+                
+                <div class="w-px h-6 bg-slate-200 dark:bg-slate-800 mx-1"></div>
+                
+                <button id="theme-toggle" class="nav-btn hover:bg-slate-900 dark:hover:bg-white dark:hover:text-slate-900">
                     <i id="theme-toggle-icon" class="fas fa-moon"></i>
                 </button>
             </div>
@@ -93,9 +105,30 @@
 
     <main class="flex-grow flex flex-col justify-center pt-24 relative overflow-hidden">
         
-        <div id="contact-page" class="content-container page-transition visible-state">
+        <div id="home-page" class="content-container page-transition visible-state">
+            <div class="grid lg:grid-cols-12 gap-10 items-center">
+                <div class="lg:col-span-7">
+                    <h1 class="display-font text-[clamp(2.5rem,7vw,4.5rem)] font-black mb-8 leading-[0.9] tracking-tighter">
+                        Building <br><span class="text-brand italic">Infrastructure.</span>
+                    </h1>
+                    <div class="flex gap-4">
+                        <button onclick="showPage('portfolio')" class="px-8 py-4 bg-brand text-white rounded-full font-bold uppercase tracking-widest text-xs hover:scale-105 transition-transform">Portfolio</button>
+                        <button onclick="showPage('contact')" class="px-8 py-4 border border-slate-200 dark:border-slate-700 rounded-full font-bold uppercase tracking-widest text-xs hover:border-brand hover:text-brand transition-all">Contact</button>
+                    </div>
+                </div>
+                <div class="lg:col-span-5">
+                    <div class="glass-panel p-8 border-brand/20">
+                        <p class="text-[10px] font-black uppercase tracking-widest text-brand mb-2">Location Status</p>
+                        <h2 class="display-font text-3xl font-bold">Sunnyvale, CA</h2>
+                        <p class="text-sm opacity-50 mt-2 leading-relaxed text-slate-500 dark:text-slate-400">Strategic TPM specialized in Hardware NPI and Manufacturing Intelligence.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="contact-page" class="content-container page-transition hidden-state">
             <div class="mb-8">
-                <button onclick="window.location.href='index.html'" class="text-brand text-[10px] font-black uppercase tracking-widest mb-3 flex items-center gap-2"><i class="fas fa-arrow-left"></i> Dashboard</button>
+                <button onclick="showPage('home')" class="text-brand text-[10px] font-black uppercase tracking-widest mb-3 flex items-center gap-2"><i class="fas fa-arrow-left"></i> Dashboard</button>
                 <h2 class="display-font text-4xl font-black tracking-tighter uppercase">Direct <span class="text-brand">Outreach</span></h2>
             </div>
 
@@ -118,37 +151,24 @@
                         </div>
                         <div>
                             <label class="text-[9px] font-black uppercase tracking-widest opacity-40 mb-1 block">Message</label>
-                            <textarea name="message" rows="4" class="input-field" placeholder="Project details..." required></textarea>
+                            <textarea name="message" rows="5" class="input-field" placeholder="How can we build together?" required></textarea>
                         </div>
-                        
                         <input type="text" name="_gotcha" style="display:none">
-                        
                         <button type="submit" class="w-full py-4 bg-brand text-white rounded-xl font-black uppercase tracking-[0.2em] text-[10px] hover:shadow-lg hover:shadow-brand/20 transition-all">
                             Dispatch Message <i class="fas fa-paper-plane ml-2"></i>
                         </button>
                     </form>
-                    
-                    <div class="mt-8 pt-8 border-t border-slate-100 dark:border-white/5 flex flex-wrap gap-6">
-                        <a href="mailto:sourabh232@gmail.com" class="flex items-center gap-3 group">
-                            <div class="w-10 h-10 rounded-lg bg-slate-50 dark:bg-white/5 flex items-center justify-center group-hover:bg-brand group-hover:text-white transition-all"><i class="fas fa-envelope text-sm"></i></div>
-                            <div><p class="text-[8px] opacity-40 font-bold uppercase">Email</p><p class="text-xs font-bold">sourabh232@gmail.com</p></div>
-                        </a>
-                        <a href="https://linkedin.com/in/sourabh232" target="_blank" class="flex items-center gap-3 group">
-                            <div class="w-10 h-10 rounded-lg bg-slate-50 dark:bg-white/5 flex items-center justify-center group-hover:bg-brand group-hover:text-white transition-all"><i class="fab fa-linkedin-in text-sm"></i></div>
-                            <div><p class="text-[8px] opacity-40 font-bold uppercase">LinkedIn</p><p class="text-xs font-bold">/in/sourabh232</p></div>
-                        </a>
-                    </div>
                 </div>
 
                 <div class="flex flex-col gap-6">
-                    <div class="glass-panel p-2 h-80 relative overflow-hidden">
+                    <div class="glass-panel p-2 h-80 relative overflow-hidden shadow-2xl">
                         <iframe 
                             class="map-frame w-full h-full rounded-[18px]" 
-                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d101416.5361361208!2d-122.094593!3d37.3853173!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x808fb4571f282a37%3A0x63345862e3d5500c!2sSunnyvale%2C%20CA!5e0!3m2!1sen!2sus!4v1700000000000!5m2!1sen!2sus" 
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d101484.34117865769!2d-122.09459582231264!3d37.35084533088927!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x808fb4571f2079c7%3A0xc98dca78ca951195!2sSunnyvale%2C%20CA!5e0!3m2!1sen!2sus!4v1700000000000!5m2!1sen!2sus" 
                             allowfullscreen="" loading="lazy">
                         </iframe>
-                        <div class="absolute bottom-6 left-6 bg-white/90 dark:bg-slate-900/90 backdrop-blur p-4 rounded-xl shadow-2xl border border-brand/20">
-                            <p class="text-[8px] font-black uppercase text-brand tracking-widest">Location</p>
+                        <div class="absolute bottom-6 left-6 bg-white/90 dark:bg-slate-900/90 backdrop-blur p-4 rounded-xl shadow-xl border border-brand/20">
+                            <p class="text-[8px] font-black uppercase text-brand tracking-widest">Base of Operations</p>
                             <h4 class="font-bold text-sm">Sunnyvale, CA, USA</h4>
                         </div>
                     </div>
@@ -159,18 +179,26 @@
                             <p id="local-time" class="display-font text-xl font-bold tracking-tighter">--:-- PST</p>
                         </div>
                         <div class="glass-panel p-5">
-                            <p class="text-[8px] font-black opacity-40 uppercase mb-1">Response Time</p>
-                            <p class="display-font text-xl font-bold text-green-500 tracking-tighter">< 24 Hours</p>
+                            <p class="text-[8px] font-black opacity-40 uppercase mb-1">Status</p>
+                            <p class="display-font text-xl font-bold text-green-500 tracking-tighter"><span class="status-dot"></span> Online</p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        <div id="portfolio-page" class="content-container page-transition hidden-state">
+             <div class="mb-8">
+                <button onclick="showPage('home')" class="text-brand text-[10px] font-black uppercase tracking-widest mb-3 flex items-center gap-2"><i class="fas fa-arrow-left"></i> Dashboard</button>
+                <h2 class="display-font text-4xl font-black tracking-tighter uppercase">Technical <span class="text-brand">Deployments</span></h2>
+            </div>
+            <p class="opacity-50">Portfolio grid logic integrated here.</p>
+        </div>
     </main>
 
-    <footer class="py-6 border-t border-slate-100 dark:border-slate-900 bg-white/50 dark:bg-slate-950/50 backdrop-blur-sm">
+    <footer class="py-6 border-t border-slate-100 dark:border-slate-900 bg-white/50 dark:bg-slate-950/50 backdrop-blur-sm z-10">
         <div class="content-container flex justify-between items-center text-[9px] font-bold tracking-[0.4em] uppercase opacity-40">
-            <p>© 2026 Sourabh Tarodekar</p>
+            <p>© 2026 Sourabh Tarodekar | MSBA | MBA | PMP</p>
         </div>
     </footer>
 
@@ -183,8 +211,20 @@
         setInterval(updateTime, 1000);
         updateTime();
 
-        const btn = document.getElementById('theme-toggle');
-        btn.addEventListener('click', () => {
+        function showPage(pageId) {
+            const pages = ['home-page', 'portfolio-page', 'contact-page'];
+            pages.forEach(p => {
+                const el = document.getElementById(p);
+                if(el) el.classList.replace('visible-state', 'hidden-state');
+            });
+            setTimeout(() => {
+                const active = document.getElementById(pageId + '-page');
+                if(active) active.classList.replace('hidden-state', 'visible-state');
+            }, 300);
+        }
+
+        const themeBtn = document.getElementById('theme-toggle');
+        themeBtn.addEventListener('click', () => {
             document.documentElement.classList.toggle('dark');
             const icon = document.getElementById('theme-toggle-icon');
             icon.classList.toggle('fa-moon');
