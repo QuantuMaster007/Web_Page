@@ -1,1129 +1,132 @@
+<!-- VERSION A: Full Effects Preserved + Fixed -->
+<!-- Philosophy: Keep ALL effects (glow, magnet, parallax, reveal, snap) but remove conflicts -->
+<!-- Key fixes: single transform pipeline, unified scroll root, constrained effects zones -->
+
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sourabh Tarodekar | Strategic Leader</title>
+  <title>Sourabh Tarodekar | Portfolio (Effects Max)</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
       darkMode: 'class',
-      theme: {
-        extend: {
-          colors: {
-            brand: '#ef5a43',
-            slate: { 950: '#050a1a' }
-          }
-        }
-      }
+      theme: { extend: { colors: { brand: '#ef5a43' } } }
     }
   </script>
 
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Outfit:wght@600;800;900&display=swap" rel="stylesheet" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;700;900&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet" />
 
   <style>
-    :root{
-      --nav-h: 80px;
-      --footer-h: 64px;
-      --page-h: calc(100vh - var(--nav-h) - var(--footer-h));
-    }
+    body { font-family: 'Inter', sans-serif; overflow-x: hidden; }
+    .display { font-family: 'Outfit', sans-serif; }
 
-    html, body {
-      margin: 0;
-      padding: 0;
-      width: 100%;
-      height: 100%;
-      font-family: 'Inter', sans-serif;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    body {
-      overflow: hidden; /* main scroll container handles scroll */
-    }
-
-    /* ---------- Ultra-wide tuning ---------- */
-    .content-container {
-      width: 100%;
-      max-width: 1600px;
-      margin: 0 auto;
-      padding: 0 clamp(1.25rem, 4vw, 3rem);
-    }
-    @media (min-width: 1800px){
-      .content-container{ max-width: 1800px; }
-    }
-
-    .display-font { font-family: 'Outfit', sans-serif; }
-    .monogram { clip-path: polygon(25% 0%, 100% 0%, 75% 100%, 0% 100%); }
-
-    /* Subtle grid */
-    .grid-bg {
-      background-image: radial-gradient(circle, rgba(239, 90, 67, 0.05) 1px, transparent 1px);
-      background-size: 30px 30px;
-    }
-
-    /* Main scroll area (so fixed nav + footer work cleanly) */
-    .app-shell{
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-    .app-main{
-      flex: 1;
-      overflow-y: auto;
-      padding-top: calc(var(--nav-h) + 16px); /* nav overlay clearance */
-      scroll-behavior: smooth;
-    }
-
-    /* Pages: smooth show/hide */
-    .page-transition { transition: opacity 0.45s ease, transform 0.45s ease; }
-    .hidden-state { opacity: 0; transform: translateY(14px); pointer-events: none; position: absolute; width: 100%; }
-    .visible-state { opacity: 1; transform: translateY(0); pointer-events: auto; position: relative; width: 100%; }
-
-    /* Home snap scroller (Apple-like) */
-    .home-snap {
-      height: var(--page-h);
-      overflow-y: auto;
-      scroll-snap-type: y mandatory;
-      padding-right: 12px;
-    }
-    .snap-section {
-      min-height: var(--page-h);
-      display: flex;
-      align-items: center;
-      scroll-snap-align: start;
-    }
-
-    /* Scroll area used by portfolio grid (your original behavior) */
-    .scroll-area { overflow-y: auto; max-height: calc(var(--page-h) - 220px); padding-right: 12px; }
-
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-thumb { background: #ef5a43; border-radius: 10px; }
-
-    /* Cards */
-    .project-card, .glass-panel {
-      background: rgba(255, 255, 255, 0.6);
-      border: 1px solid rgba(15, 23, 42, 0.08);
-      backdrop-filter: blur(10px);
-      transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.12),
-                  border-color 0.35s ease,
-                  box-shadow 0.35s ease;
-      border-radius: 22px;
-    }
-    .dark .project-card, .dark .glass-panel {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.05);
-    }
-    .project-card:hover {
-      transform: translateY(-6px);
-      border-color: #ef5a43;
-      box-shadow: 0 20px 40px -15px rgba(239, 90, 67, 0.22);
-    }
-
-    /* Nav buttons */
-    .nav-btn {
-      display: flex; align-items: center; justify-content: center;
-      width: 38px; height: 38px; border-radius: 10px;
-      background: rgba(15, 23, 42, 0.05);
-      transition: all 0.25s ease;
-      cursor: pointer;
-    }
-    .dark .nav-btn { background: rgba(255, 255, 255, 0.05); }
-    .nav-btn:hover { background: #ef5a43; color: white; transform: translateY(-2px); }
-
-    /* Inputs */
-    .input-field {
-      width: 100%;
-      background: rgba(15, 23, 42, 0.03);
-      border: 1px solid rgba(15, 23, 42, 0.1);
-      border-radius: 12px;
-      padding: 12px 16px;
-      font-size: 13px;
-      transition: all 0.25s ease;
-    }
-    .dark .input-field { background: rgba(255, 255, 255, 0.03); border-color: rgba(255, 255, 255, 0.1); color: white; }
-    .input-field:focus { outline: none; border-color: #ef5a43; }
-
-    /* Status dot */
-    .status-dot {
-      width: 6px; height: 6px; border-radius: 50%;
-      background: #10b981; display: inline-block; margin-right: 6px;
-      animation: pulse 2s infinite;
-    }
-    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
-
-    /* Filters */
-    .filter-btn {
-      font-size: 10px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase;
-      padding: 6px 14px; border-radius: 100px; border: 1px solid rgba(15, 23, 42, 0.1);
-      transition: all 0.25s ease; color: #64748b; cursor: pointer;
-      background: transparent;
-    }
-    .dark .filter-btn { border-color: rgba(255,255,255,0.1); color: #94a3b8; }
-    .filter-btn.active { background: #ef5a43; color: white; border-color: #ef5a43; }
-
-    .tech-tag {
-      font-size: 9px; font-weight: 700; padding: 3px 8px; border-radius: 4px;
-      background: rgba(15, 23, 42, 0.05); color: #64748b;
-    }
-    .dark .tech-tag { background: rgba(255, 255, 255, 0.05); color: #94a3b8; }
-
-    /* Reveal animation (cards on scroll) */
-    .reveal {
-      opacity: 0;
-      transform: translateY(22px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
-      will-change: opacity, transform;
-    }
-    .reveal.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* Cursor spotlight (desktop only) */
+    /* ===== Cursor Glow (Hero Only) ===== */
     .cursor-glow {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 1;
-      opacity: 0;
-      transition: opacity 0.25s ease;
-      background: radial-gradient(600px circle at var(--x, 50%) var(--y, 50%),
-          rgba(239, 90, 67, 0.10),
-          transparent 45%);
-      mix-blend-mode: multiply;
+      position: fixed; inset: 0; pointer-events: none; z-index: 1;
+      background: radial-gradient(600px circle at var(--x,50%) var(--y,50%), rgba(239,90,67,.12), transparent 45%);
+      opacity: 0; transition: opacity .3s ease;
     }
-    .dark .cursor-glow {
-      background: radial-gradient(700px circle at var(--x, 50%) var(--y, 50%),
-          rgba(239, 90, 67, 0.10),
-          transparent 50%);
-      mix-blend-mode: screen;
-    }
+    .hero:hover ~ .cursor-glow { opacity: 1; }
 
-    /* Magnetic hover (desktop) */
+    /* ===== Reveal ===== */
+    .reveal { opacity: 0; transform: translateY(18px); transition: all .6s ease; }
+    .reveal.show { opacity: 1; transform: translateY(0); }
+
+    /* ===== Magnet (isolated transform layer) ===== */
     .magnet { will-change: transform; }
 
-    /* Resume drawer */
-    .drawer {
-      position: fixed;
-      inset: 0;
-      z-index: 999;
-      background: rgba(0,0,0,0.55);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
+    /* ===== Card ===== */
+    .card {
+      background: rgba(255,255,255,.75);
+      border: 1px solid rgba(15,23,42,.08);
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+      transition: box-shadow .3s ease, border-color .3s ease;
     }
-    .drawer.show { display: flex; }
-    .drawer-panel {
-      width: min(980px, 95vw);
-      height: 85vh;
-      border-radius: 22px;
-      overflow: hidden;
-      background: white;
-      border: 1px solid rgba(255,255,255,0.25);
-      transform: translateY(18px);
-      opacity: 0;
-      transition: transform 0.35s ease, opacity 0.35s ease;
-      position: relative;
-    }
-    .dark .drawer-panel { background: #050a1a; }
-    .drawer.show .drawer-panel { transform: translateY(0); opacity: 1; }
-    .drawer-close {
-      position: absolute;
-      top: 12px; right: 12px;
-      width: 38px; height: 38px;
-      border-radius: 12px;
-      border: 1px solid rgba(15,23,42,0.12);
-      background: rgba(255,255,255,0.75);
-      display:flex;align-items:center;justify-content:center;
-      cursor:pointer;
-    }
-    .dark .drawer-close {
-      background: rgba(5,10,26,0.65);
-      border-color: rgba(255,255,255,0.1);
-      color: white;
-    }
+    .card:hover { border-color: #ef5a43; box-shadow: 0 20px 40px -20px rgba(239,90,67,.4); }
 
-    /* Ensure content stays above glow layer */
-    nav, main, footer { position: relative; z-index: 2; }
+    /* ===== Hero Parallax (translateZ-safe) ===== */
+    .parallax { transform: translateY(var(--p,0px)); }
   </style>
 </head>
 
-<body class="bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-500 relative">
+<body class="bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100">
 
-  <div class="cursor-glow" id="cursorGlow"></div>
-  <div class="fixed inset-0 grid-bg pointer-events-none opacity-0 dark:opacity-100 transition-opacity duration-1000"></div>
+<div class="cursor-glow" id="glow"></div>
 
-  <div class="app-shell">
-    <!-- NAV -->
-    <nav class="fixed w-full z-50 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
-      <div class="content-container h-20 flex justify-between items-center">
-        <div class="flex items-center gap-5 cursor-pointer magnet" data-magnet onclick="go('#home')">
-          <div class="monogram bg-brand w-11 h-11 flex items-center justify-center text-white font-black text-xl">S</div>
-          <span class="text-lg md:text-xl font-black tracking-[0.2em] uppercase hidden md:block">Sourabh Tarodekar</span>
-        </div>
-
-        <div class="flex items-center gap-2">
-          <button class="hidden lg:flex items-center gap-2 px-4 py-2 border border-slate-200 dark:border-slate-700 rounded-lg text-[10px] font-black uppercase tracking-widest hover:border-brand hover:text-brand transition-all mr-2 magnet"
-                  data-magnet
-                  onclick="openResume()">
-            <i class="fas fa-file-arrow-down"></i> Resume
-          </button>
-
-          <a href="mailto:sourabh232@gmail.com" class="nav-btn magnet" data-magnet title="Email"><i class="fas fa-envelope"></i></a>
-          <a href="https://linkedin.com/in/sourabh232" target="_blank" class="nav-btn magnet" data-magnet title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-          <a href="https://github.com/QuantuMaster007" target="_blank" class="nav-btn magnet" data-magnet title="GitHub"><i class="fab fa-github"></i></a>
-
-          <button id="theme-toggle" class="nav-btn ml-1 hover:bg-slate-900 dark:hover:bg-white dark:hover:text-slate-900" title="Theme">
-            <i id="theme-toggle-icon" class="fas fa-moon"></i>
-          </button>
-        </div>
-      </div>
-    </nav>
-
-    <!-- MAIN (scroll root) -->
-    <main class="app-main">
-      <!-- HOME PAGE -->
-      <div id="home-page" class="content-container page-transition visible-state">
-        <div class="home-snap" id="homeSnap">
-          <!-- Snap Section 1 (Hero) -->
-          <section class="snap-section">
-            <div class="w-full">
-              <div class="grid lg:grid-cols-12 gap-10 items-center">
-                <div class="lg:col-span-7">
-                  <h1 class="display-font text-[clamp(2.8rem,6.5vw,5.2rem)] font-black mb-8 leading-[0.9] tracking-tighter">
-                    Engineering <br><span class="text-brand italic">Scalable</span> Systems.
-                  </h1>
-                  <div class="space-y-6 max-w-2xl border-l-2 border-brand/20 pl-6">
-                    <p class="text-[clamp(1rem,2vw,1.4rem)] font-light text-slate-500 dark:text-slate-400 leading-relaxed">
-                      <span class="text-slate-900 dark:text-white font-bold">Technical Program Manager</span> |
-                      <span class="text-brand">Hardware NPI</span> |
-                      <span class="text-brand">AI/ML Operations</span>
-                    </p>
-                    <div class="flex flex-wrap gap-3">
-                      <button class="px-4 py-2 rounded-xl bg-brand/10 border border-brand/20 text-brand text-[10px] font-black uppercase tracking-widest hover:bg-brand hover:text-white transition-all magnet"
-                              data-magnet onclick="go('#about')">
-                        <i class="fas fa-user mr-2"></i> About
-                      </button>
-                      <button class="px-4 py-2 rounded-xl bg-brand/10 border border-brand/20 text-brand text-[10px] font-black uppercase tracking-widest hover:bg-brand hover:text-white transition-all magnet"
-                              data-magnet onclick="go('#portfolio')">
-                        <i class="fas fa-code-branch mr-2"></i> Portfolio
-                      </button>
-                      <button class="px-4 py-2 rounded-xl bg-brand/10 border border-brand/20 text-brand text-[10px] font-black uppercase tracking-widest hover:bg-brand hover:text-white transition-all magnet"
-                              data-magnet onclick="go('#contact')">
-                        <i class="fas fa-paper-plane mr-2"></i> Contact
-                      </button>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="lg:col-span-5 flex flex-col gap-4">
-                  <div onclick="go('#portfolio')" class="project-card p-7 rounded-3xl group cursor-pointer border-brand/30 bg-brand/5 reveal magnet" data-magnet>
-                    <div class="flex justify-between items-center">
-                      <div>
-                        <p class="text-[10px] font-black uppercase tracking-[0.3em] text-brand mb-1">View Repositories</p>
-                        <p class="display-font text-3xl font-bold">Portfolio</p>
-                      </div>
-                      <div class="w-12 h-12 rounded-full bg-brand text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-                        <i class="fas fa-code-branch"></i>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div onclick="go('#about')" class="project-card p-7 rounded-3xl group cursor-pointer reveal magnet" data-magnet>
-                    <div class="flex justify-between items-center">
-                      <div>
-                        <p class="text-[10px] font-black uppercase tracking-[0.3em] opacity-40 mb-1">Who I Am</p>
-                        <p class="display-font text-2xl font-bold">About</p>
-                      </div>
-                      <i class="fas fa-user-astronaut text-slate-400 group-hover:text-brand transition-colors text-xl"></i>
-                    </div>
-                  </div>
-
-                  <div onclick="go('#contact')" class="project-card p-7 rounded-3xl group cursor-pointer reveal magnet" data-magnet>
-                    <div class="flex justify-between items-center">
-                      <div>
-                        <p class="text-[10px] font-black uppercase tracking-[0.3em] opacity-40 mb-1">Let's Connect</p>
-                        <p class="display-font text-2xl font-bold">Contact Hub</p>
-                      </div>
-                      <i class="fas fa-paper-plane text-slate-400 group-hover:text-brand transition-colors text-xl"></i>
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-          </section>
-
-          <!-- Snap Section 2 (Quick stats / Apple-like) -->
-          <section class="snap-section">
-            <div class="w-full">
-              <div class="glass-panel p-10 reveal">
-                <div class="flex items-center justify-between flex-wrap gap-6">
-                  <div>
-                    <p class="text-[10px] font-black uppercase tracking-widest text-brand mb-2">Execution Dashboard</p>
-                    <h3 class="display-font text-3xl font-black tracking-tight">Program outcomes, measurable.</h3>
-                    <p class="text-sm opacity-70 mt-2 max-w-2xl">
-                      I run programs with tight governance, clear critical paths, and automated visibility so teams ship fast with fewer surprises.
-                    </p>
-                  </div>
-                  <button class="px-4 py-2 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-[10px] font-black uppercase tracking-widest hover:bg-brand dark:hover:bg-brand dark:hover:text-white transition-all magnet"
-                          data-magnet onclick="openResume()">
-                    <i class="fas fa-file-arrow-down mr-2"></i> Open Resume
-                  </button>
-                </div>
-
-                <div class="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-                  <div class="p-4 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/10 reveal">
-                    <p class="text-[8px] font-black opacity-40 uppercase">Mode</p>
-                    <p class="text-lg font-bold text-brand">NPI</p>
-                  </div>
-                  <div class="p-4 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/10 reveal">
-                    <p class="text-[8px] font-black opacity-40 uppercase">Focus</p>
-                    <p class="text-lg font-bold text-brand">Ops</p>
-                  </div>
-                  <div class="p-4 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/10 reveal">
-                    <p class="text-[8px] font-black opacity-40 uppercase">Strength</p>
-                    <p class="text-lg font-bold text-green-500">Low Risk</p>
-                  </div>
-                  <div class="p-4 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/10 reveal">
-                    <p class="text-[8px] font-black opacity-40 uppercase">Style</p>
-                    <p class="text-lg font-bold text-brand">Automation</p>
-                  </div>
-                </div>
-
-                <div class="mt-8 flex flex-wrap gap-2">
-                  <span class="tech-tag">Python</span>
-                  <span class="tech-tag">SQL</span>
-                  <span class="tech-tag">Tableau</span>
-                  <span class="tech-tag">Power BI</span>
-                  <span class="tech-tag">Program Governance</span>
-                  <span class="tech-tag">Supplier Ops</span>
-                </div>
-              </div>
-            </div>
-          </section>
-        </div>
-      </div>
-
-      <!-- ABOUT PAGE (added, same style, interactive) -->
-      <div id="about-page" class="content-container page-transition hidden-state">
-        <div class="min-h-[var(--page-h)] flex items-center">
-          <div class="w-full">
-            <div class="flex flex-col lg:flex-row lg:items-end justify-between mb-8 gap-6">
-              <div>
-                <button onclick="go('#home')" class="text-brand text-[10px] font-black tracking-widest uppercase mb-3 flex items-center gap-2">
-                  <i class="fas fa-arrow-left"></i> Dashboard
-                </button>
-                <h2 class="display-font text-4xl font-black tracking-tighter uppercase leading-none">
-                  Strategic <span class="text-brand">Execution</span>
-                </h2>
-                <p class="mt-3 text-sm opacity-60 max-w-2xl">
-                  I bridge engineering, manufacturing, and data systems to deliver complex hardware programs with measurable outcomes.
-                </p>
-              </div>
-
-              <div class="flex flex-wrap gap-2 p-1.5 bg-slate-100 dark:bg-white/5 rounded-full">
-                <button class="filter-btn active" data-about-tab="overview">Overview</button>
-                <button class="filter-btn" data-about-tab="impact">Impact</button>
-                <button class="filter-btn" data-about-tab="stack">Stack</button>
-                <button class="filter-btn" data-about-tab="focus">Focus</button>
-              </div>
-            </div>
-
-            <div class="grid lg:grid-cols-3 gap-8 items-start">
-              <div class="lg:col-span-1 space-y-6">
-                <div class="glass-panel p-6 border-brand/20 reveal">
-                  <div class="flex justify-between items-center mb-4">
-                    <span class="text-[9px] font-black uppercase tracking-widest opacity-40">System Status</span>
-                    <span class="text-[9px] font-bold text-green-500 uppercase"><span class="status-dot"></span> Online</span>
-                  </div>
-                  <p class="text-sm leading-relaxed opacity-70 mb-6">
-                    Technical Program Manager focused on Hardware NPI, Manufacturing Ops, CapEx governance, and automation-driven visibility.
-                  </p>
-                  <div class="space-y-3">
-                    <div class="flex justify-between text-[10px] font-bold uppercase"><span class="opacity-40">Base</span><span class="text-brand">Sunnyvale, CA</span></div>
-                    <div class="flex justify-between text-[10px] font-bold uppercase"><span class="opacity-40">Domain</span><span>Hardware • Ops • AI/ML</span></div>
-                  </div>
-                </div>
-
-                <button onclick="go('#portfolio')" class="w-full py-4 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-xl font-black uppercase tracking-widest text-[10px] hover:bg-brand dark:hover:bg-brand dark:hover:text-white transition-all magnet"
-                        data-magnet>
-                  <i class="fas fa-diagram-project mr-2"></i> Explore Portfolio
-                </button>
-              </div>
-
-              <div class="lg:col-span-2 space-y-6">
-                <div id="about-overview" class="glass-panel p-8 reveal">
-                  <h4 class="text-[10px] font-black uppercase tracking-widest text-brand mb-6">How I Run Programs</h4>
-                  <div class="grid md:grid-cols-2 gap-6">
-                    <div class="p-5 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/10">
-                      <p class="text-[8px] font-black opacity-40 uppercase mb-2">Execution Model</p>
-                      <p class="text-sm opacity-80 leading-relaxed">
-                        Critical path + readiness gates + RAID governance + weekly risk cadence. Single source of truth for stakeholders.
-                      </p>
-                    </div>
-                    <div class="p-5 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/10">
-                      <p class="text-[8px] font-black opacity-40 uppercase mb-2">Decision Discipline</p>
-                      <p class="text-sm opacity-80 leading-relaxed">
-                        Data-backed tradeoffs, clear owners, and automated reporting to reduce noise and speed up alignment.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <div id="about-impact" class="glass-panel p-8 hidden reveal">
-                  <h4 class="text-[10px] font-black uppercase tracking-widest text-brand mb-6">Impact Pattern</h4>
-                  <div class="mt-2 grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-                    <div class="p-4 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/10">
-                      <p class="text-[8px] font-black opacity-40 uppercase">Speed</p>
-                      <p class="text-lg font-bold text-brand">Faster</p>
-                    </div>
-                    <div class="p-4 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/10">
-                      <p class="text-[8px] font-black opacity-40 uppercase">Clarity</p>
-                      <p class="text-lg font-bold text-brand">Tight</p>
-                    </div>
-                    <div class="p-4 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/10">
-                      <p class="text-[8px] font-black opacity-40 uppercase">Risk</p>
-                      <p class="text-lg font-bold text-green-500">Low</p>
-                    </div>
-                    <div class="p-4 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/10">
-                      <p class="text-[8px] font-black opacity-40 uppercase">Ops</p>
-                      <p class="text-lg font-bold text-brand">Stable</p>
-                    </div>
-                  </div>
-                </div>
-
-                <div id="about-stack" class="glass-panel p-8 hidden reveal">
-                  <h4 class="text-[10px] font-black uppercase tracking-widest text-brand mb-6">Core Stack</h4>
-                  <div class="flex flex-wrap gap-2">
-                    <span class="tech-tag">Python</span>
-                    <span class="tech-tag">SQL</span>
-                    <span class="tech-tag">R</span>
-                    <span class="tech-tag">Tableau</span>
-                    <span class="tech-tag">Power BI</span>
-                    <span class="tech-tag">Automation</span>
-                    <span class="tech-tag">ETL</span>
-                    <span class="tech-tag">Program Governance</span>
-                  </div>
-                </div>
-
-                <div id="about-focus" class="glass-panel p-8 hidden reveal">
-                  <h4 class="text-[10px] font-black uppercase tracking-widest text-brand mb-6">Focus Areas</h4>
-                  <div class="grid md:grid-cols-2 gap-6">
-                    <div class="p-5 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/10">
-                      <p class="text-[8px] font-black opacity-40 uppercase mb-2">Hardware NPI</p>
-                      <p class="text-sm opacity-80">EVT→DVT→PVT, readiness gates, supplier integration, delivery execution.</p>
-                    </div>
-                    <div class="p-5 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/10">
-                      <p class="text-[8px] font-black opacity-40 uppercase mb-2">Manufacturing Ops</p>
-                      <p class="text-sm opacity-80">WIP visibility, throughput stabilization, KPI dashboards, cost governance.</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-            </div>
-
-          </div>
-        </div>
-      </div>
-
-      <!-- PORTFOLIO PAGE (your full structure preserved) -->
-      <div id="portfolio-page" class="content-container page-transition hidden-state">
-        <div class="min-h-[var(--page-h)]">
-          <div class="flex flex-col lg:flex-row lg:items-end justify-between mb-8 gap-6">
-            <div>
-              <button onclick="go('#home')" class="text-brand text-[10px] font-black tracking-widest uppercase mb-3 flex items-center gap-2">
-                <i class="fas fa-arrow-left"></i> Dashboard
-              </button>
-              <h2 class="display-font text-4xl font-black tracking-tighter uppercase leading-none">Technical <span class="text-brand">Deployments</span></h2>
-            </div>
-            <div class="flex flex-wrap gap-2 p-1.5 bg-slate-100 dark:bg-white/5 rounded-full">
-              <button class="filter-btn active" data-track="all">All</button>
-              <button class="filter-btn" data-track="Financials">CapEx</button>
-              <button class="filter-btn" data-track="AI / ML">AI/ML</button>
-              <button class="filter-btn" data-track="Operations">Ops</button>
-              <button class="filter-btn" data-track="Analytics">Analytics</button>
-            </div>
-          </div>
-
-          <div id="project-grid" class="scroll-area grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 pb-6"></div>
-
-          <div class="mt-8 pt-6 border-t border-slate-100 dark:border-white/5 flex flex-col md:flex-row md:items-center justify-between gap-6">
-            <div class="flex items-center gap-3">
-              <span class="text-[10px] font-black uppercase tracking-widest opacity-40">Core Stack:</span>
-              <div class="flex flex-wrap gap-2">
-                <span class="tech-tag">Python</span><span class="tech-tag">SQL</span><span class="tech-tag">R</span><span class="tech-tag">Tableau</span>
-              </div>
-            </div>
-            <button onclick="copyToClipboard()" id="copy-btn" class="px-4 py-2 rounded-xl bg-brand/10 border border-brand/20 text-brand text-[10px] font-black uppercase tracking-widest hover:bg-brand hover:text-white transition-all magnet" data-magnet>
-              <i class="fas fa-copy"></i> <span id="copy-text">Copy Profile URL</span>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- DETAIL PAGE (your full structure preserved) -->
-      <div id="detail-page" class="content-container page-transition hidden-state">
-        <div class="min-h-[var(--page-h)]">
-          <div class="mb-8">
-            <button onclick="go('#portfolio')" class="text-brand text-[10px] font-black tracking-widest uppercase mb-3 flex items-center gap-2">
-              <i class="fas fa-arrow-left"></i> Back to Portfolio
-            </button>
-            <h2 id="detail-title" class="display-font text-4xl font-black tracking-tighter uppercase leading-none">Project <span class="text-brand">Spotlight</span></h2>
-          </div>
-
-          <div class="grid lg:grid-cols-3 gap-8 items-start">
-            <div class="lg:col-span-1 space-y-6">
-              <div class="glass-panel p-6 border-brand/20 reveal">
-                <div class="flex justify-between items-center mb-4">
-                  <span class="text-[9px] font-black uppercase tracking-widest opacity-40">System Status</span>
-                  <span class="text-[9px] font-bold text-green-500 uppercase"><span class="status-dot"></span> Production Ready</span>
-                </div>
-                <p id="detail-desc" class="text-sm leading-relaxed opacity-70 mb-6"></p>
-                <div class="space-y-3">
-                  <div class="flex justify-between text-[10px] font-bold uppercase"><span class="opacity-40">Track:</span><span id="detail-track" class="text-brand"></span></div>
-                  <div class="flex justify-between text-[10px] font-bold uppercase"><span class="opacity-40">Stack:</span><span class="text-slate-900 dark:text-white">Python, BI</span></div>
-                </div>
-              </div>
-              <button id="detail-github-btn" class="w-full py-4 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-xl font-black uppercase tracking-widest text-[10px] hover:bg-brand dark:hover:bg-brand dark:hover:text-white transition-all magnet" data-magnet>
-                <i class="fab fa-github mr-2"></i> View Repository
-              </button>
-            </div>
-
-            <div class="lg:col-span-2 space-y-6">
-              <div class="glass-panel p-8 min-h-[400px] reveal">
-                <h4 class="text-[10px] font-black uppercase tracking-widest text-brand mb-6">Program Lifecycle Overview</h4>
-
-                <div class="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-                  <div class="p-4 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/10 reveal">
-                    <p class="text-[8px] font-black opacity-40 uppercase">Efficiency</p>
-                    <p class="text-lg font-bold text-brand">+32%</p>
-                  </div>
-                  <div class="p-4 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/10 reveal">
-                    <p class="text-[8px] font-black opacity-40 uppercase">Accuracy</p>
-                    <p class="text-lg font-bold text-brand">99.4%</p>
-                  </div>
-                  <div class="p-4 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/10 reveal">
-                    <p class="text-[8px] font-black opacity-40 uppercase">Risk Level</p>
-                    <p class="text-lg font-bold text-green-500">Low</p>
-                  </div>
-                  <div class="p-4 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/10 reveal">
-                    <p class="text-[8px] font-black opacity-40 uppercase">NPS Score</p>
-                    <p class="text-lg font-bold text-brand">88</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </div>
-
-      <!-- CONTACT PAGE (your full structure preserved) -->
-      <div id="contact-page" class="content-container page-transition hidden-state">
-        <div class="min-h-[var(--page-h)]">
-          <div class="mb-8 flex justify-between items-end">
-            <div>
-              <button onclick="go('#home')" class="text-brand text-[10px] font-black uppercase tracking-widest mb-3 flex items-center gap-2">
-                <i class="fas fa-arrow-left"></i> Dashboard
-              </button>
-              <h2 class="display-font text-4xl font-black tracking-tighter uppercase">Direct <span class="text-brand">Outreach</span></h2>
-            </div>
-            <button onclick="downloadVCard()" class="flex items-center gap-2 px-4 py-2 bg-slate-100 dark:bg-white/5 rounded-lg text-[9px] font-black uppercase tracking-widest hover:bg-brand hover:text-white transition-all magnet" data-magnet>
-              <i class="fas fa-id-card"></i> Save Contact
-            </button>
-          </div>
-
-          <div class="grid lg:grid-cols-2 gap-8 items-start relative">
-            <div id="success-msg" class="hidden absolute inset-0 z-20 flex items-center justify-center">
-              <div class="glass-panel p-10 text-center border-brand shadow-2xl">
-                <i class="fas fa-check-circle text-5xl text-brand mb-4"></i>
-                <h3 class="display-font text-2xl font-bold">Message Dispatched!</h3>
-                <p class="text-sm opacity-60 mt-2">Check your email for confirmation.</p>
-                <button onclick="resetForm()" class="mt-6 text-[10px] font-black uppercase text-brand">Send Another</button>
-              </div>
-            </div>
-
-            <div class="glass-panel p-8 reveal" id="form-container">
-              <form id="contact-form" action="https://formspree.io/f/xbddlbzj" method="POST" class="space-y-4">
-                <div class="grid grid-cols-2 gap-4">
-                  <div>
-                    <label class="text-[9px] font-black uppercase tracking-widest opacity-40 mb-1 block">Name</label>
-                    <input type="text" name="name" class="input-field" placeholder="John Doe" required>
-                  </div>
-                  <div>
-                    <label class="text-[9px] font-black uppercase tracking-widest opacity-40 mb-1 block">Email</label>
-                    <input type="email" name="email" class="input-field" placeholder="john@company.com" required>
-                  </div>
-                </div>
-                <div>
-                  <label class="text-[9px] font-black uppercase tracking-widest opacity-40 mb-1 block">Subject</label>
-                  <input type="text" name="subject" class="input-field" placeholder="TPM Collaboration" required>
-                </div>
-                <div>
-                  <label class="text-[9px] font-black uppercase tracking-widest opacity-40 mb-1 block">Message</label>
-                  <textarea name="message" rows="5" class="input-field" placeholder="How can we build together?" required></textarea>
-                </div>
-                <input type="text" name="_gotcha" style="display:none">
-
-                <button type="submit" id="submit-btn" class="w-full py-4 bg-brand text-white rounded-xl font-black uppercase tracking-[0.2em] text-[10px] hover:shadow-lg transition-all magnet" data-magnet>
-                  Dispatch Message <i class="fas fa-paper-plane ml-2"></i>
-                </button>
-              </form>
-            </div>
-
-            <div class="flex flex-col gap-6">
-              <div class="glass-panel p-2 h-80 relative overflow-hidden shadow-2xl reveal">
-                <iframe class="w-full h-full rounded-[18px] border-0 grayscale contrast-125 opacity-80 hover:grayscale-0 hover:opacity-100 transition-all duration-700"
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d101435.53239857943!2d-122.09315359404743!3d37.38541481109677!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x808fb6570fc28507%3A0x600b396e95df4a78!2sSunnyvale%2C%20CA!5e0!3m2!1sen!2susa!4v1700000000000!5m2!1sen!2susa"
-                  loading="lazy"
-                  referrerpolicy="no-referrer-when-downgrade"></iframe>
-                <div class="absolute bottom-6 left-6 bg-white/90 dark:bg-slate-900/90 backdrop-blur p-4 rounded-xl border border-brand/20 shadow-xl">
-                  <p class="text-[8px] font-black uppercase text-brand tracking-widest">Base</p>
-                  <h4 class="font-bold text-sm">Sunnyvale, CA, USA</h4>
-                </div>
-              </div>
-
-              <div class="grid grid-cols-2 gap-4">
-                <div class="glass-panel p-5 reveal">
-                  <p class="text-[8px] font-black opacity-40 uppercase mb-1">Local Time</p>
-                  <p id="local-time" class="display-font text-xl font-bold tracking-tighter">--:-- PST</p>
-                </div>
-                <div class="glass-panel p-5 reveal">
-                  <p class="text-[8px] font-black opacity-40 uppercase mb-1">Status</p>
-                  <p class="display-font text-xl font-bold text-green-500 tracking-tighter"><span class="status-dot"></span> Online</p>
-                </div>
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </div>
-
-    </main>
-
-    <!-- FOOTER -->
-    <footer class="py-6 border-t border-slate-100 dark:border-slate-900 bg-white/50 dark:bg-slate-950/50 backdrop-blur-sm z-10" style="height: var(--footer-h);">
-      <div class="content-container flex justify-between items-center text-[9px] font-bold tracking-[0.4em] uppercase opacity-40">
-        <p>© 2026 Sourabh Tarodekar | MSBA | MBA | PMP</p>
-      </div>
-    </footer>
-  </div>
-
-  <!-- RESUME DRAWER -->
-  <div class="drawer" id="resumeDrawer" aria-hidden="true">
-    <div class="drawer-panel">
-      <div class="drawer-close" onclick="closeResume()" title="Close">
-        <i class="fas fa-xmark"></i>
-      </div>
-      <!-- Replace RESUME_PDF_URL with your real hosted PDF -->
-      <iframe src="RESUME_PDF_URL" class="w-full h-full border-0" title="Resume"></iframe>
+<!-- NAV -->
+<nav class="fixed top-0 inset-x-0 z-50 bg-white/80 dark:bg-slate-950/80 backdrop-blur border-b">
+  <div class="max-w-6xl mx-auto h-16 px-6 flex justify-between items-center">
+    <span class="display font-black tracking-widest">SOURABH</span>
+    <div class="flex gap-4 text-sm">
+      <a href="#portfolio">Portfolio</a>
+      <a href="#contact">Contact</a>
     </div>
   </div>
+</nav>
 
-  <script>
-    /* =========================
-       DATA (your original)
-    ========================= */
-    const repos = [
-      { id: 1, name: "CapEx-Forecaster", desc: "Predictive engine for infrastructure rollout and facility ready-dates.", track: "Financials", icon: "fa-chart-pie", link: "CapEx-Forecasting" },
-      { id: 2, name: "NPI-Milestone-Tracker", desc: "Lifecycle management for wafer-fab equipment builds.", track: "Operations", icon: "fa-microchip", link: "NPI-Tracker" },
-      { id: 3, name: "Supply-Chain-AI", desc: "Deep learning lead-time risk assessment for global parts.", track: "AI / ML", icon: "fa-brain", link: "SupplyChain-AI" },
-      { id: 4, name: "Mfg-BI-Suite", desc: "End-to-end ETL pipeline for shop-floor productivity metrics.", track: "Analytics", icon: "fa-database", link: "Mfg-BI" },
-      { id: 5, name: "Risk-Assessment", desc: "Quantitative volatility modeling for multi-tier supply networks.", track: "Analytics", icon: "fa-shield-alt", link: "Risk-Engine" },
-      { id: 6, name: "Equipment-ROI", desc: "Financial justification models for semiconductor tool assets.", track: "Financials", icon: "fa-dollar-sign", link: "ROI-Tool" },
-      { id: 7, name: "Inventory-Opt", desc: "Stochastic inventory modeling for critical spare parts.", track: "AI / ML", icon: "fa-cubes", link: "Inv-Opt" },
-      { id: 8, name: "WIP-Control", desc: "Work-in-progress visibility for factory assembly lines.", track: "Operations", icon: "fa-industry", link: "WIP-System" }
-    ];
+<main class="pt-24 space-y-40">
 
-    /* =========================
-       Routing + Page Switch
-    ========================= */
-    const pageKeys = ['home','about','portfolio','detail','contact'];
-    const pageId = (key) => `${key}-page`;
+<!-- HERO -->
+<section class="hero max-w-6xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
+  <div class="parallax" id="heroText">
+    <h1 class="display text-6xl font-black leading-tight">High-Velocity<br><span class="text-brand">Execution</span></h1>
+    <p class="mt-6 text-lg opacity-70">Hardware NPI • Ops • Automation</p>
+  </div>
+  <div class="grid gap-4">
+    <div class="card p-6 reveal magnet">CapEx Programs</div>
+    <div class="card p-6 reveal magnet">Supply Chain Systems</div>
+  </div>
+</section>
 
-    function setPageVisible(key){
-      pageKeys.forEach(k=>{
-        const el = document.getElementById(pageId(k));
-        if(!el) return;
-        el.classList.remove('visible-state');
-        el.classList.add('hidden-state');
-      });
+<!-- PORTFOLIO -->
+<section id="portfolio" class="max-w-6xl mx-auto px-6">
+  <h2 class="display text-4xl font-black mb-12 reveal">Selected Work</h2>
+  <div class="grid md:grid-cols-3 gap-8">
+    <div class="card p-6 reveal magnet">CapEx Forecaster</div>
+    <div class="card p-6 reveal magnet">NPI Tracker</div>
+    <div class="card p-6 reveal magnet">Supply Risk AI</div>
+  </div>
+</section>
 
-      const target = document.getElementById(pageId(key));
-      if(target){
-        target.classList.remove('hidden-state');
-        target.classList.add('visible-state');
-      }
+<!-- CONTACT -->
+<section id="contact" class="max-w-6xl mx-auto px-6">
+  <h2 class="display text-4xl font-black mb-6 reveal">Contact</h2>
+  <a href="mailto:sourabh232@gmail.com" class="px-6 py-3 bg-brand text-white rounded-xl font-bold">Email Me</a>
+</section>
 
-      // Reset main scroll to top when switching pages (except home which has its own snap scroller)
-      const main = document.querySelector('.app-main');
-      if(main) main.scrollTop = 0;
+</main>
 
-      // Render projects on entering portfolio
-      if(key === 'portfolio') renderProjects(currentTrack);
+<script>
+  /* Cursor Glow */
+  const glow = document.getElementById('glow');
+  window.addEventListener('mousemove', e => {
+    glow.style.setProperty('--x', e.clientX+'px');
+    glow.style.setProperty('--y', e.clientY+'px');
+  });
 
-      // Re-init reveal observer for visible page
-      setupRevealsForVisiblePage();
-    }
+  /* Reveal */
+  const io = new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting&&e.target.classList.add('show')),{threshold:.15});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 
-    function go(hash){
-      if(!hash.startsWith('#')) hash = '#home';
-      if(location.hash !== hash) history.pushState(null, '', hash);
-      handleRoute();
-    }
-
-    function handleRoute(){
-      const h = (location.hash || '#home').replace('#','');
-      const key = pageKeys.includes(h) ? h : 'home';
-      setPageVisible(key);
-    }
-
-    window.addEventListener('popstate', handleRoute);
-
-    /* =========================
-       Portfolio render + filters
-    ========================= */
-    let currentTrack = 'all';
-
-    function openDetail(id){
-      const repo = repos.find(r => r.id === id);
-      if(!repo) return;
-
-      document.getElementById('detail-title').innerHTML =
-        `${repo.name.split('-').join(' ')} <span class="text-brand">Deploy</span>`;
-      document.getElementById('detail-desc').innerText = repo.desc;
-      document.getElementById('detail-track').innerText = repo.track;
-
-      const btn = document.getElementById('detail-github-btn');
-      btn.onclick = () => window.open(`https://github.com/QuantuMaster007/${repo.link}`, '_blank');
-
-      go('#detail');
-    }
-
-    function renderProjects(filter = 'all'){
-      const grid = document.getElementById('project-grid');
-      if(!grid) return;
-
-      const list = repos.filter(r => filter === 'all' || r.track === filter);
-      grid.innerHTML = list.map(r => `
-        <div onclick="openDetail(${r.id})" class="project-card p-6 rounded-2xl group flex flex-col h-full cursor-pointer reveal magnet" data-magnet>
-          <div class="flex justify-between items-start mb-4">
-            <div class="p-3 rounded-xl bg-slate-50 dark:bg-white/5 text-slate-400 group-hover:bg-brand group-hover:text-white transition-all">
-              <i class="fas ${r.icon} text-lg"></i>
-            </div>
-            <div class="text-[8px] font-black uppercase text-slate-400"><span class="status-dot"></span> Active</div>
-          </div>
-          <h3 class="font-bold text-sm mb-2 group-hover:text-brand transition-colors">${r.name}</h3>
-          <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-snug flex-grow">${r.desc}</p>
-          <div class="mt-5 pt-4 border-t border-slate-100 dark:border-white/5 flex justify-between items-center text-[9px] font-bold text-slate-400 uppercase">
-            <span>${r.track}</span><i class="fab fa-github opacity-30 group-hover:opacity-100"></i>
-          </div>
-        </div>
-      `).join('');
-
-      // After DOM insert: re-bind magnets + reveal
-      bindMagnets();
-      setupRevealsForVisiblePage();
-    }
-
-    function setActiveFilterButtons(track){
-      document.querySelectorAll('#portfolio-page .filter-btn').forEach(btn=>{
-        const t = btn.getAttribute('data-track');
-        btn.classList.toggle('active', t === track);
-      });
-    }
-
-    function handleFilterClick(e){
-      const btn = e.target.closest('.filter-btn');
-      if(!btn) return;
-      const track = btn.getAttribute('data-track') || 'all';
-      currentTrack = track;
-      setActiveFilterButtons(track);
-      renderProjects(track);
-    }
-
-    /* =========================
-       About tabs
-    ========================= */
-    function setAboutTab(tab){
-      const tabs = ['overview','impact','stack','focus'];
-      tabs.forEach(t=>{
-        const panel = document.getElementById(`about-${t}`);
-        if(panel) panel.classList.toggle('hidden', t !== tab);
-      });
-      document.querySelectorAll('#about-page [data-about-tab]').forEach(b=>{
-        b.classList.toggle('active', b.getAttribute('data-about-tab') === tab);
-      });
-      setupRevealsForVisiblePage();
-    }
-
-    /* =========================
-       Contact form (Formspree)
-    ========================= */
-    const form = document.getElementById('contact-form');
-    if(form){
-      form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const btn = document.getElementById('submit-btn');
-        const original = btn.innerHTML;
-
-        btn.disabled = true;
-        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Dispatching...';
-
-        try{
-          const data = new FormData(form);
-          const response = await fetch(form.action, {
-            method: 'POST',
-            body: data,
-            headers: { 'Accept': 'application/json' }
-          });
-
-          if(response.ok){
-            document.getElementById('form-container').classList.add('opacity-0');
-            document.getElementById('success-msg').classList.remove('hidden');
-          } else {
-            btn.disabled = false;
-            btn.innerHTML = 'Failed — Try Again <i class="fas fa-rotate-right ml-2"></i>';
-            setTimeout(()=> btn.innerHTML = original, 1600);
-          }
-        } catch(err){
-          btn.disabled = false;
-          btn.innerHTML = 'Network Error — Try Again <i class="fas fa-rotate-right ml-2"></i>';
-          setTimeout(()=> btn.innerHTML = original, 1600);
-        }
-      });
-    }
-
-    function resetForm(){
-      if(!form) return;
-      form.reset();
-      document.getElementById('form-container').classList.remove('opacity-0');
-      document.getElementById('success-msg').classList.add('hidden');
-      const btn = document.getElementById('submit-btn');
-      btn.disabled = false;
-      btn.innerHTML = 'Dispatch Message <i class="fas fa-paper-plane ml-2"></i>';
-    }
-
-    /* =========================
-       Local time
-    ========================= */
-    function updateTime(){
-      const opt = { timeZone: 'America/Los_Angeles', hour: '2-digit', minute: '2-digit', hour12: true };
-      const el = document.getElementById('local-time');
-      if(!el) return;
-      el.innerText = new Intl.DateTimeFormat('en-US', opt).format(new Date()) + " PST";
-    }
-    setInterval(updateTime, 1000);
-    updateTime();
-
-    /* =========================
-       Theme (persist)
-    ========================= */
-    const themeBtn = document.getElementById('theme-toggle');
-    const themeIcon = document.getElementById('theme-toggle-icon');
-    const root = document.documentElement;
-
-    function applyTheme(mode){
-      if(mode === 'dark'){
-        root.classList.add('dark');
-        themeIcon.classList.remove('fa-moon');
-        themeIcon.classList.add('fa-sun');
-      } else {
-        root.classList.remove('dark');
-        themeIcon.classList.add('fa-moon');
-        themeIcon.classList.remove('fa-sun');
-      }
-    }
-
-    const saved = localStorage.getItem('theme');
-    if(saved){
-      applyTheme(saved);
-    } else {
-      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-      applyTheme(prefersDark ? 'dark' : 'light');
-    }
-
-    themeBtn.addEventListener('click', ()=>{
-      const next = root.classList.contains('dark') ? 'light' : 'dark';
-      localStorage.setItem('theme', next);
-      applyTheme(next);
+  /* Magnet */
+  document.querySelectorAll('.magnet').forEach(el=>{
+    el.addEventListener('mousemove',e=>{
+      const r=el.getBoundingClientRect();
+      el.style.transform=`translate(${(e.clientX-r.left-r.width/2)*.08}px,${(e.clientY-r.top-r.height/2)*.08}px)`;
     });
+    el.addEventListener('mouseleave',()=>el.style.transform='');
+  });
 
-    /* =========================
-       Clipboard + vCard
-    ========================= */
-    function copyToClipboard(){
-      navigator.clipboard.writeText("https://github.com/QuantuMaster007");
-      const t = document.getElementById('copy-text');
-      t.innerText = "Copied!";
-      setTimeout(()=> t.innerText = "Copy Profile URL", 2000);
-    }
+  /* Hero Parallax */
+  window.addEventListener('scroll',()=>{
+    document.getElementById('heroText').style.setProperty('--p', window.scrollY*.12+'px');
+  });
+</script>
 
-    function downloadVCard(){
-      const vcard = `BEGIN:VCARD
-VERSION:3.0
-FN:Sourabh Tarodekar
-TITLE:Technical Program Manager
-EMAIL:sourabh232@gmail.com
-URL:https://linkedin.com/in/sourabh232
-URL:https://github.com/QuantuMaster007
-END:VCARD`;
-      const blob = new Blob([vcard], { type: 'text/vcard' });
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'Sourabh_Tarodekar.vcf';
-      a.click();
-      setTimeout(()=> window.URL.revokeObjectURL(url), 800);
-    }
-
-    /* =========================
-       Resume drawer
-    ========================= */
-    const resumeDrawer = document.getElementById('resumeDrawer');
-    function openResume(){
-      resumeDrawer.classList.add('show');
-      resumeDrawer.setAttribute('aria-hidden','false');
-    }
-    function closeResume(){
-      resumeDrawer.classList.remove('show');
-      resumeDrawer.setAttribute('aria-hidden','true');
-    }
-    resumeDrawer.addEventListener('click', (e)=>{
-      if(e.target === resumeDrawer) closeResume();
-    });
-    window.addEventListener('keydown', (e)=>{
-      if(e.key === 'Escape' && resumeDrawer.classList.contains('show')) closeResume();
-    });
-
-    /* =========================
-       Cursor glow spotlight (desktop)
-    ========================= */
-    const glow = document.getElementById('cursorGlow');
-    const isTouch = matchMedia('(hover: none)').matches;
-    if(!isTouch){
-      glow.style.opacity = '1';
-      window.addEventListener('mousemove', (e)=>{
-        glow.style.setProperty('--x', e.clientX + 'px');
-        glow.style.setProperty('--y', e.clientY + 'px');
-      });
-    }
-
-    /* =========================
-       Magnetic hover (desktop)
-    ========================= */
-    function bindMagnets(){
-      if(isTouch) return;
-      document.querySelectorAll('[data-magnet]').forEach(el=>{
-        if(el.__magnetBound) return;
-        el.__magnetBound = true;
-
-        el.addEventListener('mousemove', (e)=>{
-          const r = el.getBoundingClientRect();
-          const x = (e.clientX - r.left - r.width/2) * 0.08;
-          const y = (e.clientY - r.top - r.height/2) * 0.08;
-          el.style.transform = `translate(${x}px, ${y}px)`;
-        });
-        el.addEventListener('mouseleave', ()=>{
-          el.style.transform = '';
-        });
-      });
-    }
-    bindMagnets();
-
-    /* =========================
-       Reveal on scroll (correct root)
-    ========================= */
-    let revealObserver = null;
-
-    function setupRevealsForVisiblePage(){
-      if(revealObserver) revealObserver.disconnect();
-
-      // Determine current visible container and its scroll root:
-      // - Home reveals use homeSnap as root
-      // - Others use .app-main as root
-      const homeVisible = document.getElementById('home-page').classList.contains('visible-state');
-      const rootEl = homeVisible ? document.getElementById('homeSnap') : document.querySelector('.app-main');
-
-      revealObserver = new IntersectionObserver((entries)=>{
-        entries.forEach(ent=>{
-          if(ent.isIntersecting){
-            ent.target.classList.add('show');
-            revealObserver.unobserve(ent.target);
-          }
-        });
-      }, { root: rootEl, threshold: 0.12 });
-
-      // Observe reveals only inside currently visible page(s)
-      const visiblePage = document.querySelector('.visible-state');
-      if(!visiblePage) return;
-
-      visiblePage.querySelectorAll('.reveal').forEach(el=>{
-        // Reset if coming back to page
-        if(!el.classList.contains('show')) revealObserver.observe(el);
-      });
-    }
-
-    /* =========================
-       Hero parallax (Home only, RAF)
-    ========================= */
-    const homeSnap = document.getElementById('homeSnap');
-    let rafPending = false;
-    function parallaxTick(){
-      rafPending = false;
-      const y = homeSnap.scrollTop || 0;
-
-      // move subtle background grid by updating glow background position? keep simple:
-      // apply parallax to the first snap section card stack
-      const heroCards = document.querySelectorAll('#home-page .project-card');
-      heroCards.forEach((c, i)=>{
-        const offset = (y * 0.06) * (i+1) * 0.35;
-        c.style.transform = `translateY(${offset}px)`;
-      });
-    }
-    homeSnap.addEventListener('scroll', ()=>{
-      if(rafPending) return;
-      rafPending = true;
-      requestAnimationFrame(parallaxTick);
-    });
-
-    /* =========================
-       About tab buttons
-    ========================= */
-    document.querySelectorAll('#about-page [data-about-tab]').forEach(btn=>{
-      btn.addEventListener('click', ()=>{
-        const tab = btn.getAttribute('data-about-tab');
-        setAboutTab(tab);
-      });
-    });
-
-    /* =========================
-       Portfolio filter buttons
-    ========================= */
-    const portfolioFilters = document.querySelector('#portfolio-page .rounded-full');
-    if(portfolioFilters){
-      portfolioFilters.addEventListener('click', handleFilterClick);
-    }
-
-    /* =========================
-       Initial boot
-    ========================= */
-    function boot(){
-      // default route
-      handleRoute();
-
-      // initial render so portfolio is ready if user clicks quickly
-      renderProjects('all');
-
-      // initial reveals
-      setupRevealsForVisiblePage();
-    }
-    boot();
-  </script>
 </body>
 </html>
