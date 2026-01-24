@@ -1,132 +1,24 @@
-<!-- VERSION A: Full Effects Preserved + Fixed -->
-<!-- Philosophy: Keep ALL effects (glow, magnet, parallax, reveal, snap) but remove conflicts -->
-<!-- Key fixes: single transform pipeline, unified scroll root, constrained effects zones -->
-
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sourabh Tarodekar | Portfolio (Effects Max)</title>
+  <meta charset="UTF-8">
+  <title>Redirecting…</title>
 
-  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Instant redirect -->
+  <meta http-equiv="refresh" content="0; url=https://portfoliosourabh.vercel.app/" />
+
+  <!-- SEO-friendly canonical -->
+  <link rel="canonical" href="https://portfoliosourabh.vercel.app/" />
+
+  <!-- JS fallback -->
   <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: { extend: { colors: { brand: '#ef5a43' } } }
-    }
+    window.location.replace("https://portfoliosourabh.vercel.app/");
   </script>
-
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Outfit:wght@600;800;900&display=swap" rel="stylesheet" />
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
-
-  <style>
-    body { font-family: 'Inter', sans-serif; overflow-x: hidden; }
-    .display { font-family: 'Outfit', sans-serif; }
-
-    /* ===== Cursor Glow (Hero Only) ===== */
-    .cursor-glow {
-      position: fixed; inset: 0; pointer-events: none; z-index: 1;
-      background: radial-gradient(600px circle at var(--x,50%) var(--y,50%), rgba(239,90,67,.12), transparent 45%);
-      opacity: 0; transition: opacity .3s ease;
-    }
-    .hero:hover ~ .cursor-glow { opacity: 1; }
-
-    /* ===== Reveal ===== */
-    .reveal { opacity: 0; transform: translateY(18px); transition: all .6s ease; }
-    .reveal.show { opacity: 1; transform: translateY(0); }
-
-    /* ===== Magnet (isolated transform layer) ===== */
-    .magnet { will-change: transform; }
-
-    /* ===== Card ===== */
-    .card {
-      background: rgba(255,255,255,.75);
-      border: 1px solid rgba(15,23,42,.08);
-      border-radius: 20px;
-      backdrop-filter: blur(10px);
-      transition: box-shadow .3s ease, border-color .3s ease;
-    }
-    .card:hover { border-color: #ef5a43; box-shadow: 0 20px 40px -20px rgba(239,90,67,.4); }
-
-    /* ===== Hero Parallax (translateZ-safe) ===== */
-    .parallax { transform: translateY(var(--p,0px)); }
-  </style>
 </head>
-
-<body class="bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100">
-
-<div class="cursor-glow" id="glow"></div>
-
-<!-- NAV -->
-<nav class="fixed top-0 inset-x-0 z-50 bg-white/80 dark:bg-slate-950/80 backdrop-blur border-b">
-  <div class="max-w-6xl mx-auto h-16 px-6 flex justify-between items-center">
-    <span class="display font-black tracking-widest">SOURABH</span>
-    <div class="flex gap-4 text-sm">
-      <a href="#portfolio">Portfolio</a>
-      <a href="#contact">Contact</a>
-    </div>
-  </div>
-</nav>
-
-<main class="pt-24 space-y-40">
-
-<!-- HERO -->
-<section class="hero max-w-6xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
-  <div class="parallax" id="heroText">
-    <h1 class="display text-6xl font-black leading-tight">High-Velocity<br><span class="text-brand">Execution</span></h1>
-    <p class="mt-6 text-lg opacity-70">Hardware NPI • Ops • Automation</p>
-  </div>
-  <div class="grid gap-4">
-    <div class="card p-6 reveal magnet">CapEx Programs</div>
-    <div class="card p-6 reveal magnet">Supply Chain Systems</div>
-  </div>
-</section>
-
-<!-- PORTFOLIO -->
-<section id="portfolio" class="max-w-6xl mx-auto px-6">
-  <h2 class="display text-4xl font-black mb-12 reveal">Selected Work</h2>
-  <div class="grid md:grid-cols-3 gap-8">
-    <div class="card p-6 reveal magnet">CapEx Forecaster</div>
-    <div class="card p-6 reveal magnet">NPI Tracker</div>
-    <div class="card p-6 reveal magnet">Supply Risk AI</div>
-  </div>
-</section>
-
-<!-- CONTACT -->
-<section id="contact" class="max-w-6xl mx-auto px-6">
-  <h2 class="display text-4xl font-black mb-6 reveal">Contact</h2>
-  <a href="mailto:sourabh232@gmail.com" class="px-6 py-3 bg-brand text-white rounded-xl font-bold">Email Me</a>
-</section>
-
-</main>
-
-<script>
-  /* Cursor Glow */
-  const glow = document.getElementById('glow');
-  window.addEventListener('mousemove', e => {
-    glow.style.setProperty('--x', e.clientX+'px');
-    glow.style.setProperty('--y', e.clientY+'px');
-  });
-
-  /* Reveal */
-  const io = new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting&&e.target.classList.add('show')),{threshold:.15});
-  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
-
-  /* Magnet */
-  document.querySelectorAll('.magnet').forEach(el=>{
-    el.addEventListener('mousemove',e=>{
-      const r=el.getBoundingClientRect();
-      el.style.transform=`translate(${(e.clientX-r.left-r.width/2)*.08}px,${(e.clientY-r.top-r.height/2)*.08}px)`;
-    });
-    el.addEventListener('mouseleave',()=>el.style.transform='');
-  });
-
-  /* Hero Parallax */
-  window.addEventListener('scroll',()=>{
-    document.getElementById('heroText').style.setProperty('--p', window.scrollY*.12+'px');
-  });
-</script>
-
+<body>
+  <p>
+    Redirecting to the new site…
+    <a href="https://portfoliosourabh.vercel.app/">Click here if not redirected</a>
+  </p>
 </body>
 </html>
